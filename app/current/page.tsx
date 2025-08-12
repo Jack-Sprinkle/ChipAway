@@ -1,11 +1,14 @@
 "use client";
+// interfaces
 import { Round } from "../_shared/interfaces";
-import { db } from "../_db/db";
+// hooks
 import { useEffect, useState } from "react";
+//db
+import { db } from "../_db/db";
 import { useLiveQuery } from "dexie-react-hooks";
-
-// Components
+// components
 import AddRound from "../_components/AddRound";
+import Scorecard from "../_components/Scorecard";
 
 export default function CurrentRound() {
   // initialize current round to NULL
@@ -25,6 +28,7 @@ export default function CurrentRound() {
     }
   }, [rounds]);
 
+  // if there is no round, make user add one
   if (!currentRound) {
     return (
       <div className="container-sm flex flex-col gap-5 md: items-center">
@@ -32,6 +36,7 @@ export default function CurrentRound() {
       </div>
     );
   } else {
+    // display the current round
     return (
       <div className="container-sm flex flex-col gap-5 md: items-center">
         <div className="container-sm flex flex-col gap-2 md: items-center">
@@ -41,6 +46,7 @@ export default function CurrentRound() {
             Discard Round
           </button>
         </div>
+        <Scorecard roundNumber={currentRound.id}/>
       </div>
     );
   }

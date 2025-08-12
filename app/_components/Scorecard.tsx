@@ -1,26 +1,38 @@
-import { CheckIcon, XIcon } from "../_shared/icons";
+// interfaces
+import { Hole, ScorecardProps } from "../_shared/interfaces";
+// hooks
 import { useState, useEffect } from "react";
-import { ScorecardProps, Hole } from "../_shared/interfaces";
+// indexeddb
 import { db } from "../_db/db";
 import { useLiveQuery } from "dexie-react-hooks";
+// components
+import { CheckIcon, XIcon } from "../_shared/icons";
 
-export default function Scorecard({ roundNumber }: ScorecardProps) {
+export default function Scorecard( { roundNumber }: ScorecardProps) {
+  // fetch all holes that are saved for this round, reminder useLiveQuery cannot be used in useEffect
   const holes: Hole[] | undefined = useLiveQuery(() =>
     db.holes.where("roundNumber").equals(roundNumber).toArray()
   );
 
+  // initialize state variables
   const [scorecard, setScorecard] = useState<Hole[] | null>(null);
   const [coursePar, setCoursePar] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [totalStrokes, setTotalStrokes] = useState(0);
   const [error, setError] = useState("");
 
+  // set dependency on roundNumber, to initially get holes, then on holes, so it updates after adding hole
   useEffect(() => {
-    if (holes && holes.length > 0) {
+    if (holes) {
+      // sort holes by number to display properly
       const sortedHoles = holes.sort((a, b) => a.holeNumber - b.holeNumber);
+      // get total score for all holes so far
       const score = holes.reduce((total, hole) => total + Number(hole.score), 0);
+      // get par for all holes so far
       const par = holes.reduce((total, hole) => total + Number(hole.par), 0);
+      // get total strokes for holes so far
       const strokes = holes.reduce((total, hole) => total + Number(hole.strokes), 0);
+      // update state variables
       setScorecard(sortedHoles);
       setCoursePar(par);
       setTotalScore(score);
@@ -29,7 +41,7 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
     } else {
       setError("Add a hole to start your scorecard.");
     }
-  }, [holes, roundNumber]);
+  }, [roundNumber, holes]);
 
   return (
     <div className="container-xs flex flex-col gap-4">

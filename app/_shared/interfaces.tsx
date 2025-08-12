@@ -1,6 +1,9 @@
 export interface Round {
-  id?: number;
+  id: number;
   courseName: string;
+  courseRating: number;
+  courseSlope: number;
+  tees: string;
   date: string;
   inProgress: number;
 }

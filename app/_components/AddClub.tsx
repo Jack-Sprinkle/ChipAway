@@ -1,6 +1,6 @@
 "use client";
 import { Club, AddClubInputProps } from "../_shared/interfaces";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 
 export default function AddClub({ saveClub }: AddClubInputProps) {
   const [club, setClub] = useState<Club>({
@@ -17,7 +17,8 @@ export default function AddClub({ saveClub }: AddClubInputProps) {
     });
   };
 
-  function handleSubmit() {
+  function handleSubmit(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
     saveClub(club);
     setClub({
       name: "",

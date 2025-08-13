@@ -46,7 +46,9 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
     }
   }, [holes, roundNumber]);
 
-  function handleChange(evt: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+  function handleChange(
+    evt: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
     const { name, value } = evt.target;
     setCurrentHole({
       ...currentHole,
@@ -84,77 +86,82 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
   } else {
     return (
       <div className="container-sm flex flex-col gap-4">
-        <h3 className="text-xl underline text-center">
-          Hole: {currentHole.id}
-        </h3>
+        {currentHole.id === 19 ? (
+          <h3 className="text-xl underline text-center">Round Finished</h3>
+        ) : (
+          <h3 className="text-xl underline text-center">
+            Hole: {currentHole.id}
+          </h3>
+        )}
+
         {error ? <p className="text-red-700">{error}</p> : null}
         <form className="flex flex-col items-start" onSubmit={addHole}>
           {currentHole.id === 19 ? (
             <p>Please save your round.</p>
           ) : (
             <>
-            <label className="mb-2">
-            Par:
-            <input
-              type="number"
-              name="par"
-              value={currentHole.par ?? 0}
-              onChange={handleChange}
-              className="ml-2 border rounded p-1 w-20"
-              required
-            />
-          </label>
-          <label className="mb-2">
-            Strokes:
-            <input
-              type="number"
-              name="strokes"
-              value={currentHole.strokes ?? 0}
-              onChange={handleChange}
-              className="ml-2 border rounded p-1 w-20"
-              required
-            />
-          </label>
-          <label className="mb-2">
-            FIR
-            <select
-              name="fairway"
-              value={currentHole.fairway ?? 0}
-              onChange={handleChange}
-              className="ml-2"
-              required
-            >
-              <option value={1}>Yes</option>
-              <option value={0}>No</option>
-            </select>
-          </label>
-          <label className="mb-2">
-            GIR?
-            <select
-              name="green"
-              value={currentHole.green ?? 0}
-              onChange={handleChange}
-              className="ml-2"
-              required
-            >
-              <option value={1}>Yes</option>
-              <option value={0}>No</option>
-            </select>
-          </label>
-          <label className="mb-2">
-            Putts:
-            <input
-              type="number"
-              name="putts"
-              value={currentHole.putts ?? 0}
-              onChange={handleChange}
-              className="ml-2 border rounded p-1 w-20"
-              required
-            />
-          </label>
+              <label className="mb-2">
+                Par:
+                <input
+                  type="number"
+                  name="par"
+                  value={currentHole.par ?? 0}
+                  onChange={handleChange}
+                  className="ml-2 border rounded p-1 w-20"
+                  required
+                />
+              </label>
+              <label className="mb-2">
+                Strokes:
+                <input
+                  type="number"
+                  name="strokes"
+                  value={currentHole.strokes ?? 0}
+                  onChange={handleChange}
+                  className="ml-2 border rounded p-1 w-20"
+                  required
+                />
+              </label>
+              <label className="mb-2">
+                FIR
+                <select
+                  name="fairway"
+                  value={currentHole.fairway ?? 0}
+                  onChange={handleChange}
+                  className="ml-2"
+                  required
+                >
+                  <option value={1}>Yes</option>
+                  <option value={0}>No</option>
+                </select>
+              </label>
+              <label className="mb-2">
+                GIR?
+                <select
+                  name="green"
+                  value={currentHole.green ?? 0}
+                  onChange={handleChange}
+                  className="ml-2"
+                  required
+                >
+                  <option value={1}>Yes</option>
+                  <option value={0}>No</option>
+                </select>
+              </label>
+              <label className="mb-2">
+                Putts:
+                <input
+                  type="number"
+                  name="putts"
+                  value={currentHole.putts ?? 0}
+                  onChange={handleChange}
+                  className="ml-2 border rounded p-1 w-20"
+                  required
+                />
+              </label>
             </>
           )}
-          
+
           <div className="flex w-full">
             {currentHole.id === 19 ? (
               <button

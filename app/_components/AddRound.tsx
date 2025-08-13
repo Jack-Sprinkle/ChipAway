@@ -1,5 +1,5 @@
 import { db } from "../_db/db";
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 
 export default function AddRound() {
   // set all state used for a round and error handling
@@ -10,7 +10,8 @@ export default function AddRound() {
   const [tees, setTees] = useState<string>("");
   const [date, setDate] = useState<string>("");
 
-  const addRound = async () => {
+  async function addRound(evt: FormEvent<HTMLFormElement>) {
+    evt.preventDefault();
     // attempt to save a round to indexeddb
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

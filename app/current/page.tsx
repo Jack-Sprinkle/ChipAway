@@ -3,12 +3,13 @@
 import { Round } from "../_shared/interfaces";
 // hooks
 import { useEffect, useState } from "react";
-//db
+// db
 import { db } from "../_db/db";
 import { useLiveQuery } from "dexie-react-hooks";
 // components
 import AddRound from "../_components/AddRound";
 import Scorecard from "../_components/Scorecard";
+import AddHole from "../_components/AddHole";
 
 export default function CurrentRound() {
   // initialize current round to NULL
@@ -24,9 +25,31 @@ export default function CurrentRound() {
   useEffect(() => {
     // if we have rounds, set the current round
     if (rounds) {
-      setCurrentRound(rounds[0])
+      setCurrentRound(rounds[0]);
     }
   }, [rounds]);
+
+  async function saveRound() {
+    if (currentRound) {
+      try {
+        await db.rounds.update(currentRound.id, { inProgress: 0 });
+        setCurrentRound(null);
+      } catch (err) {
+        console.error(`Failed to save current round: ${err}`)
+      }
+    }
+  }
+
+  async function deleteRound(id: number) {
+    if (currentRound) {
+      try {
+        await db.holes.where("roundNumber").equals(id).delete();
+        await db.rounds.delete(id);
+      } catch (err) {
+        console.error(`Failed to delete current round: ${err}`)
+      }
+    }
+  }
 
   // if there is no round, make user add one
   if (!currentRound) {
@@ -42,11 +65,12 @@ export default function CurrentRound() {
         <div className="container-sm flex flex-col gap-2 md: items-center">
           <h1 className="text-3xl underline">Current Round</h1>
           <h2 className="text-2xl">Course: {currentRound.courseName}</h2>
-          <button className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start">
+          <button onClick={() => deleteRound(currentRound.id)} className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start">
             Discard Round
           </button>
         </div>
-        <Scorecard roundNumber={currentRound.id}/>
+        <AddHole roundNumber={currentRound.id} saveRound={saveRound}/>
+        <Scorecard roundNumber={currentRound.id} />
       </div>
     );
   }

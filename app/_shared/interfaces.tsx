@@ -9,15 +9,14 @@ export interface Round {
 }
 
 export interface Hole {
-  id?: number;
-  roundNumber?: number;
-  holeNumber: number;
-  par: number | null;
-  strokes: number | null;
-  score: number | null;
-  fairway: number | null;
-  green: number | null;
-  putts: number | null;
+  id: number;
+  roundNumber: number;
+  par: number;
+  strokes: number;
+  score: number;
+  fairway: number;
+  green: number;
+  putts: number;
 }
 
 export interface Club {

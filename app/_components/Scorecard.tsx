@@ -25,7 +25,7 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
   useEffect(() => {
     if (holes) {
       // sort holes by number to display properly
-      const sortedHoles = holes.sort((a, b) => a.id - b.id);
+      const sortedHoles = holes.sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
       // get total score for all holes so far
       const score = holes.reduce(
         (total, hole) => total + Number(hole.score),
@@ -67,7 +67,7 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
         <tbody className="text-center">
           {scorecard?.map((hole, index) => (
             <tr key={index}>
-              <td>{hole.id}</td>
+              <td>{hole.holeNumber}</td>
               <td>{Number(hole.par)}</td>
               <td>{Number(hole.strokes)}</td>
               <td>{Number(hole.score)}</td>

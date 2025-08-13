@@ -12,10 +12,10 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
     db.holes.where("roundNumber").equals(roundNumber).toArray()
   );
 
-  // initialize currentHole to 1 for start of round
+  // initialize currentHole for start of new round
   const [currentHole, setCurrentHole] = useState<Hole>({
     roundNumber: roundNumber,
-    id: 1,
+    holeNumber: 1,
     par: 0,
     strokes: 0,
     score: 0,
@@ -23,6 +23,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
     green: 0,
     putts: 0,
   });
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState("");
 
@@ -30,12 +31,14 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
   useEffect(() => {
     // if holes exists AND has length, it will exist in indexeddb but it won't have a length on initial load
     if (holes && holes.length > 0) {
-      const sortedHoles = holes.sort((a, b) => b.id - a.id);
+      // sort the holes based on id, need to add ?? 0 because id has the potential to be undefined
+      const sortedHoles = holes.sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
       const mostRecentHole = sortedHoles[0];
       setCurrentHole({
         ...mostRecentHole,
         roundNumber: roundNumber,
-        id: mostRecentHole.id + 1,
+        id: (mostRecentHole.id ?? 0) + 1,
+        holeNumber: mostRecentHole.holeNumber + 1,
         par: 0,
         strokes: 0,
         score: 0,
@@ -46,6 +49,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
     }
   }, [holes, roundNumber]);
 
+  // continue to update the currentHole based on user input
   function handleChange(
     evt: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) {
@@ -65,11 +69,13 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
         score: (currentHole.strokes ?? 0) - (currentHole.par ?? 0),
       };
       // add updated hole to indexeddb
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const id = await db.holes.add(updatedHole);
       // update current hole to next hole
       setCurrentHole({
+        ...currentHole,
         roundNumber: roundNumber,
-        id: id + 1,
+        holeNumber: currentHole.holeNumber + 1,
         par: 0,
         strokes: 0,
         score: 0,
@@ -77,7 +83,9 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
         green: 0,
         putts: 0,
       });
-    } catch {}
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   // if we don't have a hole, there is an issue display loading
@@ -86,17 +94,17 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
   } else {
     return (
       <div className="container-sm flex flex-col gap-4">
-        {currentHole.id === 19 ? (
+        {currentHole.holeNumber === 19 ? (
           <h3 className="text-xl underline text-center">Round Finished</h3>
         ) : (
           <h3 className="text-xl underline text-center">
-            Hole: {currentHole.id}
+            Hole: {currentHole.holeNumber}
           </h3>
         )}
 
         {error ? <p className="text-red-700">{error}</p> : null}
         <form className="flex flex-col items-start" onSubmit={addHole}>
-          {currentHole.id === 19 ? (
+          {currentHole.holeNumber === 19 ? (
             <p>Please save your round.</p>
           ) : (
             <>
@@ -163,7 +171,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
           )}
 
           <div className="flex w-full">
-            {currentHole.id === 19 ? (
+            {currentHole.holeNumber === 19 ? (
               <button
                 type="button"
                 onClick={saveRound}

@@ -1,5 +1,5 @@
 export interface Round {
-  id: number;
+  id?: number;
   courseName: string;
   courseRating: number;
   courseSlope: number;
@@ -9,7 +9,8 @@ export interface Round {
 }
 
 export interface Hole {
-  id: number;
+  id?: number;
+  holeNumber: number;
   roundNumber: number;
   par: number;
   strokes: number;

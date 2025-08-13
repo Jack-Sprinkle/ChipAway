@@ -58,19 +58,19 @@ export default function CurrentRound() {
         <AddRound />
       </div>
     );
-  } else {
+  } else if (currentRound.id) {
     // display the current round
     return (
       <div className="container-sm flex flex-col gap-5 md: items-center">
         <div className="container-sm flex flex-col gap-2 md: items-center">
           <h1 className="text-3xl underline">Current Round</h1>
           <h2 className="text-2xl">Course: {currentRound.courseName}</h2>
-          <button onClick={() => deleteRound(currentRound.id)} className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start">
+          <button onClick={() => deleteRound(currentRound.id ?? 0)} className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start">
             Discard Round
           </button>
         </div>
-        <AddHole roundNumber={currentRound.id} saveRound={saveRound}/>
-        <Scorecard roundNumber={currentRound.id} />
+          <AddHole roundNumber={currentRound.id} saveRound={saveRound}/>
+          <Scorecard roundNumber={currentRound.id} />
       </div>
     );
   }

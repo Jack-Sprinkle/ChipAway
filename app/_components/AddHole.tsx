@@ -46,15 +46,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
     }
   }, [holes, roundNumber]);
 
-  function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = evt.target;
-    setCurrentHole({
-      ...currentHole,
-      [name]: value,
-    });
-  }
-
-  function handleSelectChange(evt: React.ChangeEvent<HTMLSelectElement>) {
+  function handleChange(evt: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = evt.target;
     setCurrentHole({
       ...currentHole,
@@ -128,7 +120,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
             <select
               name="fairway"
               value={currentHole.fairway ?? 0}
-              onChange={handleSelectChange}
+              onChange={handleChange}
               className="ml-2"
               required
             >
@@ -141,7 +133,7 @@ export default function AddHole({ roundNumber, saveRound }: AddHoleProps) {
             <select
               name="green"
               value={currentHole.green ?? 0}
-              onChange={handleSelectChange}
+              onChange={handleChange}
               className="ml-2"
               required
             >

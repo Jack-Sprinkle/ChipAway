@@ -1,6 +1,6 @@
 "use client";
 import { Club, AddClubInputProps } from "../_shared/interfaces";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent } from "react";
 
 export default function AddClub({ saveClub }: AddClubInputProps) {
   const [club, setClub] = useState<Club>({
@@ -9,20 +9,15 @@ export default function AddClub({ saveClub }: AddClubInputProps) {
     distance: 0,
   });
 
-  const handleChange = (
-    evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    evt.preventDefault();
+  function handleChange(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = evt.target;
-    setClub((prevClub) => ({
-      ...prevClub,
-      [name]:
-        name === "loft" || name === "distance" ? parseFloat(value) : value,
-    }));
+    setClub({
+      ...club,
+      [name] : value,
+    });
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
+  function handleSubmit() {
     saveClub(club);
     setClub({
       name: "",

@@ -9,8 +9,7 @@ export default function HomePage() {
         overwhelm you with options, stats, or other information mid-round.
       </p>
       <p className="pl-4">
-        My intent is to never require a username, password, or collect any data
-        on any users. This application strictly uses the browser and its native
+        My intent is to keep this platform lightweight and simple. This application strictly uses the browser and its native
         Indexed Database to store the information you provide about your round
         or clubs.
       </p>

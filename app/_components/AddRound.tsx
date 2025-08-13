@@ -1,25 +1,47 @@
-import { db } from "../_db/db";
+// interfaces
+import { Round } from "../_shared/interfaces";
+// hooks
 import { useState, FormEvent } from "react";
+// db
+import { db } from "../_db/db";
 
 export default function AddRound() {
   // set all state used for a round and error handling
   const [error, setError] = useState<string>("");
-  const [courseName, setCourseName] = useState<string>("");
-  const [courseRating, setCourseRating] = useState<number>(0);
-  const [courseSlope, setCourseSlope] = useState<number>(0);
-  const [tees, setTees] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+
+  // initialize round to start
+  const [newRound, setNewRound] = useState<Round>({
+    courseName: "",
+    courseRating: 0,
+    courseSlope: 0,
+    tees: "",
+    date: "",
+    inProgress: 0,
+  });
+
+  // update round values from user input
+  function handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = evt.target;
+    setNewRound({
+      ...newRound,
+      [name]: value,
+    });
+  }
 
   async function addRound(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     // attempt to save a round to indexeddb
     try {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const roundId = await db.rounds.add({ courseName, courseRating, courseSlope, tees, date, inProgress: 1 });
+      const newRoundId = await db.rounds.add({
+        ...newRound,
+        inProgress: 1,
+      });
     } catch (err) {
+      console.error(err)
       setError(`Could not start round: ${err}`);
     }
-  };
+  }
 
   return (
     <form
@@ -33,8 +55,9 @@ export default function AddRound() {
         <input
           className="ml-2 border rounded p-1 w-50"
           type="text"
-          value={courseName}
-          onChange={(evt) => setCourseName(evt.target.value)}
+          name="courseName"
+          value={newRound.courseName}
+          onChange={handleChange}
           required
         />
       </label>
@@ -43,8 +66,9 @@ export default function AddRound() {
         <input
           className="ml-2 border rounded p-1 w-50"
           type="number"
-          value={courseRating}
-          onChange={(evt) => setCourseRating(evt.target.valueAsNumber)}
+          name="courseRating"
+          value={newRound.courseRating ?? 0}
+          onChange={handleChange}
           required
         />
       </label>
@@ -53,18 +77,20 @@ export default function AddRound() {
         <input
           className="ml-2 border rounded p-1 w-50"
           type="number"
-          value={courseSlope}
-          onChange={(evt) => setCourseSlope(evt.target.valueAsNumber)}
+          name="courseSlope"
+          value={newRound.courseSlope ?? 0}
+          onChange={handleChange}
           required
         />
       </label>
-            <label className="mb-2">
+      <label className="mb-2">
         Tees:
         <input
           className="ml-2 border rounded p-1 w-50"
           type="text"
-          value={tees}
-          onChange={(evt) => setTees(evt.target.value)}
+          name="tees"
+          value={newRound.tees}
+          onChange={handleChange}
           required
         />
       </label>
@@ -73,8 +99,9 @@ export default function AddRound() {
         <input
           className="ml-2 border rounded p-1 w-50"
           type="date"
-          value={date}
-          onChange={(evt) => setDate(evt.target.value)}
+          name="date"
+          value={newRound.date}
+          onChange={handleChange}
           required
         />
       </label>

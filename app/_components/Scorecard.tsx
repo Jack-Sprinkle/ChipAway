@@ -70,7 +70,36 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
               <td>{hole.holeNumber}</td>
               <td>{Number(hole.par)}</td>
               <td>{Number(hole.strokes)}</td>
-              <td>{Number(hole.score)}</td>
+              <td>
+                {Number(hole.score) <= -2 ? (
+                  // Eagle or better: double circle
+                  <span className="inline-block p-0.5 border-2 border-blue-500 rounded-full">
+                    <span className="border-2 border-blue-500 rounded-full px-2 inline-block">
+                      {Number(hole.score)}
+                    </span>
+                  </span>
+                ) : Number(hole.score) === -1 ? (
+                  // Birdie: circle
+                  <span className="border-2 border-blue-500 rounded-full px-2 inline-block">
+                    {Number(hole.score)}
+                  </span>
+                ) : Number(hole.score) === 1 ? (
+                  // Bogey: single square
+                  <span className="border-2 border-red-500 rounded-none px-2 inline-block">
+                    +{Number(hole.score)}
+                  </span>
+                ) : Number(hole.score) >= 2 ? (
+                  // Double bogey or worse: double square
+                  <span className="inline-block p-0.5 border-2 border-red-500 rounded-none">
+                    <span className="border-2 border-red-500 rounded-none px-2 inline-block">
+                      +{Number(hole.score)}
+                    </span>
+                  </span>
+                ) : (
+                  // event par
+                  Number(hole.score)
+                )}
+              </td>
               <td className="text-center">
                 <div className="flex justify-center">
                   {Number(hole.fairway) ? <CheckIcon /> : <XIcon />}

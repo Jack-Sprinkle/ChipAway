@@ -1,73 +1,77 @@
 "use client";
+// interfaces
 import { Round } from "../_shared/interfaces";
+// hooks
+import { useEffect, useState } from "react";
+// db
 import { db } from "../_db/db";
 import { useLiveQuery } from "dexie-react-hooks";
+// components
 import AddRound from "../_components/AddRound";
-import AddHole from "../_components/AddHole";
-import { useState, useEffect } from "react";
 import Scorecard from "../_components/Scorecard";
+import AddHole from "../_components/AddHole";
 
 export default function CurrentRound() {
+  // initialize current round to NULL
   const [currentRound, setCurrentRound] = useState<Round | null>(null);
+
+  // get rounds outside of useEffect, indexeddb cannot be called in useEffect
   const rounds: Round[] | undefined = useLiveQuery(() =>
+    // just get rounds where they're in progress
     db.rounds.where("inProgress").equals(1).toArray()
   );
 
+  // useEffect must be dependent on rounds getting updated from indexeddb
   useEffect(() => {
-    if (rounds && rounds.length > 0) {
+    // if we have rounds, set the current round
+    if (rounds) {
       setCurrentRound(rounds[0]);
     }
   }, [rounds]);
 
-  const saveRound = async () => {
-    if (currentRound && currentRound.id !== undefined) {
+  async function saveRound() {
+    if (currentRound) {
       try {
         await db.rounds.update(currentRound.id, { inProgress: 0 });
         setCurrentRound(null);
       } catch (err) {
-        console.error("Failed to save round:", err);
+        console.error(`Failed to save current round: ${err}`)
       }
     }
-  };
+  }
 
-  const deleteCurrentRound = async (id: number | undefined) => {
-    if (id !== undefined) {
+  async function deleteRound(id: number) {
+    if (currentRound) {
       try {
         await db.holes.where("roundNumber").equals(id).delete();
         await db.rounds.delete(id);
-        setCurrentRound(null);
       } catch (err) {
-        console.error("Failed to delete round:", err);
+        console.error(`Failed to delete current round: ${err}`)
       }
     }
-  };
+  }
 
+  // if there is no round, make user add one
   if (!currentRound) {
     return (
       <div className="container-sm flex flex-col gap-5 md: items-center">
         <AddRound />
       </div>
     );
-  }
-
-  return (
-    <div className="container-sm flex flex-col gap-5 md: items-center">
-      <div className="container-sm flex flex-col gap-2 md: items-center">
-        <h1 className="text-3xl">Current Round</h1>
-        <h2 className="text-2xl">Course: {currentRound.courseName}</h2>
-        <button
-          onClick={() => deleteCurrentRound(currentRound.id)}
-          className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start"
-        >
-          Discard Round
-        </button>
-      </div>
-      {currentRound.id !== undefined && (
-        <AddHole roundNumber={currentRound.id} saveRound={saveRound} />
-      )}
-      {currentRound.id !== undefined && (
+  } else {
+    // display the current round
+    return (
+      <div className="container-sm flex flex-col gap-5 md: items-center">
+        <div className="container-sm flex flex-col gap-2 md: items-center">
+          <h1 className="text-3xl underline">Current Round</h1>
+          <h2 className="text-2xl">Course: {currentRound.courseName}</h2>
+          <button onClick={() => deleteRound(currentRound.id)} className="rounded-lg bg-red-500 text-white px-2 py-1 text-xs self-start">
+            Discard Round
+          </button>
+        </div>
+        <AddHole roundNumber={currentRound.id} saveRound={saveRound}/>
         <Scorecard roundNumber={currentRound.id} />
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }

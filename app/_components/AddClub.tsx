@@ -9,19 +9,15 @@ export default function AddClub({ saveClub }: AddClubInputProps) {
     distance: 0,
   });
 
-  const handleChange = (
-    evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    evt.preventDefault();
+  function handleChange(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = evt.target;
-    setClub((prevClub) => ({
-      ...prevClub,
-      [name]:
-        name === "loft" || name === "distance" ? parseFloat(value) : value,
-    }));
+    setClub({
+      ...club,
+      [name] : value,
+    });
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  function handleSubmit(evt: FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     saveClub(club);
     setClub({

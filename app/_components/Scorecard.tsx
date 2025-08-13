@@ -1,32 +1,44 @@
-import { CheckIcon, XIcon } from "../_shared/icons";
+// interfaces
+import { Hole, ScorecardProps } from "../_shared/interfaces";
+// hooks
 import { useState, useEffect } from "react";
-import { ScorecardProps, Hole } from "../_shared/interfaces";
+// db
 import { db } from "../_db/db";
 import { useLiveQuery } from "dexie-react-hooks";
+// components
+import { CheckIcon, XIcon } from "../_shared/icons";
 
 export default function Scorecard({ roundNumber }: ScorecardProps) {
+  // fetch all holes that are saved for this round, reminder useLiveQuery cannot be used in useEffect
   const holes: Hole[] | undefined = useLiveQuery(() =>
     db.holes.where("roundNumber").equals(roundNumber).toArray()
   );
 
+  // initialize state variables
   const [scorecard, setScorecard] = useState<Hole[] | null>(null);
   const [coursePar, setCoursePar] = useState(0);
   const [totalScore, setTotalScore] = useState(0);
   const [totalStrokes, setTotalStrokes] = useState(0);
   const [error, setError] = useState("");
 
+  // set dependency on roundNumber, to initially get holes, then on holes, so it updates after adding hole
   useEffect(() => {
-    if (holes && holes.length > 0) {
-      const sortedHoles = holes.sort((a, b) => a.holeNumber - b.holeNumber);
+    if (holes) {
+      // sort holes by number to display properly
+      const sortedHoles = holes.sort((a, b) => a.id - b.id);
+      // get total score for all holes so far
       const score = holes.reduce(
         (total, hole) => total + Number(hole.score),
         0
       );
+      // get par for all holes so far
       const par = holes.reduce((total, hole) => total + Number(hole.par), 0);
+      // get total strokes for holes so far
       const strokes = holes.reduce(
         (total, hole) => total + Number(hole.strokes),
         0
       );
+      // update state variables
       setScorecard(sortedHoles);
       setCoursePar(par);
       setTotalScore(score);
@@ -35,7 +47,7 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
     } else {
       setError("Add a hole to start your scorecard.");
     }
-  }, [holes, roundNumber]);
+  }, [roundNumber, holes]);
 
   return (
     <div className="container-xs flex flex-col gap-4">
@@ -55,34 +67,11 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
         <tbody className="text-center">
           {scorecard?.map((hole, index) => (
             <tr key={index}>
-              <td className="py-2">{hole.holeNumber}</td>
-              <td className="py-2">{Number(hole.par)}</td>
-              <td className="py-2">{Number(hole.strokes)}</td>
-              <td className="py-2">
-                {" "}
-                {Number(hole.score) === -1 ? (
-                  // Birdie: circle
-                  <span className="border-2 border-blue-500 rounded-full px-2 inline-block">
-                    {Number(hole.score)}
-                  </span>
-                ) : Number(hole.score) === 1 ? (
-                  // Bogey: single square
-                  <span className="border-2 border-red-500 rounded-none px-2 inline-block">
-                    {Number(hole.score)}
-                  </span>
-                ) : Number(hole.score) >= 2 ? (
-                  // Double bogey: double square (nested span)
-                  <span className="inline-block p-0.5 border-2 border-red-500 rounded-none">
-                    <span className="border-2 border-red-500 rounded-none px-2 inline-block">
-                      {Number(hole.score)}
-                    </span>
-                  </span>
-                ) : (
-                  // Normal score
-                  Number(hole.score)
-                )}
-              </td>
-              <td className="text-center py-2">
+              <td>{hole.id}</td>
+              <td>{Number(hole.par)}</td>
+              <td>{Number(hole.strokes)}</td>
+              <td>{Number(hole.score)}</td>
+              <td className="text-center">
                 <div className="flex justify-center">
                   {Number(hole.fairway) ? <CheckIcon /> : <XIcon />}
                 </div>
@@ -99,6 +88,7 @@ export default function Scorecard({ roundNumber }: ScorecardProps) {
                     : "py-2"
                 }
               >
+                {" "}
                 {Number(hole.putts)}
               </td>
             </tr>

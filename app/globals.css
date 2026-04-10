@@ -6,6 +6,8 @@
     --color-warm-gold: #d4a574; /* Warm gold */
     --color-cream: #f5f1e8; /* Cream/natural */
     --color-light-sand: #e8e4d0; /* Light sand */
+	--color-muted-red: #a94442;  /* muted brick red */
+	--color-muted-red-hover: #8f3a38;  /* slightly darker for hover */
     /* Text colors */
     --color-text-dark: #2c2c2c; /* Near-black */
     --color-text-light: #f9f9f7; /* Off-white */

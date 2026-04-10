@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllRounds } from "@/lib/db";
+import { getAllRounds, deleteRound } from "@/lib/db";
 import type { Round } from "@/lib/types";
 import { getRoundTotals } from "@/lib/types";
 
@@ -10,6 +10,7 @@ export default function ScoresPage() {
     const [rounds, setRounds] = useState<Round[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [deletingRoundId, setDeletingRoundId] = useState<string | null>(null);
 
     /**
      * Load all rounds from IndexedDB on mount
@@ -31,6 +32,31 @@ export default function ScoresPage() {
 
         loadRounds();
     }, []);
+
+    const handleDeleteRound = async (roundId: string) => {
+        const shouldDelete = window.confirm(
+            "Delete this round? This action cannot be undone.",
+        );
+
+        if (!shouldDelete) {
+            return;
+        }
+
+        setDeletingRoundId(roundId);
+        setError(null);
+        try {
+            await deleteRound(roundId);
+            setRounds((currentRounds) =>
+                currentRounds.filter((round) => round.id !== roundId),
+            );
+        } catch (err) {
+            setError(
+                err instanceof Error ? err.message : "Failed to delete round",
+            );
+        } finally {
+            setDeletingRoundId(null);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -75,12 +101,6 @@ export default function ScoresPage() {
                         <p className="text-text-dark mb-6">
                             No rounds recorded yet
                         </p>
-                        <Link
-                            href="/round/new"
-                            className="inline-block px-6 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
-                        >
-                            Start a New Round
-                        </Link>
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -98,17 +118,16 @@ export default function ScoresPage() {
                             );
 
                             return (
-                                <Link
+                                <div
                                     key={round.id}
-                                    href={`/round/${round.id}/view`}
-                                    className="block p-6 border-2 border-gray-200 rounded-lg hover:border-vibrant-green hover:bg-cream transition-colors"
+                                    className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md"
                                 >
-                                    <div className="flex justify-between items-start mb-2">
+                                    <div className="mb-4 flex items-start justify-between gap-4">
                                         <div>
-                                            <h2 className="font-bold text-fairway-green text-lg">
+                                            <h2 className="text-lg font-bold text-fairway-green">
                                                 {round.courseName}
                                             </h2>
-                                            <p className="text-text-dark text-sm">
+                                            <p className="text-sm text-text-dark">
                                                 {formattedDate}
                                             </p>
                                         </div>
@@ -116,32 +135,31 @@ export default function ScoresPage() {
                                             <p className="text-4xl font-bold text-vibrant-green">
                                                 {totalScore}
                                             </p>
-                                            <p className="text-text-dark text-xs">
+                                            <p className="text-xs uppercase tracking-[0.2em] text-text-dark">
                                                 Total Score
                                             </p>
                                         </div>
                                     </div>
 
                                     {/* Front 9 / Back 9 Split */}
-                                    <div className="flex justify-between pt-4 border-t border-gray-200 text-sm text-text-dark">
-                                        <div>
-                                            <span className="font-semibold">
+                                    <div className="grid grid-cols-2 gap-3 border-t border-gray-200 pt-4 text-sm text-text-dark">
+                                        <div className="rounded-xl bg-light-sand px-4 py-3">
+                                            <span className="font-semibold text-fairway-green">
                                                 Front 9:
                                             </span>{" "}
                                             {front9Score}
                                         </div>
-                                        <div>
-                                            <span className="font-semibold">
+                                        <div className="rounded-xl bg-light-sand px-4 py-3">
+                                            <span className="font-semibold text-fairway-green">
                                                 Back 9:
                                             </span>{" "}
                                             {back9Score}
                                         </div>
                                     </div>
 
-                                    {/* Status */}
-                                    <div className="mt-2">
+                                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                                         <span
-                                            className={`inline-block text-xs px-2 py-1 rounded font-semibold ${
+                                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
                                                 round.completed
                                                     ? "bg-vibrant-green text-white"
                                                     : "bg-warm-gold text-text-dark"
@@ -151,8 +169,30 @@ export default function ScoresPage() {
                                                 ? "Completed"
                                                 : "In Progress"}
                                         </span>
+
+                                        <div className="flex items-center gap-2">
+                                            <Link
+                                                href={`/round/${round.id}/view`}
+                                                className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
+                                            >
+                                                View Round
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    void handleDeleteRound(round.id)
+                                                }
+                                                disabled={deletingRoundId === round.id}
+                                                aria-label={`Delete round at ${round.courseName} from ${formattedDate}`}
+                                                className="inline-flex items-center rounded-full bg-muted-red px-3 py-2 text-sm font-semibold text-text-light transition-colors hover:bg-muted-red-hover disabled:cursor-not-allowed disabled:opacity-60"
+                                            >
+                                                {deletingRoundId === round.id
+                                                    ? "Deleting..."
+                                                    : "Delete"}
+                                            </button>
+                                        </div>
                                     </div>
-                                </Link>
+                                </div>
                             );
                         })}
                     </div>

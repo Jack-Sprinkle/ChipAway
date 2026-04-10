@@ -1,7 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { RoundProvider } from "./context/RoundContext";
-// @ts-expect-error - Next.js handles CSS imports
 import "./globals.css";
 
 export const metadata: Metadata = {

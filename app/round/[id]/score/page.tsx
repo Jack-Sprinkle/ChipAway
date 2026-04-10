@@ -23,10 +23,16 @@ export default function ScoringPage({
         completeAndSave,
     } = useRound();
 
-    const currentHoleNum = parseInt(searchParams.get("hole") || "1", 10);
+    const holeParam = parseInt(searchParams.get("hole") || "1", 10);
+    const currentHoleNum =
+        Number.isNaN(holeParam) || holeParam < 1 || holeParam > 18
+            ? 1
+            : holeParam;
     const currentHoleIndex = currentHoleNum - 1;
 
-    const [isLoading, setIsLoading] = useState(!currentRound);
+    const [isLoading, setIsLoading] = useState(
+        !currentRound || currentRound.id !== roundId,
+    );
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +41,8 @@ export default function ScoringPage({
      * This handles page refresh or direct URL access
      */
     useEffect(() => {
-        if (!currentRound) {
+        if (!currentRound || currentRound.id !== roundId) {
+            setIsLoading(true);
             const loadRound = async () => {
                 try {
                     const round = await getRound(roundId);
@@ -58,6 +65,12 @@ export default function ScoringPage({
             setIsLoading(false);
         }
     }, [roundId, currentRound, setCurrentRound, router]);
+
+    useEffect(() => {
+        if (Number.isNaN(holeParam) || holeParam < 1 || holeParam > 18) {
+            router.replace(`/round/${roundId}/score?hole=1`);
+        }
+    }, [holeParam, roundId, router]);
 
     if (isLoading) {
         return (
@@ -94,9 +107,27 @@ export default function ScoringPage({
     /**
      * Handle navigation to previous hole
      */
+    const navigateToHole = async (targetHole: number) => {
+        setIsSaving(true);
+        setError(null);
+
+        try {
+            await saveToDatabase();
+            router.push(`/round/${roundId}/score?hole=${targetHole}`);
+            setIsSaving(false);
+        } catch (err) {
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "Failed to save round progress",
+            );
+            setIsSaving(false);
+        }
+    };
+
     const handlePrevious = () => {
         if (currentHoleNum > 1) {
-            router.push(`/round/${roundId}/score?hole=${currentHoleNum - 1}`);
+            void navigateToHole(currentHoleNum - 1);
         }
     };
 
@@ -105,7 +136,7 @@ export default function ScoringPage({
      */
     const handleNext = () => {
         if (currentHoleNum < 18) {
-            router.push(`/round/${roundId}/score?hole=${currentHoleNum + 1}`);
+            void navigateToHole(currentHoleNum + 1);
         }
     };
 
@@ -214,7 +245,7 @@ export default function ScoringPage({
                         </label>
                         <select
                             id="par"
-                            value={currentHole.parValue || ""}
+                            value={currentHole.parValue ?? ""}
                             onChange={(e) => handleParChange(e.target.value)}
                             disabled={isSaving}
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
@@ -237,7 +268,7 @@ export default function ScoringPage({
                         <input
                             id="score"
                             type="number"
-                            value={currentHole.score || ""}
+                            value={currentHole.score ?? ""}
                             onChange={(e) => handleScoreChange(e.target.value)}
                             placeholder="Enter score"
                             disabled={isSaving}
@@ -257,7 +288,7 @@ export default function ScoringPage({
                         <input
                             id="putts"
                             type="number"
-                            value={currentHole.putts || ""}
+                            value={currentHole.putts ?? ""}
                             onChange={(e) => handlePuttsChange(e.target.value)}
                             placeholder="Enter putts"
                             disabled={isSaving}
@@ -272,6 +303,7 @@ export default function ScoringPage({
                     {/* Previous/Next Row */}
                     <div className="flex gap-3">
                         <button
+                            type="button"
                             onClick={handlePrevious}
                             disabled={isFirstHole || isSaving}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -279,6 +311,7 @@ export default function ScoringPage({
                             ← Previous
                         </button>
                         <button
+                            type="button"
                             onClick={handleNext}
                             disabled={isLastHole || isSaving}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -290,6 +323,7 @@ export default function ScoringPage({
                     {/* Save/Complete Button */}
                     {isFront9Save && (
                         <button
+                            type="button"
                             onClick={handleSaveFront9}
                             disabled={isSaving}
                             className="w-full px-4 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -300,6 +334,7 @@ export default function ScoringPage({
 
                     {isBack9Save && (
                         <button
+                            type="button"
                             onClick={handleCompleteRound}
                             disabled={isSaving}
                             className="w-full px-4 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"

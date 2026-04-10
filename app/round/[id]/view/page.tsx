@@ -152,7 +152,8 @@ export default function RoundViewPage({
 
                             {round.holes.slice(0, 9).map((hole) => {
                                 const vs_par =
-                                    hole.score && hole.parValue
+                                    hole.score !== undefined &&
+                                    hole.parValue !== undefined
                                         ? hole.score - hole.parValue
                                         : null;
                                 return (
@@ -173,10 +174,12 @@ export default function RoundViewPage({
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par
+                                            {vs_par !== null
                                                 ? vs_par > 0
                                                     ? `+${vs_par}`
-                                                    : vs_par
+                                                    : vs_par === 0
+                                                      ? "E"
+                                                      : vs_par
                                                 : "—"}
                                         </div>
                                     </div>
@@ -211,7 +214,8 @@ export default function RoundViewPage({
 
                             {round.holes.slice(9, 18).map((hole) => {
                                 const vs_par =
-                                    hole.score && hole.parValue
+                                    hole.score !== undefined &&
+                                    hole.parValue !== undefined
                                         ? hole.score - hole.parValue
                                         : null;
                                 return (
@@ -232,10 +236,12 @@ export default function RoundViewPage({
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par
+                                            {vs_par !== null
                                                 ? vs_par > 0
                                                     ? `+${vs_par}`
-                                                    : vs_par
+                                                    : vs_par === 0
+                                                      ? "E"
+                                                      : vs_par
                                                 : "—"}
                                         </div>
                                     </div>

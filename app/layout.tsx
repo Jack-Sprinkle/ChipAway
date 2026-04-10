@@ -1,9 +1,13 @@
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { RoundProvider } from "./context/RoundContext";
+// @ts-expect-error - Next.js handles CSS imports
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Welcome",
-    description: "Next.js app with Tailwind",
+    title: "ChipAway | Golf Score Tracking",
+    description:
+        "Simple, offline golf score tracking. No accounts, no GPS, no data selling. Privacy-first golf app.",
 };
 
 export default function RootLayout({
@@ -12,9 +16,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={GeistSans.className}>
             <body>
-                <main>{children}</main>
+                <RoundProvider>
+                    <main>{children}</main>
+                </RoundProvider>
             </body>
         </html>
     );

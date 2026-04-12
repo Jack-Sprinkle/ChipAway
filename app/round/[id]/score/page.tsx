@@ -105,6 +105,22 @@ export default function ScoringPage({
     const isBack9Save = currentHoleNum === 18;
 
     /**
+     * Calculate running totals for the round
+     */
+    const runningScore = currentRound.holes.reduce(
+        (sum, hole) => sum + (hole.score ?? 0),
+        0,
+    );
+    const runningPar = currentRound.holes.reduce(
+        (sum, hole) => sum + (hole.parValue ?? 0),
+        0,
+    );
+    const scoredHoles = currentRound.holes.filter(
+        (hole) => hole.score !== undefined && hole.parValue !== undefined,
+    ).length;
+    const vsPar = runningScore - runningPar;
+
+    /**
      * Handle navigation to previous hole
      */
     const navigateToHole = async (targetHole: number) => {
@@ -154,6 +170,10 @@ export default function ScoringPage({
      * Handle score input change
      */
     const handleScoreChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { score: undefined });
+            return;
+        }
         const score = parseInt(value, 10);
         if (!isNaN(score) && score > 0) {
             updateHole(currentHoleIndex, { score });
@@ -164,6 +184,10 @@ export default function ScoringPage({
      * Handle putts input change
      */
     const handlePuttsChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { putts: undefined });
+            return;
+        }
         const putts = parseInt(value, 10);
         if (!isNaN(putts) && putts >= 0) {
             updateHole(currentHoleIndex, { putts });
@@ -225,6 +249,39 @@ export default function ScoringPage({
                         {currentHoleNum} of 18
                     </p>
                 </div>
+
+                {/* Running Score Stats - Leaderboard Style */}
+                {scoredHoles > 0 && (
+                    <div className="mb-8 p-6 bg-fairway-green text-white rounded-lg">
+                        <div className="flex items-center justify-between mb-4">
+                            <div>
+                                <p className="text-xs font-semibold opacity-90 mb-1">
+                                    SCORE
+                                </p>
+                                <p className="text-5xl font-bold">
+                                    {runningScore}
+                                </p>
+                            </div>
+                            <div className="text-right">
+                                <p
+                                    className={`text-5xl font-bold ${
+                                        vsPar > 0
+                                            ? "text-red-300"
+                                            : vsPar < 0
+                                              ? "text-green-300"
+                                              : "text-white"
+                                    }`}
+                                >
+                                    {vsPar > 0 ? "+" : ""}
+                                    {vsPar === 0 ? "E" : vsPar}
+                                </p>
+                                <p className="text-xs font-semibold opacity-90 mt-2">
+                                    THRU {currentHoleNum}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Error Message */}
                 {error && (

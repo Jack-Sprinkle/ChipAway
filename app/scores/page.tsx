@@ -32,9 +32,7 @@ export default function ScoresPage() {
     }, []);
 
     const handleDeleteRound = async (roundId: string) => {
-        const shouldDelete = window.confirm(
-            "Delete this round? This action cannot be undone.",
-        );
+        const shouldDelete = window.confirm("Delete this round? This action cannot be undone.");
 
         if (!shouldDelete) {
             return;
@@ -44,13 +42,9 @@ export default function ScoresPage() {
         setError(null);
         try {
             await deleteRound(roundId);
-            setRounds((currentRounds) =>
-                currentRounds.filter((round) => round.id !== roundId),
-            );
+            setRounds((currentRounds) => currentRounds.filter((round) => round.id !== roundId));
         } catch (err) {
-            setError(
-                err instanceof Error ? err.message : "Failed to delete round",
-            );
+            setError(err instanceof Error ? err.message : "Failed to delete round");
         } finally {
             setDeletingRoundId(null);
         }
@@ -69,10 +63,7 @@ export default function ScoresPage() {
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error}</p>
-                    <Link
-                        href="/"
-                        className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
-                    >
+                    <Link href="/" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
                         Return Home
                     </Link>
                 </div>
@@ -85,39 +76,25 @@ export default function ScoresPage() {
             <div className="max-w-2xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-fairway-green mb-2">
-                        Past Rounds
-                    </h1>
-                    <p className="text-text-dark text-sm">
-                        {rounds.length} round(s) recorded
-                    </p>
+                    <h1 className="text-3xl font-bold text-fairway-green mb-2">Past Rounds</h1>
+                    <p className="text-text-dark text-sm">{rounds.length} round(s) recorded</p>
                 </div>
 
                 {/* Empty State */}
                 {rounds.length === 0 ? (
                     <div className="text-center py-12">
-                        <p className="text-text-dark mb-6">
-                            No rounds recorded yet
-                        </p>
+                        <p className="text-text-dark mb-6">No rounds recorded yet</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         {rounds.map((round) => {
-                            const {
-                                totalScore,
-                                front9Score,
-                                back9Score,
-                                totalPar,
-                            } = getRoundTotals(round);
+                            const { totalScore, front9Score, back9Score, totalPar } = getRoundTotals(round);
                             const roundDate = new Date(round.date);
-                            const formattedDate = roundDate.toLocaleDateString(
-                                "en-US",
-                                {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                },
-                            );
+                            const formattedDate = roundDate.toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                            });
                             const vsPar = totalScore - totalPar;
 
                             return (
@@ -127,12 +104,8 @@ export default function ScoresPage() {
                                 >
                                     <div className="mb-4 flex items-start justify-between gap-4">
                                         <div>
-                                            <h2 className="text-lg font-bold text-fairway-green">
-                                                {round.courseName}
-                                            </h2>
-                                            <p className="text-sm text-text-dark">
-                                                {formattedDate}
-                                            </p>
+                                            <h2 className="text-lg font-bold text-fairway-green">{round.courseName}</h2>
+                                            <p className="text-sm text-text-dark">{formattedDate}</p>
                                         </div>
                                         <div className="text-right">
                                             <div className="mb-2 flex items-baseline justify-end gap-3">
@@ -148,9 +121,7 @@ export default function ScoresPage() {
                                                     <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
                                                         Par
                                                     </p>
-                                                    <p className="text-3xl font-bold text-fairway-green">
-                                                        {totalPar}
-                                                    </p>
+                                                    <p className="text-3xl font-bold text-fairway-green">{totalPar}</p>
                                                 </div>
                                                 <div>
                                                     <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
@@ -166,9 +137,7 @@ export default function ScoresPage() {
                                                         }`}
                                                     >
                                                         {vsPar > 0 ? "+" : ""}
-                                                        {vsPar === 0
-                                                            ? "E"
-                                                            : vsPar}
+                                                        {vsPar === 0 ? "E" : vsPar}
                                                     </p>
                                                 </div>
                                             </div>
@@ -178,15 +147,11 @@ export default function ScoresPage() {
                                     {/* Front 9 / Back 9 Split */}
                                     <div className="grid grid-cols-2 gap-3 border-t border-gray-200 pt-4 text-sm text-text-dark">
                                         <div className="rounded-xl bg-light-sand px-4 py-3">
-                                            <span className="font-semibold text-fairway-green">
-                                                Front 9:
-                                            </span>{" "}
+                                            <span className="font-semibold text-fairway-green">Front 9:</span>{" "}
                                             {front9Score}
                                         </div>
                                         <div className="rounded-xl bg-light-sand px-4 py-3">
-                                            <span className="font-semibold text-fairway-green">
-                                                Back 9:
-                                            </span>{" "}
+                                            <span className="font-semibold text-fairway-green">Back 9:</span>{" "}
                                             {back9Score}
                                         </div>
                                     </div>
@@ -199,9 +164,7 @@ export default function ScoresPage() {
                                                     : "bg-warm-gold text-text-dark"
                                             }`}
                                         >
-                                            {round.completed
-                                                ? "Completed"
-                                                : "In Progress"}
+                                            {round.completed ? "Completed" : "In Progress"}
                                         </span>
 
                                         <div className="flex items-center gap-2">
@@ -213,20 +176,12 @@ export default function ScoresPage() {
                                             </Link>
                                             <button
                                                 type="button"
-                                                onClick={() =>
-                                                    void handleDeleteRound(
-                                                        round.id,
-                                                    )
-                                                }
-                                                disabled={
-                                                    deletingRoundId === round.id
-                                                }
+                                                onClick={() => void handleDeleteRound(round.id)}
+                                                disabled={deletingRoundId === round.id}
                                                 aria-label={`Delete round at ${round.courseName} from ${formattedDate}`}
                                                 className="inline-flex items-center rounded-full bg-muted-red px-3 py-2 text-sm font-semibold text-text-light transition-colors hover:bg-muted-red-hover disabled:cursor-not-allowed disabled:opacity-60"
                                             >
-                                                {deletingRoundId === round.id
-                                                    ? "Deleting..."
-                                                    : "Delete"}
+                                                {deletingRoundId === round.id ? "Deleting..." : "Delete"}
                                             </button>
                                         </div>
                                     </div>

@@ -6,11 +6,7 @@ import { getRound } from "@/lib/db";
 import type { Round } from "@/lib/types";
 import { getRoundTotals } from "@/lib/types";
 
-export default function RoundViewPage({
-    params,
-}: {
-    params: Promise<{ id: string }>;
-}) {
+export default function RoundViewPage({ params }: { params: Promise<{ id: string }> }) {
     const [round, setRound] = useState<Round | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -52,9 +48,7 @@ export default function RoundViewPage({
         return (
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-red-700 font-semibold mb-4">
-                        {error || "Round not found"}
-                    </p>
+                    <p className="text-red-700 font-semibold mb-4">{error || "Round not found"}</p>
                     <Link
                         href="/scores"
                         className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
@@ -66,14 +60,7 @@ export default function RoundViewPage({
         );
     }
 
-    const {
-        totalScore,
-        front9Score,
-        back9Score,
-        totalPar,
-        front9Par,
-        back9Par,
-    } = getRoundTotals(round);
+    const { totalScore, front9Score, back9Score, totalPar, front9Par, back9Par } = getRoundTotals(round);
     const roundDate = new Date(round.date);
     const formattedDate = roundDate.toLocaleDateString("en-US", {
         month: "long",
@@ -93,63 +80,37 @@ export default function RoundViewPage({
                     >
                         ← Back to Rounds
                     </Link>
-                    <h1 className="text-3xl font-bold text-fairway-green mb-2">
-                        {round.courseName}
-                    </h1>
+                    <h1 className="text-3xl font-bold text-fairway-green mb-2">{round.courseName}</h1>
                     <p className="text-text-dark text-sm">{formattedDate}</p>
                 </div>
 
                 {/* Score Summary */}
                 <div className="grid grid-cols-5 gap-3 mb-8">
                     <div className="p-4 bg-cream border-2 border-vibrant-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            FRONT 9
-                        </p>
-                        <p className="text-4xl font-bold text-vibrant-green">
-                            {front9Score}
-                        </p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">FRONT 9</p>
+                        <p className="text-4xl font-bold text-vibrant-green">{front9Score}</p>
                     </div>
                     <div className="p-4 bg-cream border-2 border-vibrant-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            BACK 9
-                        </p>
-                        <p className="text-4xl font-bold text-vibrant-green">
-                            {back9Score}
-                        </p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">BACK 9</p>
+                        <p className="text-4xl font-bold text-vibrant-green">{back9Score}</p>
                     </div>
                     <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            TOTAL SCORE
-                        </p>
-                        <p className="text-4xl font-bold text-fairway-green">
-                            {totalScore}
-                        </p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">TOTAL SCORE</p>
+                        <p className="text-4xl font-bold text-fairway-green">{totalScore}</p>
                     </div>
                     <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            PAR
-                        </p>
-                        <p className="text-4xl font-bold text-fairway-green">
-                            {totalPar}
-                        </p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">PAR</p>
+                        <p className="text-4xl font-bold text-fairway-green">{totalPar}</p>
                     </div>
                     <div
                         className={`p-4 border-2 rounded-lg text-center ${
-                            vsPar > 0
-                                ? "bg-red-50 border-red-400"
-                                : "bg-green-50 border-vibrant-green"
+                            vsPar > 0 ? "bg-red-50 border-red-400" : "bg-green-50 border-vibrant-green"
                         }`}
                     >
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            +/-
-                        </p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">+/-</p>
                         <p
                             className={`text-4xl font-bold ${
-                                vsPar > 0
-                                    ? "text-red-600"
-                                    : vsPar < 0
-                                      ? "text-green-600"
-                                      : "text-fairway-green"
+                                vsPar > 0 ? "text-red-600" : vsPar < 0 ? "text-green-600" : "text-fairway-green"
                             }`}
                         >
                             {vsPar > 0 ? "+" : ""}
@@ -160,15 +121,11 @@ export default function RoundViewPage({
 
                 {/* Scorecard */}
                 <div className="mb-8">
-                    <h2 className="font-bold text-fairway-green text-lg mb-4">
-                        Scorecard
-                    </h2>
+                    <h2 className="font-bold text-fairway-green text-lg mb-4">Scorecard</h2>
 
                     {/* Front 9 */}
                     <div className="mb-8">
-                        <h3 className="font-semibold text-vibrant-green text-md mb-3">
-                            Front Nine
-                        </h3>
+                        <h3 className="font-semibold text-vibrant-green text-md mb-3">Front Nine</h3>
                         <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                             <div className="grid grid-cols-5 gap-0 bg-cream">
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
@@ -183,16 +140,11 @@ export default function RoundViewPage({
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
                                     Putts
                                 </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark">
-                                    +/-
-                                </div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark">+/-</div>
                             </div>
 
                             {round.holes.slice(0, 9).map((hole) => {
-                                const vs_par =
-                                    hole.score && hole.parValue
-                                        ? hole.score - hole.parValue
-                                        : null;
+                                const vs_par = hole.score && hole.parValue ? hole.score - hole.parValue : null;
                                 return (
                                     <div
                                         key={hole.holeNumber}
@@ -217,11 +169,7 @@ export default function RoundViewPage({
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par
-                                                ? vs_par > 0
-                                                    ? `+${vs_par}`
-                                                    : vs_par
-                                                : "—"}
+                                            {vs_par ? (vs_par > 0 ? `+${vs_par}` : vs_par) : "—"}
                                         </div>
                                     </div>
                                 );
@@ -231,9 +179,7 @@ export default function RoundViewPage({
 
                     {/* Back 9 */}
                     <div>
-                        <h3 className="font-semibold text-vibrant-green text-md mb-3">
-                            Back Nine
-                        </h3>
+                        <h3 className="font-semibold text-vibrant-green text-md mb-3">Back Nine</h3>
                         <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                             <div className="grid grid-cols-5 gap-0 bg-cream">
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
@@ -248,16 +194,11 @@ export default function RoundViewPage({
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
                                     Putts
                                 </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark">
-                                    +/-
-                                </div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark">+/-</div>
                             </div>
 
                             {round.holes.slice(9, 18).map((hole) => {
-                                const vs_par =
-                                    hole.score && hole.parValue
-                                        ? hole.score - hole.parValue
-                                        : null;
+                                const vs_par = hole.score && hole.parValue ? hole.score - hole.parValue : null;
                                 return (
                                     <div
                                         key={hole.holeNumber}
@@ -282,11 +223,7 @@ export default function RoundViewPage({
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par
-                                                ? vs_par > 0
-                                                    ? `+${vs_par}`
-                                                    : vs_par
-                                                : "—"}
+                                            {vs_par ? (vs_par > 0 ? `+${vs_par}` : vs_par) : "—"}
                                         </div>
                                     </div>
                                 );

@@ -122,7 +122,6 @@ export async function completeRound(roundId: string): Promise<void> {
 }
 
 // Clear all rounds from the database
-// WARNING: This is destructive and cannot be undone
 
 export async function clearAllRounds(): Promise<void> {
     const database = await getDB();

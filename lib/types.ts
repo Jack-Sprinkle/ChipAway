@@ -18,10 +18,7 @@ export interface Round {
 // Helper function to create a new round
 // Initializes all 18 holes with empty data (user fills par/score/putts progressively)
 
-export function createRound(
-    courseName: string,
-    date: number = Date.now(),
-): Round {
+export function createRound(courseName: string, date: number = Date.now()): Round {
     return {
         id: `round-${date}`,
         courseName,
@@ -41,24 +38,14 @@ export function getRoundTotals(round: Round) {
     const back9 = round.holes.slice(9, 18);
 
     // Calculate totals only for holes with complete data
-    const front9Score = front9.reduce(
-        (sum, hole) => sum + (hole.score !== undefined ? hole.score : 0),
-        0,
-    );
-    const back9Score = back9.reduce(
-        (sum, hole) => sum + (hole.score !== undefined ? hole.score : 0),
-        0,
-    );
+    const front9Score = front9.reduce((sum, hole) => sum + (hole.score !== undefined ? hole.score : 0), 0);
+    const back9Score = back9.reduce((sum, hole) => sum + (hole.score !== undefined ? hole.score : 0), 0);
     const totalScore = front9Score + back9Score;
 
-    const front9Par = front9.reduce(
-        (sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0),
-        0,
-    );
-    const back9Par = back9.reduce(
-        (sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0),
-        0,
-    );
+    const front9Par = front9.reduce((sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0), 0);
+    const back9Par = back9.reduce((sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0), 0);
+
+    const totalPar = front9Par + back9Par;
 
     return {
         front9Score,
@@ -66,6 +53,6 @@ export function getRoundTotals(round: Round) {
         totalScore,
         front9Par,
         back9Par,
-        totalPar: front9Par + back9Par,
+        totalPar,
     };
 }

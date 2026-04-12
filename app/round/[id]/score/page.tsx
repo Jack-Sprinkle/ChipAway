@@ -36,10 +36,9 @@ export default function ScoringPage({
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    /**
-     * Load round from IndexedDB if not in context
-     * This handles page refresh or direct URL access
-     */
+    // Load round from IndexedDB if not in context
+    // This handles page refresh or direct URL access
+
     useEffect(() => {
         if (!currentRound || currentRound.id !== roundId) {
             setIsLoading(true);
@@ -104,9 +103,8 @@ export default function ScoringPage({
     const isFront9Save = currentHoleNum === 9;
     const isBack9Save = currentHoleNum === 18;
 
-    /**
-     * Calculate running totals for the round
-     */
+    // Calculate running totals for the round
+
     const runningScore = currentRound.holes.reduce(
         (sum, hole) => sum + (hole.score ?? 0),
         0,
@@ -120,9 +118,8 @@ export default function ScoringPage({
     ).length;
     const vsPar = runningScore - runningPar;
 
-    /**
-     * Handle navigation to previous hole
-     */
+    // Handle navigation to previous hole
+
     const navigateToHole = async (targetHole: number) => {
         setIsSaving(true);
         setError(null);
@@ -147,18 +144,16 @@ export default function ScoringPage({
         }
     };
 
-    /**
-     * Handle navigation to next hole
-     */
+    // Handle navigation to next hole
+
     const handleNext = () => {
         if (currentHoleNum < 18) {
             void navigateToHole(currentHoleNum + 1);
         }
     };
 
-    /**
-     * Handle par input change
-     */
+    // Handle par input change
+
     const handleParChange = (value: string) => {
         const parValue = parseInt(value, 10);
         if (!isNaN(parValue) && parValue >= 3 && parValue <= 5) {
@@ -166,9 +161,8 @@ export default function ScoringPage({
         }
     };
 
-    /**
-     * Handle score input change
-     */
+    // Handle score input change
+
     const handleScoreChange = (value: string) => {
         if (value === "") {
             updateHole(currentHoleIndex, { score: undefined });
@@ -180,9 +174,8 @@ export default function ScoringPage({
         }
     };
 
-    /**
-     * Handle putts input change
-     */
+    // Handle putts input change
+
     const handlePuttsChange = (value: string) => {
         if (value === "") {
             updateHole(currentHoleIndex, { putts: undefined });
@@ -194,9 +187,8 @@ export default function ScoringPage({
         }
     };
 
-    /**
-     * Handle save at hole 9
-     */
+    // Handle save at hole 9
+
     const handleSaveFront9 = async () => {
         setIsSaving(true);
         setError(null);
@@ -212,9 +204,8 @@ export default function ScoringPage({
         }
     };
 
-    /**
-     * Handle complete round at hole 18
-     */
+    // Handle complete round at hole 18
+
     const handleCompleteRound = async () => {
         setIsSaving(true);
         setError(null);

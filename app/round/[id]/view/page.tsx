@@ -18,9 +18,8 @@ export default function RoundViewPage({
     // Unwrap params promise
     const { id: roundId } = use(params);
 
-    /**
-     * Load round from IndexedDB on mount
-     */
+    // Load round from IndexedDB on mount
+
     useEffect(() => {
         const loadRound = async () => {
             try {

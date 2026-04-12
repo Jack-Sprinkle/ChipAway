@@ -4,8 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
     return {
         name: "ChipAway",
         short_name: "ChipAway",
-        description:
-            "Simple golf score tracking that stays focused on your round.",
+        description: "Simple golf score tracking that stays focused on your round.",
         start_url: "/",
         display: "standalone",
         background_color: "#f5f1e8",

@@ -5,8 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
     title: "ChipAway | Golf Score Tracking",
-    description:
-        "Simple, offline golf score tracking. No accounts, no GPS, no data selling. Privacy-first golf app.",
+    description: "Simple, offline golf score tracking. No accounts, no GPS, no data selling. Privacy-first golf app.",
     applicationName: "ChipAway",
     appleWebApp: {
         capable: true,

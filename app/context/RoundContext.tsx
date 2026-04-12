@@ -4,10 +4,8 @@ import React, { createContext, useContext, useState, useCallback } from "react";
 import { Round, Hole } from "@/lib/types";
 import { saveRound, completeRound } from "@/lib/db";
 
-
- // RoundContext - Manages in-memory round state during scoring
- // Provides methods to update holes and persist to IndexedDB
-
+// RoundContext - Manages in-memory round state during scoring
+// Provides methods to update holes and persist to IndexedDB
 interface RoundContextType {
     currentRound: Round | null;
     setCurrentRound: (round: Round | null) => void;
@@ -19,40 +17,31 @@ interface RoundContextType {
 
 const RoundContext = createContext<RoundContextType | undefined>(undefined);
 
-
- // RoundProvider - Wraps the app to provide round state
- 
+// RoundProvider - Wraps the app to provide round state
 export function RoundProvider({ children }: { children: React.ReactNode }) {
     const [currentRound, setCurrentRound] = useState<Round | null>(null);
 
-    
-     // Update a specific hole's data
-     // Merges new data with existing hole data
-     
-    const updateHole = useCallback(
-        (holeIndex: number, holeData: Partial<Hole>) => {
-            setCurrentRound((prevRound) => {
-                if (!prevRound) return null;
+    // Update a specific hole's data
+    // Merges new data with existing hole data
+    const updateHole = useCallback((holeIndex: number, holeData: Partial<Hole>) => {
+        setCurrentRound((prevRound) => {
+            if (!prevRound) return null;
 
-                const updatedHoles = [...prevRound.holes];
-                updatedHoles[holeIndex] = {
-                    ...updatedHoles[holeIndex],
-                    ...holeData,
-                };
+            const updatedHoles = [...prevRound.holes];
+            updatedHoles[holeIndex] = {
+                ...updatedHoles[holeIndex],
+                ...holeData,
+            };
 
-                return {
-                    ...prevRound,
-                    holes: updatedHoles,
-                };
-            });
-        },
-        [],
-    );
+            return {
+                ...prevRound,
+                holes: updatedHoles,
+            };
+        });
+    }, []);
 
-    
-     // Save current round to IndexedDB
-     // Called at hole 9 and after hole 18
-     
+    // Save current round to IndexedDB
+    // Called at hole 9 and after hole 18
     const saveToDatabase = useCallback(async () => {
         if (!currentRound) {
             throw new Error("No round to save");
@@ -66,10 +55,8 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
         }
     }, [currentRound]);
 
-    
-     // Mark round as complete and save to IndexedDB
-     // Called after hole 18
-     
+    // Mark round as complete and save to IndexedDB
+    // Called after hole 18
     const completeAndSave = useCallback(async () => {
         if (!currentRound) {
             throw new Error("No round to complete");
@@ -83,9 +70,7 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
         }
     }, [currentRound]);
 
-    
-     // Reset current round (clears context)
-     
+    // Reset current round (clears context)
     const resetRound = useCallback(() => {
         setCurrentRound(null);
     }, []);
@@ -99,14 +84,11 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
         resetRound,
     };
 
-    return (
-        <RoundContext.Provider value={value}>{children}</RoundContext.Provider>
-    );
+    return <RoundContext.Provider value={value}>{children}</RoundContext.Provider>;
 }
 
- // Custom hook to use RoundContext
- // Must be called within RoundProvider
-
+// Custom hook to use RoundContext
+// Must be called within RoundProvider
 export function useRound(): RoundContextType {
     const context = useContext(RoundContext);
 

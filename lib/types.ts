@@ -5,6 +5,7 @@ export interface Hole {
     parValue?: number; // Par value (entered by user during scoring)
     score?: number; // Strokes taken (entered by user during scoring)
     putts?: number; // Number of putts (entered by user during scoring)
+    isComplete: boolean; // Marker for hole being complete to track ongoing round
 }
 
 export interface Round {
@@ -16,18 +17,15 @@ export interface Round {
 }
 
 // Helper function to create a new round
-// Initializes all 18 holes with empty data (user fills par/score/putts progressively)
-
-export function createRound(
-    courseName: string,
-    date: number = Date.now(),
-): Round {
+// Initializes all 18 holes with empty data (user fills par/score/putts progressively), isComplete will be updated on next hole click
+export function createRound(courseName: string, date: number = Date.now()): Round {
     return {
         id: `round-${date}`,
         courseName,
         date,
         holes: Array.from({ length: 18 }, (_, index) => ({
             holeNumber: index + 1,
+            isComplete: false,
         })),
         completed: false,
     };
@@ -41,24 +39,14 @@ export function getRoundTotals(round: Round) {
     const back9 = round.holes.slice(9, 18);
 
     // Calculate totals only for holes with complete data
-    const front9Score = front9.reduce(
-        (sum, hole) => sum + (hole.score !== undefined ? hole.score : 0),
-        0,
-    );
-    const back9Score = back9.reduce(
-        (sum, hole) => sum + (hole.score !== undefined ? hole.score : 0),
-        0,
-    );
+    const front9Score = front9.reduce((sum, hole) => sum + (hole.score !== undefined ? hole.score : 0), 0);
+    const back9Score = back9.reduce((sum, hole) => sum + (hole.score !== undefined ? hole.score : 0), 0);
     const totalScore = front9Score + back9Score;
 
-    const front9Par = front9.reduce(
-        (sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0),
-        0,
-    );
-    const back9Par = back9.reduce(
-        (sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0),
-        0,
-    );
+    const front9Par = front9.reduce((sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0), 0);
+    const back9Par = back9.reduce((sum, hole) => sum + (hole.parValue !== undefined ? hole.parValue : 0), 0);
+
+    const totalPar = front9Par + back9Par;
 
     return {
         front9Score,
@@ -66,6 +54,6 @@ export function getRoundTotals(round: Round) {
         totalScore,
         front9Par,
         back9Par,
-        totalPar: front9Par + back9Par,
+        totalPar,
     };
 }

@@ -41,9 +41,7 @@ export default function NewRoundPage() {
             // Navigate to scoring page
             router.push(`/round/${newRound.id}/score`);
         } catch (err) {
-            setError(
-                err instanceof Error ? err.message : "Failed to create round",
-            );
+            setError(err instanceof Error ? err.message : "Failed to create round");
             setIsLoading(false);
         }
     };
@@ -59,23 +57,19 @@ export default function NewRoundPage() {
                     >
                         ← Back to Home
                     </Link>
-                    <h1 className="text-4xl font-bold text-fairway-green mt-4 mb-2">
-                        New Round
-                    </h1>
+                    <h1 className="text-4xl font-bold text-fairway-green mt-4 mb-2">New Round</h1>
                     <p className="text-text-dark">
-                        Enter your course name. You&apos;ll input par, score,
-                        and putts for each hole as you go.
+                        Enter your course name. You&apos;ll input par, score, and putts for each hole as you go.
                     </p>
                 </div>
 
                 {/* Error Message */}
-                {error && (
-                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
-                        {error}
-                    </div>
-                )}
+                {error && <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">{error}</div>}
 
-                <form onSubmit={handleStartRound} className="space-y-6">
+                <form
+                    onSubmit={handleStartRound}
+                    className="space-y-6"
+                >
                     {/* Course Name */}
                     <div>
                         <label

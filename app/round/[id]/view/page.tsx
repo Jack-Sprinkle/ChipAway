@@ -67,13 +67,21 @@ export default function RoundViewPage({
         );
     }
 
-    const { totalScore, front9Score, back9Score } = getRoundTotals(round);
+    const {
+        totalScore,
+        front9Score,
+        back9Score,
+        totalPar,
+        front9Par,
+        back9Par,
+    } = getRoundTotals(round);
     const roundDate = new Date(round.date);
     const formattedDate = roundDate.toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
     });
+    const vsPar = totalScore - totalPar;
 
     return (
         <main className="min-h-screen bg-white py-12 px-6">
@@ -93,15 +101,7 @@ export default function RoundViewPage({
                 </div>
 
                 {/* Score Summary */}
-                <div className="grid grid-cols-3 gap-4 mb-8">
-                    <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">
-                            TOTAL SCORE
-                        </p>
-                        <p className="text-4xl font-bold text-fairway-green">
-                            {totalScore}
-                        </p>
-                    </div>
+                <div className="grid grid-cols-5 gap-3 mb-8">
                     <div className="p-4 bg-cream border-2 border-vibrant-green rounded-lg text-center">
                         <p className="text-text-dark text-xs font-semibold mb-1">
                             FRONT 9
@@ -116,6 +116,45 @@ export default function RoundViewPage({
                         </p>
                         <p className="text-4xl font-bold text-vibrant-green">
                             {back9Score}
+                        </p>
+                    </div>
+                    <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
+                        <p className="text-text-dark text-xs font-semibold mb-1">
+                            TOTAL SCORE
+                        </p>
+                        <p className="text-4xl font-bold text-fairway-green">
+                            {totalScore}
+                        </p>
+                    </div>
+                    <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
+                        <p className="text-text-dark text-xs font-semibold mb-1">
+                            PAR
+                        </p>
+                        <p className="text-4xl font-bold text-fairway-green">
+                            {totalPar}
+                        </p>
+                    </div>
+                    <div
+                        className={`p-4 border-2 rounded-lg text-center ${
+                            vsPar > 0
+                                ? "bg-red-50 border-red-400"
+                                : "bg-green-50 border-vibrant-green"
+                        }`}
+                    >
+                        <p className="text-text-dark text-xs font-semibold mb-1">
+                            +/-
+                        </p>
+                        <p
+                            className={`text-4xl font-bold ${
+                                vsPar > 0
+                                    ? "text-red-600"
+                                    : vsPar < 0
+                                      ? "text-green-600"
+                                      : "text-fairway-green"
+                            }`}
+                        >
+                            {vsPar > 0 ? "+" : ""}
+                            {vsPar === 0 ? "E" : vsPar}
                         </p>
                     </div>
                 </div>
@@ -152,8 +191,7 @@ export default function RoundViewPage({
 
                             {round.holes.slice(0, 9).map((hole) => {
                                 const vs_par =
-                                    hole.score !== undefined &&
-                                    hole.parValue !== undefined
+                                    hole.score && hole.parValue
                                         ? hole.score - hole.parValue
                                         : null;
                                 return (
@@ -170,16 +208,20 @@ export default function RoundViewPage({
                                         <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
                                             {hole.score ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center text-text-dark border-r border-gray-200">
+                                        <div
+                                            className={`p-3 text-center font-semibold border-r border-gray-200 ${
+                                                hole.putts && hole.putts >= 3
+                                                    ? "bg-red-100 text-red-700"
+                                                    : "text-text-dark"
+                                            }`}
+                                        >
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par !== null
+                                            {vs_par
                                                 ? vs_par > 0
                                                     ? `+${vs_par}`
-                                                    : vs_par === 0
-                                                      ? "E"
-                                                      : vs_par
+                                                    : vs_par
                                                 : "—"}
                                         </div>
                                     </div>
@@ -214,8 +256,7 @@ export default function RoundViewPage({
 
                             {round.holes.slice(9, 18).map((hole) => {
                                 const vs_par =
-                                    hole.score !== undefined &&
-                                    hole.parValue !== undefined
+                                    hole.score && hole.parValue
                                         ? hole.score - hole.parValue
                                         : null;
                                 return (
@@ -232,16 +273,20 @@ export default function RoundViewPage({
                                         <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
                                             {hole.score ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center text-text-dark border-r border-gray-200">
+                                        <div
+                                            className={`p-3 text-center font-semibold border-r border-gray-200 ${
+                                                hole.putts && hole.putts >= 3
+                                                    ? "bg-red-100 text-red-700"
+                                                    : "text-text-dark"
+                                            }`}
+                                        >
                                             {hole.putts ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-text-dark">
-                                            {vs_par !== null
+                                            {vs_par
                                                 ? vs_par > 0
                                                     ? `+${vs_par}`
-                                                    : vs_par === 0
-                                                      ? "E"
-                                                      : vs_par
+                                                    : vs_par
                                                 : "—"}
                                         </div>
                                     </div>

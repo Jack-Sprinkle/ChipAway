@@ -12,9 +12,7 @@ export default function ScoresPage() {
     const [error, setError] = useState<string | null>(null);
     const [deletingRoundId, setDeletingRoundId] = useState<string | null>(null);
 
-    /**
-     * Load all rounds from IndexedDB on mount
-     */
+    // Load all rounds from IndexedDB on mount
     useEffect(() => {
         const loadRounds = async () => {
             try {
@@ -105,8 +103,12 @@ export default function ScoresPage() {
                 ) : (
                     <div className="space-y-4">
                         {rounds.map((round) => {
-                            const { totalScore, front9Score, back9Score } =
-                                getRoundTotals(round);
+                            const {
+                                totalScore,
+                                front9Score,
+                                back9Score,
+                                totalPar,
+                            } = getRoundTotals(round);
                             const roundDate = new Date(round.date);
                             const formattedDate = roundDate.toLocaleDateString(
                                 "en-US",
@@ -116,6 +118,7 @@ export default function ScoresPage() {
                                     year: "numeric",
                                 },
                             );
+                            const vsPar = totalScore - totalPar;
 
                             return (
                                 <div
@@ -132,12 +135,43 @@ export default function ScoresPage() {
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-4xl font-bold text-vibrant-green">
-                                                {totalScore}
-                                            </p>
-                                            <p className="text-xs uppercase tracking-[0.2em] text-text-dark">
-                                                Total Score
-                                            </p>
+                                            <div className="mb-2 flex items-baseline justify-end gap-3">
+                                                <div>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
+                                                        Score
+                                                    </p>
+                                                    <p className="text-3xl font-bold text-vibrant-green">
+                                                        {totalScore}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
+                                                        Par
+                                                    </p>
+                                                    <p className="text-3xl font-bold text-fairway-green">
+                                                        {totalPar}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
+                                                        +/-
+                                                    </p>
+                                                    <p
+                                                        className={`text-3xl font-bold ${
+                                                            vsPar > 0
+                                                                ? "text-red-600"
+                                                                : vsPar < 0
+                                                                  ? "text-green-600"
+                                                                  : "text-fairway-green"
+                                                        }`}
+                                                    >
+                                                        {vsPar > 0 ? "+" : ""}
+                                                        {vsPar === 0
+                                                            ? "E"
+                                                            : vsPar}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -180,9 +214,13 @@ export default function ScoresPage() {
                                             <button
                                                 type="button"
                                                 onClick={() =>
-                                                    void handleDeleteRound(round.id)
+                                                    void handleDeleteRound(
+                                                        round.id,
+                                                    )
                                                 }
-                                                disabled={deletingRoundId === round.id}
+                                                disabled={
+                                                    deletingRoundId === round.id
+                                                }
                                                 aria-label={`Delete round at ${round.courseName} from ${formattedDate}`}
                                                 className="inline-flex items-center rounded-full bg-muted-red px-3 py-2 text-sm font-semibold text-text-light transition-colors hover:bg-muted-red-hover disabled:cursor-not-allowed disabled:opacity-60"
                                             >

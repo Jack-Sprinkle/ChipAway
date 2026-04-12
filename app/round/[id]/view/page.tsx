@@ -128,17 +128,9 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                 </div>
 
                 {/* Score Summary */}
-                <div className="grid grid-cols-5 gap-3 mb-8">
-                    <div className="p-4 bg-cream border-2 border-vibrant-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">FRONT 9</p>
-                        <p className="text-4xl font-bold text-vibrant-green">{front9Score}</p>
-                    </div>
-                    <div className="p-4 bg-cream border-2 border-vibrant-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">BACK 9</p>
-                        <p className="text-4xl font-bold text-vibrant-green">{back9Score}</p>
-                    </div>
+                <div className="grid grid-cols-3 gap-3 mb-8">
                     <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
-                        <p className="text-text-dark text-xs font-semibold mb-1">TOTAL SCORE</p>
+                        <p className="text-text-dark text-xs font-semibold mb-1">SCORE</p>
                         <p className="text-4xl font-bold text-fairway-green">{totalScore}</p>
                     </div>
                     <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
@@ -191,7 +183,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         <div className="p-3 text-center text-text-dark border-r border-gray-200">
                                             {hole.parValue ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 font-semibold text-vibrant-green border-r border-gray-200">
                                             {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
@@ -209,6 +201,14 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                     </div>
                                 );
                             })}
+                        </div>
+                        <div className="mt-5 grid grid-cols-2 gap-3">
+                            <div className="rounded-xl bg-light-sand px-4 py-3 text-sm text-text-dark">
+                                <span className="font-semibold text-fairway-green">Front 9 Score:</span> {front9Score}
+                            </div>
+                            <div className="rounded-xl bg-light-sand px-4 py-3 text-sm text-text-dark">
+                                <span className="font-semibold text-fairway-green">Front 9 Par:</span> {front9Par}
+                            </div>
                         </div>
                     </div>
 
@@ -245,7 +245,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         <div className="p-3 text-center text-text-dark border-r border-gray-200">
                                             {hole.parValue ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 font-semibold text-vibrant-green border-r border-gray-200">
                                             {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
@@ -263,6 +263,14 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                     </div>
                                 );
                             })}
+                        </div>
+                        <div className="mt-5 grid grid-cols-2 gap-3">
+                            <div className="rounded-xl bg-light-sand px-4 py-3 text-sm text-text-dark">
+                                <span className="font-semibold text-fairway-green">Back 9 Score:</span> {back9Score}
+                            </div>
+                            <div className="rounded-xl bg-light-sand px-4 py-3 text-sm text-text-dark">
+                                <span className="font-semibold text-fairway-green">Back 9 Par:</span> {back9Par}
+                            </div>
                         </div>
                     </div>
                 </div>

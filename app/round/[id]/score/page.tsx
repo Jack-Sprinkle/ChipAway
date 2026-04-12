@@ -82,7 +82,6 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const currentHole = currentRound.holes[currentHoleIndex];
     const isFirstHole = currentHoleNum === 1;
     const isLastHole = currentHoleNum === 18;
-    const isRoundComplete = currentHoleNum === 18;
 
     // Calculate running totals for the round
     const runningScore = currentRound.holes.reduce((sum, hole) => {
@@ -311,7 +310,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         </button>
                     </div>
 
-                    {isRoundComplete && (
+                    {isLastHole && (
                         <button
                             type="button"
                             onClick={handleCompleteRound}

@@ -86,11 +86,21 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const isBack9Save = currentHoleNum === 18;
 
     // Calculate running totals for the round
-    const runningScore = currentRound.holes.reduce((sum, hole) => sum + (hole.score ?? 0), 0);
-    const runningPar = currentRound.holes.reduce((sum, hole) => sum + (hole.parValue ?? 0), 0);
-    const scoredHoles = currentRound.holes.filter(
-        (hole) => hole.score !== undefined && hole.parValue !== undefined,
-    ).length;
+    const runningScore = currentRound.holes.reduce((sum, hole) => {
+        if (hole.isComplete) {
+            return sum + (hole.score ?? 0);
+        }
+        return sum;
+    }, 0);
+
+    const runningPar = currentRound.holes.reduce((sum, hole) => {
+        if (hole.isComplete) {
+            return sum + (hole.parValue ?? 0);
+        }
+        return sum;
+    }, 0);
+
+    const scoredHoles = currentRound.holes.filter((hole) => hole.isComplete).length;
     const vsPar = runningScore - runningPar;
 
     // Handle general hole navigation
@@ -100,7 +110,6 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         setError(null);
 
         try {
-            await saveToDatabase();
             router.push(`/round/${roundId}/score?hole=${targetHole}`);
             setIsSaving(false);
         } catch (err) {
@@ -119,6 +128,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     // Handle next hole button click
     const handleNext = () => {
         if (currentHoleNum < 18) {
+            updateHole(currentHoleIndex, { isComplete: true });
             void navigateToHole(currentHoleNum + 1);
         }
     };
@@ -216,7 +226,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                                     {vsPar > 0 ? "+" : ""}
                                     {vsPar === 0 ? "E" : vsPar}
                                 </p>
-                                <p className="text-xs font-semibold opacity-90 mt-2">THRU {currentHoleNum}</p>
+                                <p className="text-xs font-semibold opacity-90 mt-2">THRU {scoredHoles}</p>
                             </div>
                         </div>
                     </div>

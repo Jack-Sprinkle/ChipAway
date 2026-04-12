@@ -82,8 +82,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const currentHole = currentRound.holes[currentHoleIndex];
     const isFirstHole = currentHoleNum === 1;
     const isLastHole = currentHoleNum === 18;
-    const isFront9Save = currentHoleNum === 9;
-    const isBack9Save = currentHoleNum === 18;
+    const isRoundComplete = currentHoleNum === 18;
 
     // Calculate running totals for the round
     const runningScore = currentRound.holes.reduce((sum, hole) => {
@@ -127,6 +126,10 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     // Handle next hole button click
     const handleNext = () => {
+        if (currentHoleNum === 9) {
+            saveToDatabase();
+            void navigateToHole(currentHoleNum + 1);
+        }
         if (currentHoleNum < 18) {
             updateHole(currentHoleIndex, { isComplete: true });
             void navigateToHole(currentHoleNum + 1);
@@ -162,22 +165,6 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         const putts = parseInt(value, 10);
         if (!isNaN(putts) && putts >= 0) {
             updateHole(currentHoleIndex, { putts });
-        }
-    };
-
-    // Handle save at hole 9
-    const handleSaveFront9 = async () => {
-        setIsSaving(true);
-        setError(null);
-
-        try {
-            await saveToDatabase();
-            // Continue to hole 10
-            router.push(`/round/${roundId}/score?hole=10`);
-            setIsSaving(false);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "Failed to save");
-            setIsSaving(false);
         }
     };
 
@@ -324,19 +311,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         </button>
                     </div>
 
-                    {/* Save/Complete Button */}
-                    {isFront9Save && (
-                        <button
-                            type="button"
-                            onClick={handleSaveFront9}
-                            disabled={isSaving}
-                            className="w-full px-4 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {isSaving ? "Saving..." : "Save Front 9"}
-                        </button>
-                    )}
-
-                    {isBack9Save && (
+                    {isRoundComplete && (
                         <button
                             type="button"
                             onClick={handleCompleteRound}

@@ -63,7 +63,10 @@ export default function ScoresPage() {
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error}</p>
-                    <Link href="/" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
+                    <Link
+                        href="/"
+                        className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
+                    >
                         Return Home
                     </Link>
                 </div>
@@ -127,15 +130,7 @@ export default function ScoresPage() {
                                                     <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
                                                         +/-
                                                     </p>
-                                                    <p
-                                                        className={`text-3xl font-bold ${
-                                                            vsPar > 0
-                                                                ? "text-red-600"
-                                                                : vsPar < 0
-                                                                  ? "text-green-600"
-                                                                  : "text-fairway-green"
-                                                        }`}
-                                                    >
+                                                    <p className={"text-3xl font-bold text-fairway-green"}>
                                                         {vsPar > 0 ? "+" : ""}
                                                         {vsPar === 0 ? "E" : vsPar}
                                                     </p>

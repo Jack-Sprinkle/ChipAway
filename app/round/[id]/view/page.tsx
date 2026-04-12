@@ -68,6 +68,49 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
         year: "numeric",
     });
     const vsPar = totalScore - totalPar;
+    const getScoreMarker = (score?: number, holeVsPar?: number | null) => {
+        if (score === undefined) {
+            return "—";
+        }
+
+        if (typeof holeVsPar === "number" && holeVsPar <= -2) {
+            return (
+                <span className="inline-flex rounded-full border-2 border-fairway-green p-[3px]">
+                    <span className="inline-flex min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 py-1 text-sm font-bold leading-none text-fairway-green">
+                        {score}
+                    </span>
+                </span>
+            );
+        }
+
+        if (holeVsPar === -1) {
+            return (
+                <span className="inline-flex min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 py-1 text-sm font-bold leading-none text-fairway-green">
+                    {score}
+                </span>
+            );
+        }
+
+        if (typeof holeVsPar === "number" && holeVsPar >= 2) {
+            return (
+                <span className="inline-flex border-2 border-red-700 p-[3px]">
+                    <span className="inline-flex min-w-9 items-center justify-center border-2 border-red-700 px-2 py-1 text-sm font-bold leading-none text-red-700">
+                        {score}
+                    </span>
+                </span>
+            );
+        }
+
+        if (holeVsPar === 1) {
+            return (
+                <span className="inline-flex min-w-9 items-center justify-center border-2 border-red-700 px-2 py-1 text-sm font-bold leading-none text-red-700">
+                    {score}
+                </span>
+            );
+        }
+
+        return score;
+    };
 
     return (
         <main className="min-h-screen bg-white py-12 px-6">
@@ -102,17 +145,9 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                         <p className="text-text-dark text-xs font-semibold mb-1">PAR</p>
                         <p className="text-4xl font-bold text-fairway-green">{totalPar}</p>
                     </div>
-                    <div
-                        className={`p-4 border-2 rounded-lg text-center ${
-                            vsPar > 0 ? "bg-red-50 border-red-400" : "bg-green-50 border-vibrant-green"
-                        }`}
-                    >
+                    <div className={"p-4 border-2 rounded-lg text-center bg-green-50 border-vibrant-green"}>
                         <p className="text-text-dark text-xs font-semibold mb-1">+/-</p>
-                        <p
-                            className={`text-4xl font-bold ${
-                                vsPar > 0 ? "text-red-600" : vsPar < 0 ? "text-green-600" : "text-fairway-green"
-                            }`}
-                        >
+                        <p className={"text-4xl font-bold text-fairway-green"}>
                             {vsPar > 0 ? "+" : ""}
                             {vsPar === 0 ? "E" : vsPar}
                         </p>
@@ -157,7 +192,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                             {hole.parValue ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
-                                            {hole.score ?? "—"}
+                                            {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
                                             className={`p-3 text-center font-semibold border-r border-gray-200 ${
@@ -211,7 +246,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                             {hole.parValue ?? "—"}
                                         </div>
                                         <div className="p-3 text-center font-semibold text-vibrant-green border-r border-gray-200">
-                                            {hole.score ?? "—"}
+                                            {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
                                             className={`p-3 text-center font-semibold border-r border-gray-200 ${

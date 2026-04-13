@@ -101,6 +101,11 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const scoredHoles = currentRound.holes.filter((hole) => hole.isComplete).length;
     const vsPar = runningScore - runningPar;
 
+    // Validate that a hole has all required data before saving
+    const isHoleComplete = (hole: typeof currentHole) => {
+        return hole.parValue !== undefined && hole.score !== undefined && hole.putts !== undefined;
+    };
+
     // Handle back hole button click
     const handlePrevious = () => {
         if (currentHoleNum > 1) {
@@ -119,6 +124,11 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     // Save the current hole and move to the next one.
     const handleNext = async () => {
+        if (!isHoleComplete(currentHole)) {
+            setError("Please enter Par, Score, and Putts before moving to the next hole");
+            return;
+        }
+
         setIsSaving(true);
         setError(null);
 
@@ -169,6 +179,11 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     // Handle complete round at hole 18
     const handleCompleteRound = async () => {
+        if (!isHoleComplete(currentHole)) {
+            setError("Please enter Par, Score, and Putts before completing the round");
+            return;
+        }
+
         setIsSaving(true);
         setError(null);
 
@@ -303,7 +318,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         <button
                             type="button"
                             onClick={() => void handleNext()}
-                            disabled={isLastHole || isSaving}
+                            disabled={isLastHole || isSaving || !isHoleComplete(currentHole)}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Next →
@@ -314,7 +329,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         <button
                             type="button"
                             onClick={handleCompleteRound}
-                            disabled={isSaving}
+                            disabled={isSaving || !isHoleComplete(currentHole)}
                             className="w-full px-4 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isSaving ? "Completing..." : "Complete Round"}

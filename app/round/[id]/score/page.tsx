@@ -138,7 +138,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeData: { isComplete: true },
             });
             router.push(`/round/${roundId}/score?hole=${currentHoleNum + 1}`);
-			setIsSaving(false);
+            setIsSaving(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to save round progress");
             setIsSaving(false);

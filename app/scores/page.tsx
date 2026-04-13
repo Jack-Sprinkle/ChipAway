@@ -78,9 +78,17 @@ export default function ScoresPage() {
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-2xl mx-auto">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-fairway-green mb-2">Past Rounds</h1>
-                    <p className="text-text-dark text-sm">{rounds.length} round(s) recorded</p>
+                <div className="mb-8 flex items-start justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-bold text-fairway-green mb-2">Past Rounds</h1>
+                        <p className="text-text-dark text-sm">{rounds.length} round(s) recorded</p>
+                    </div>
+                    <Link
+                        href="/"
+                        className="inline-flex items-center rounded-full border border-fairway-green/15 bg-light-sand px-4 py-2 text-sm font-semibold text-fairway-green transition-colors hover:border-fairway-green/30 hover:bg-cream"
+                    >
+                        Home
+                    </Link>
                 </div>
 
                 {/* Empty State */}
@@ -187,10 +195,16 @@ export default function ScoresPage() {
                 )}
 
                 {/* CTA Button */}
-                <div className="mt-12 text-center">
+                <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center rounded-lg border border-fairway-green/15 bg-light-sand px-6 py-3 font-semibold text-fairway-green transition-colors hover:border-fairway-green/30 hover:bg-cream"
+                    >
+                        Home
+                    </Link>
                     <Link
                         href="/round/new"
-                        className="inline-block px-6 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
+                        className="inline-block rounded-lg bg-vibrant-green px-6 py-3 font-semibold text-white transition-colors hover:bg-fairway-green"
                     >
                         Start a New Round
                     </Link>

@@ -70,13 +70,13 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
     const vsPar = totalScore - totalPar;
     const getScoreMarker = (score?: number, holeVsPar?: number | null) => {
         if (score === undefined) {
-            return "—";
+            return <span className="inline-flex h-11 items-center justify-center">—</span>;
         }
 
         if (typeof holeVsPar === "number" && holeVsPar <= -2) {
             return (
-                <span className="inline-flex rounded-full border-2 border-fairway-green p-[3px]">
-                    <span className="inline-flex min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 py-1 text-sm font-bold leading-none text-fairway-green">
+                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-full border-2 border-fairway-green p-[3px]">
+                    <span className="inline-flex h-full min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 text-sm font-bold leading-none text-fairway-green">
                         {score}
                     </span>
                 </span>
@@ -85,7 +85,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
 
         if (holeVsPar === -1) {
             return (
-                <span className="inline-flex min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 py-1 text-sm font-bold leading-none text-fairway-green">
+                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-full border-2 border-fairway-green px-2 text-sm font-bold leading-none text-fairway-green">
                     {score}
                 </span>
             );
@@ -93,8 +93,8 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
 
         if (typeof holeVsPar === "number" && holeVsPar >= 2) {
             return (
-                <span className="inline-flex border-2 border-red-700 p-[3px]">
-                    <span className="inline-flex min-w-9 items-center justify-center border-2 border-red-700 px-2 py-1 text-sm font-bold leading-none text-red-700">
+                <span className="inline-flex h-11 min-w-11 items-center justify-center border-2 border-red-700 p-[3px]">
+                    <span className="inline-flex h-full min-w-9 items-center justify-center border-2 border-red-700 px-2 text-sm font-bold leading-none text-red-700">
                         {score}
                     </span>
                 </span>
@@ -103,13 +103,13 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
 
         if (holeVsPar === 1) {
             return (
-                <span className="inline-flex min-w-9 items-center justify-center border-2 border-red-700 px-2 py-1 text-sm font-bold leading-none text-red-700">
+                <span className="inline-flex h-11 min-w-11 items-center justify-center border-2 border-red-700 px-2 text-sm font-bold leading-none text-red-700">
                     {score}
                 </span>
             );
         }
 
-        return score;
+        return <span className="inline-flex h-11 items-center justify-center">{score}</span>;
     };
 
     return (
@@ -177,17 +177,17 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         key={hole.holeNumber}
                                         className="grid grid-cols-5 gap-0 border-t border-gray-200"
                                     >
-                                        <div className="p-3 text-center font-semibold text-text-dark border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark border-r border-gray-200">
                                             {hole.holeNumber}
                                         </div>
-                                        <div className="p-3 text-center text-text-dark border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 text-center text-text-dark border-r border-gray-200">
                                             {hole.parValue ?? "—"}
                                         </div>
                                         <div className="flex items-center justify-center p-3 font-semibold text-vibrant-green border-r border-gray-200">
                                             {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
-                                            className={`p-3 text-center font-semibold border-r border-gray-200 ${
+                                            className={`flex items-center justify-center p-3 text-center font-semibold border-r border-gray-200 ${
                                                 hole.putts && hole.putts >= 3
                                                     ? "bg-red-100 text-red-700"
                                                     : "text-text-dark"
@@ -195,7 +195,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         >
                                             {hole.putts ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center font-semibold text-text-dark">
+                                        <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark">
                                             {vs_par ? (vs_par > 0 ? `+${vs_par}` : vs_par) : "—"}
                                         </div>
                                     </div>
@@ -239,17 +239,17 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         key={hole.holeNumber}
                                         className="grid grid-cols-5 gap-0 border-t border-gray-200"
                                     >
-                                        <div className="p-3 text-center font-semibold text-text-dark border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark border-r border-gray-200">
                                             {hole.holeNumber}
                                         </div>
-                                        <div className="p-3 text-center text-text-dark border-r border-gray-200">
+                                        <div className="flex items-center justify-center p-3 text-center text-text-dark border-r border-gray-200">
                                             {hole.parValue ?? "—"}
                                         </div>
                                         <div className="flex items-center justify-center p-3 font-semibold text-vibrant-green border-r border-gray-200">
                                             {getScoreMarker(hole.score, vs_par)}
                                         </div>
                                         <div
-                                            className={`p-3 text-center font-semibold border-r border-gray-200 ${
+                                            className={`flex items-center justify-center p-3 text-center font-semibold border-r border-gray-200 ${
                                                 hole.putts && hole.putts >= 3
                                                     ? "bg-red-100 text-red-700"
                                                     : "text-text-dark"
@@ -257,7 +257,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         >
                                             {hole.putts ?? "—"}
                                         </div>
-                                        <div className="p-3 text-center font-semibold text-text-dark">
+                                        <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark">
                                             {vs_par ? (vs_par > 0 ? `+${vs_par}` : vs_par) : "—"}
                                         </div>
                                     </div>

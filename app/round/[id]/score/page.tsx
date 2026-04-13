@@ -203,6 +203,22 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     return (
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-md mx-auto">
+                {/* Quick Navigation */}
+                <div className="mb-8 flex justify-between text-sm">
+                    <button
+                        onClick={() => router.push("/")}
+                        className="text-fairway-green hover:text-vibrant-green font-medium transition-colors"
+                    >
+                        ← Home
+                    </button>
+                    <button
+                        onClick={() => router.push("/scores")}
+                        className="text-fairway-green hover:text-vibrant-green font-medium transition-colors"
+                    >
+                        View Scores
+                    </button>
+                </div>
+
                 {/* Header */}
                 <div className="mb-8 text-center">
                     <p className="text-text-dark mb-1">{currentRound.courseName}</p>

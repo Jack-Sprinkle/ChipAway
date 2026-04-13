@@ -2,7 +2,12 @@
 
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { Round, Hole } from "@/lib/types";
-import { saveRound, completeRound } from "@/lib/db";
+import { saveRound } from "@/lib/db";
+
+interface SaveRoundOptions {
+    holeIndex?: number;
+    holeData?: Partial<Hole>;
+}
 
 // RoundContext - Manages in-memory round state during scoring
 // Provides methods to update holes and persist to IndexedDB
@@ -10,8 +15,7 @@ interface RoundContextType {
     currentRound: Round | null;
     setCurrentRound: (round: Round | null) => void;
     updateHole: (holeIndex: number, holeData: Partial<Hole>) => void;
-    saveToDatabase: () => Promise<void>;
-    completeAndSave: () => Promise<void>;
+    saveToDatabase: (options?: SaveRoundOptions) => Promise<void>;
     resetRound: () => void;
 }
 
@@ -40,32 +44,32 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
         });
     }, []);
 
-    // Save current round to IndexedDB
-    // Called at hole 9 and after hole 18
-    const saveToDatabase = useCallback(async () => {
+    // Save current round to IndexedDB, optionally applying one last hole update first.
+    const saveToDatabase = useCallback(async (options?: SaveRoundOptions) => {
         if (!currentRound) {
             throw new Error("No round to save");
         }
 
+        const updatedHoles = [...currentRound.holes];
+
+        if (options?.holeIndex !== undefined && options.holeData) {
+            updatedHoles[options.holeIndex] = {
+                ...updatedHoles[options.holeIndex],
+                ...options.holeData,
+            };
+        }
+
+        const roundToSave: Round = {
+            ...currentRound,
+            holes: updatedHoles,
+            completed: updatedHoles.every((hole) => hole.isComplete),
+        };
+
         try {
-            await saveRound(currentRound);
+            await saveRound(roundToSave);
+            setCurrentRound(roundToSave);
         } catch (error) {
             console.error("Failed to save round:", error);
-            throw error;
-        }
-    }, [currentRound]);
-
-    // Mark round as complete and save to IndexedDB
-    // Called after hole 18
-    const completeAndSave = useCallback(async () => {
-        if (!currentRound) {
-            throw new Error("No round to complete");
-        }
-
-        try {
-            await completeRound(currentRound.id);
-        } catch (error) {
-            console.error("Failed to complete and save round:", error);
             throw error;
         }
     }, [currentRound]);
@@ -80,7 +84,6 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
         setCurrentRound,
         updateHole,
         saveToDatabase,
-        completeAndSave,
         resetRound,
     };
 

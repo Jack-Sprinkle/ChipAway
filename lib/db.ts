@@ -1,6 +1,5 @@
 // IndexedDB wrapper for ChipAway using idb library
 // Provides simple, promise-based CRUD operations for golf rounds
-
 import { IDBPDatabase, openDB } from "idb";
 import { Round } from "./types";
 
@@ -10,7 +9,6 @@ const STORE_NAME = "rounds";
 
 // Database schema for ChipAway
 // Defines the structure of all object stores in IndexedDB
-
 interface ChipAwayDB {
     rounds: {
         key: string;
@@ -22,7 +20,6 @@ let db: IDBPDatabase<ChipAwayDB> | null = null;
 
 // Initialize database connection
 // Creates the object store if it doesn't exist
-
 export async function initDB(): Promise<IDBPDatabase<ChipAwayDB>> {
     if (db) {
         return db;
@@ -42,7 +39,6 @@ export async function initDB(): Promise<IDBPDatabase<ChipAwayDB>> {
 
 // Get database connection
 // Initializes if not already connected
-
 async function getDB(): Promise<IDBPDatabase<ChipAwayDB>> {
     if (!db) {
         await initDB();
@@ -52,7 +48,6 @@ async function getDB(): Promise<IDBPDatabase<ChipAwayDB>> {
 
 // Save a round to the database
 // Creates or updates an existing round
-
 export async function saveRound(round: Round): Promise<string> {
     const database = await getDB();
     const id = await database.put(STORE_NAME, round);
@@ -60,7 +55,6 @@ export async function saveRound(round: Round): Promise<string> {
 }
 
 // Get a single round by ID
-
 export async function getRound(id: string): Promise<Round | undefined> {
     const database = await getDB();
     return database.get(STORE_NAME, id);
@@ -68,7 +62,6 @@ export async function getRound(id: string): Promise<Round | undefined> {
 
 // Get all rounds from the database
 // Returns rounds sorted by date (newest first)
-
 export async function getAllRounds(): Promise<Round[]> {
     const database = await getDB();
     const rounds = await database.getAll(STORE_NAME);
@@ -77,14 +70,12 @@ export async function getAllRounds(): Promise<Round[]> {
 }
 
 // Delete a round by ID
-
 export async function deleteRound(id: string): Promise<void> {
     const database = await getDB();
     await database.delete(STORE_NAME, id);
 }
 
 // Update a specific hole in a round
-
 export async function updateRoundHole(
     roundId: string,
     holeIndex: number,
@@ -108,21 +99,7 @@ export async function updateRoundHole(
     await saveRound(round);
 }
 
-// Mark a round as completed
-
-export async function completeRound(roundId: string): Promise<void> {
-    const round = await getRound(roundId);
-
-    if (!round) {
-        throw new Error(`Round with ID ${roundId} not found`);
-    }
-
-    round.completed = true;
-    await saveRound(round);
-}
-
 // Clear all rounds from the database
-
 export async function clearAllRounds(): Promise<void> {
     const database = await getDB();
     await database.clear(STORE_NAME);

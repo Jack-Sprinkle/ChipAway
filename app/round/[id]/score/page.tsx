@@ -11,7 +11,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     // Unwrap params promise
     const { id: roundId } = use(params);
-    const { currentRound, setCurrentRound, updateHole, saveToDatabase, completeAndSave } = useRound();
+    const { currentRound, setCurrentRound, updateHole, saveToDatabase } = useRound();
 
     const holeParam = parseInt(searchParams.get("hole") || "1", 10);
     const currentHoleNum = Number.isNaN(holeParam) || holeParam < 1 || holeParam > 18 ? 1 : holeParam;
@@ -101,37 +101,37 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const scoredHoles = currentRound.holes.filter((hole) => hole.isComplete).length;
     const vsPar = runningScore - runningPar;
 
-    // Handle general hole navigation
-    // Separate it from buttons, ensure we're saving to database each time in case of updates
-    const navigateToHole = async (targetHole: number) => {
+    // Handle back hole button click
+    const handlePrevious = () => {
+        if (currentHoleNum > 1) {
+            setIsSaving(true);
+            setError(null);
+            const targetHole = currentHoleNum - 1;
+            try {
+                router.push(`/round/${roundId}/score?hole=${targetHole}`);
+                setIsSaving(false);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : "Failed to save round progress");
+                setIsSaving(false);
+            }
+        }
+    };
+
+    // Save the current hole and move to the next one.
+    const handleNext = async () => {
         setIsSaving(true);
         setError(null);
 
         try {
-            router.push(`/round/${roundId}/score?hole=${targetHole}`);
-            setIsSaving(false);
+            await saveToDatabase({
+                holeIndex: currentHoleIndex,
+                holeData: { isComplete: true },
+            });
+            router.push(`/round/${roundId}/score?hole=${currentHoleNum + 1}`);
+			setIsSaving(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to save round progress");
             setIsSaving(false);
-        }
-    };
-
-    // Handle back hole button click
-    const handlePrevious = () => {
-        if (currentHoleNum > 1) {
-            void navigateToHole(currentHoleNum - 1);
-        }
-    };
-
-    // Handle next hole button click
-    const handleNext = () => {
-        if (currentHoleNum === 9) {
-            saveToDatabase();
-            void navigateToHole(currentHoleNum + 1);
-        }
-        if (currentHoleNum < 18) {
-            updateHole(currentHoleIndex, { isComplete: true });
-            void navigateToHole(currentHoleNum + 1);
         }
     };
 
@@ -173,10 +173,10 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         setError(null);
 
         try {
-            // Save all 18 holes first (context state)
-            await saveToDatabase();
-            // Then mark as complete
-            await completeAndSave();
+            await saveToDatabase({
+                holeIndex: currentHoleIndex,
+                holeData: { isComplete: true },
+            });
             // Navigate to past rounds or home
             router.push("/scores");
         } catch (err) {
@@ -302,7 +302,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         </button>
                         <button
                             type="button"
-                            onClick={handleNext}
+                            onClick={() => void handleNext()}
                             disabled={isLastHole || isSaving}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >

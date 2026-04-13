@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getAllRounds, deleteRound } from "@/lib/db";
+import { getAllRounds, getRound, deleteRound } from "@/lib/db";
 import type { Round } from "@/lib/types";
 import { getRoundTotals } from "@/lib/types";
 
 export default function ScoresPage() {
+    const router = useRouter();
+
     const [rounds, setRounds] = useState<Round[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -30,6 +33,13 @@ export default function ScoresPage() {
 
         loadRounds();
     }, []);
+
+    const handleResumeRound = async (roundId: string) => {
+        const inProgRound = await getRound(roundId);
+        const nextHoleIndex = inProgRound?.holes.findIndex((hole) => !hole.isComplete) ?? 0;
+        const nextHole = nextHoleIndex + 1;
+        router.push(`/round/${inProgRound?.id}/score?hole=${nextHole}`);
+    };
 
     const handleDeleteRound = async (roundId: string) => {
         const shouldDelete = window.confirm("Delete this round? This action cannot be undone.");
@@ -171,12 +181,23 @@ export default function ScoresPage() {
                                         </span>
 
                                         <div className="flex items-center gap-2">
-                                            <Link
-                                                href={`/round/${round.id}/view`}
-                                                className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
-                                            >
-                                                View Round
-                                            </Link>
+                                            {round.completed ? (
+                                                <Link
+                                                    href={`/round/${round.id}/view`}
+                                                    className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
+                                                >
+                                                    View Round
+                                                </Link>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => void handleResumeRound(round.id)}
+                                                    aria-label={`Resume round at ${round.courseName} from ${formattedDate}`}
+                                                    className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
+                                                >
+                                                    Resume
+                                                </button>
+                                            )}
                                             <button
                                                 type="button"
                                                 onClick={() => void handleDeleteRound(round.id)}

@@ -39,7 +39,7 @@ export default function NewRoundPage() {
             setCurrentRound(newRound);
 
             // Navigate to scoring page
-            router.push(`/round/${newRound.id}/score`);
+            router.push(`/round/${newRound.id}/score?hole=1`);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to create round");
             setIsLoading(false);

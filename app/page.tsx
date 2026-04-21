@@ -14,8 +14,8 @@ export default function HomePage() {
 
                     {/* Hero Description */}
                     <p className="text-lg text-text-dark mb-8 leading-relaxed">
-                        Track your golf round without the bloat. No GPS. No personal data collection. No accounts. Just
-                        you, your score, and your phone.
+                        Track your golf round without the bloat. All data lives on your phone. No GPS. No personal data
+                        collection. No accounts. Just you, your score, and your phone.
                     </p>
 
                     {/* CTA Buttons */}
@@ -51,21 +51,21 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        {/* Card 2: Privacy */}
+                        {/* Card 2: Local First */}
                         <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">🔒 Your Data, Your Device</h3>
+                            <h3 className="text-xl font-semibold text-fairway-green mb-3">💾 Local First</h3>
                             <p className="text-text-dark">
-                                All data stored locally on your phone. No cloud. No GPS tracking. No personal
-                                information collected or sold.
+                                Every round, every score lives on your phone. No cloud. No GPS tracking. No personal
+                                information collected or sent anywhere.
                             </p>
                         </div>
 
-                        {/* Card 3: Offline */}
+                        {/* Card 3: Uninterrupted Play */}
                         <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">📱 Works Offline</h3>
+                            <h3 className="text-xl font-semibold text-fairway-green mb-3">⚡ Uninterrupted Play</h3>
                             <p className="text-text-dark">
-                                No internet? No problem. Your round works perfectly offline. Data syncs to your device
-                                when you&apos;re back online.
+                                Start a round online, then play completely offline. Your scores stay on your phone. No
+                                internet needed during your round.
                             </p>
                         </div>
                     </div>

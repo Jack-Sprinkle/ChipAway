@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRound } from "@/app/context/RoundContext";
 import { createRound } from "@/lib/types";
 import { saveRound } from "@/lib/db";
+import { cacheUrls } from "@/lib/service-worker";
 
 export default function NewRoundPage() {
     const router = useRouter();
@@ -37,6 +38,19 @@ export default function NewRoundPage() {
 
             // Set in context for scoring
             setCurrentRound(newRound);
+
+            // cache hole 1 while online before going offline
+            await cacheUrls([
+                [
+                    `/round/${newRound.id}/score?hole=1`,
+                    {
+                        headers: {
+                            accept: "text/html",
+                        },
+                    },
+                ],
+                "/scores",
+            ]);
 
             // Navigate to scoring page
             router.push(`/round/${newRound.id}/score?hole=1`);

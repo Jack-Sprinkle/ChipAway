@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -8,7 +9,15 @@ export default function HomePage() {
                 <div className="max-w-2xl mx-auto">
                     {/* Logo / Title */}
                     <div className="mb-6">
-                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">ChipAway</h1>
+                        <Image
+                            src="/brand/cag_monogram_logo.png"
+                            alt="ChipAway Golf monogram"
+                            width={96}
+                            height={96}
+                            className="mx-auto rounded-lg border border-light-sand mb-5"
+                            priority
+                        />
+                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Chip Away Golf</h1>
                         <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>
                     </div>
 

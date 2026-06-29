@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useRound } from "@/app/context/RoundContext";
+import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
 import { createRound } from "@/lib/types";
 import { saveRound } from "@/lib/db";
 import { cacheUrls } from "@/lib/service-worker";
@@ -66,7 +66,7 @@ export default function NewRoundPage() {
                 {/* Header */}
                 <div className="mb-8">
                     <Link
-                        href="/"
+                        href="/scorecard"
                         className="text-vibrant-green font-semibold hover:underline"
                     >
                         ← Back to Home

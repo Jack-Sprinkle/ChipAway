@@ -1,6 +1,5 @@
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { RoundProvider } from "./context/RoundContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,11 +28,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={GeistSans.className}>
+        <html
+            lang="en"
+            className={GeistSans.className}
+        >
             <body>
-                <RoundProvider>
-                    <main>{children}</main>
-                </RoundProvider>
+                <main>{children}</main>
             </body>
         </html>
     );

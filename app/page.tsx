@@ -1,137 +1,127 @@
 import Link from "next/link";
 
+const scoreRows = [
+    { hole: 1, par: 4, score: 4 },
+    { hole: 2, par: 3, score: 3 },
+    { hole: 3, par: 5, score: 6 },
+    { hole: 4, par: 4, score: 4 },
+];
+
 export default function HomePage() {
     return (
-        <main className="min-h-screen bg-gradient-to-b from-white to-cream flex flex-col">
-            {/* Hero Section */}
-            <section className="flex-1 flex flex-col justify-center items-center px-6 py-20 text-center">
-                <div className="max-w-2xl mx-auto">
-                    {/* Logo / Title */}
-                    <div className="mb-6">
-                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">ChipAway</h1>
-                        <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>
+        <main className="min-h-screen bg-gradient-to-b from-white to-cream text-text-dark">
+            <section className="px-6 py-6">
+                <nav className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+                    <Link
+                        href="/"
+                        className="text-2xl font-bold text-fairway-green"
+                    >
+                        ChipAway
+                    </Link>
+
+                    <Link
+                        href="/scorecard"
+                        className="px-4 py-2 bg-vibrant-green text-white text-sm font-semibold rounded-lg hover:bg-fairway-green transition-colors"
+                    >
+                        Open Scorecard
+                    </Link>
+                </nav>
+            </section>
+
+            <section className="px-6 py-16 md:py-24">
+                <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_420px] gap-12 items-center">
+                    <div>
+                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">
+                            Simple golf notes and scoring
+                        </p>
+                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-6">
+                            A quieter home for your golf rounds.
+                        </h1>
+                        <p className="text-lg leading-relaxed mb-8 max-w-2xl">
+                            ChipAway is built around the parts of golf worth remembering: the round you played, the
+                            shots that taught you something, and a scorecard that stays out of the way.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <Link
+                                href="/scorecard"
+                                className="px-8 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors text-center"
+                            >
+                                Launch Scorecard App
+                            </Link>
+                            <Link
+                                href="#about"
+                                className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-white transition-colors text-center"
+                            >
+                                About ChipAway
+                            </Link>
+                        </div>
                     </div>
 
-                    {/* Hero Description */}
-                    <p className="text-lg text-text-dark mb-8 leading-relaxed">
-                        Track your golf round without the bloat. All data lives on your phone. No GPS. No personal data
-                        collection. No accounts. Just you, your score, and your phone.
-                    </p>
+                    <div className="bg-white rounded-lg p-6 shadow-sm border border-light-sand">
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <p className="text-sm text-vibrant-green font-semibold">Today&apos;s Card</p>
+                                <h2 className="text-2xl font-bold text-fairway-green">Front Nine</h2>
+                            </div>
+                            <span className="bg-cream text-fairway-green px-3 py-1 rounded-lg text-sm font-bold">
+                                +1
+                            </span>
+                        </div>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                        <div className="grid grid-cols-4 gap-2 text-sm font-bold text-fairway-green mb-3">
+                            <span>Hole</span>
+                            <span>Par</span>
+                            <span>Score</span>
+                            <span>Result</span>
+                        </div>
+
+                        <div className="space-y-2">
+                            {scoreRows.map((row) => (
+                                <div
+                                    key={row.hole}
+                                    className="grid grid-cols-4 gap-2 bg-cream rounded-lg px-3 py-3 text-sm"
+                                >
+                                    <span className="font-semibold">{row.hole}</span>
+                                    <span>{row.par}</span>
+                                    <span>{row.score}</span>
+                                    <span className="font-semibold text-vibrant-green">
+                                        {row.score - row.par === 0 ? "E" : `+${row.score - row.par}`}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                id="about"
+                className="bg-white px-6 py-16"
+            >
+                <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
+                    <div className="md:col-span-2">
+                        <h2 className="text-3xl font-bold text-fairway-green mb-5">Built for the walk between shots.</h2>
+                        <p className="text-lg leading-relaxed">
+                            This site will grow into a place for golf reflections, course notes, and small lessons from
+                            ordinary rounds. For now, it keeps things focused: a clean welcome page and a direct path
+                            into the scorecard app.
+                        </p>
+                    </div>
+
+                    <div className="bg-cream rounded-lg p-6">
+                        <h3 className="text-xl font-semibold text-fairway-green mb-3">Score without clutter</h3>
+                        <p className="leading-relaxed mb-5">
+                            Start a round, enter each hole, and keep your scores local to your device.
+                        </p>
                         <Link
-                            href="/round/new"
-                            className="px-8 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
+                            href="/scorecard"
+                            className="text-vibrant-green font-semibold hover:text-fairway-green transition-colors"
                         >
-                            Start New Round
-                        </Link>
-                        <Link
-                            href="/scores"
-                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
-                        >
-                            View Scores
+                            Go to the scorecard
                         </Link>
                     </div>
                 </div>
-            </section>
-
-            {/* Features Section */}
-            <section className="bg-white px-6 py-16">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-3xl font-bold text-fairway-green mb-12 text-center">Why ChipAway?</h2>
-
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {/* Card 1: Simplicity */}
-                        <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">⛳ Simple & Fast</h3>
-                            <p className="text-text-dark">
-                                Enter your course name. Input par, score, and putts for each hole. That&apos;s it. No
-                                signup forms, no complexity.
-                            </p>
-                        </div>
-
-                        {/* Card 2: Local First */}
-                        <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">💾 Local First</h3>
-                            <p className="text-text-dark">
-                                Every round, every score lives on your phone. No cloud. No GPS tracking. No personal
-                                information collected or sent anywhere.
-                            </p>
-                        </div>
-
-                        {/* Card 3: Uninterrupted Play */}
-                        <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">⚡ Uninterrupted Play</h3>
-                            <p className="text-text-dark">
-                                Start a round online, then play completely offline. Your scores stay on your phone. No
-                                internet needed during your round.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Why Not Other Apps Section */}
-            <section className="bg-cream px-6 py-16">
-                <div className="max-w-3xl mx-auto">
-                    <h2 className="text-3xl font-bold text-fairway-green mb-8 text-center">
-                        The Problem with Other Apps
-                    </h2>
-
-                    <div className="space-y-4 text-text-dark">
-                        <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">📍</span>
-                            <div>
-                                <p className="font-semibold">GPS Tracking</p>
-                                <p className="text-sm">Constantly tracking your location and course data.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">📊</span>
-                            <div>
-                                <p className="font-semibold">Data Collection</p>
-                                <p className="text-sm">
-                                    Selling your scores, locations, and behavioral data to third parties.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">🔑</span>
-                            <div>
-                                <p className="font-semibold">Account Requirements</p>
-                                <p className="text-sm">
-                                    Forced to create accounts, remember passwords, manage profiles.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">💸</span>
-                            <div>
-                                <p className="font-semibold">Ads & Upsells</p>
-                                <p className="text-sm">Bombarded with ads, premium tiers, and in-app purchases.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p className="mt-8 text-center text-vibrant-green font-semibold">
-                        ChipAway takes a different approach: just scoring, no fuss, no surveillance.
-                    </p>
-                </div>
-            </section>
-
-            {/* Footer CTA */}
-            <section className="bg-white px-6 py-12 text-center">
-                <h3 className="text-2xl font-bold text-fairway-green mb-4">Ready to score?</h3>
-                <Link
-                    href="/round/new"
-                    className="inline-block px-8 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
-                >
-                    Start Your First Round
-                </Link>
             </section>
         </main>
     );

@@ -50,7 +50,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error || "Round not found"}</p>
                     <Link
-                        href="/scores"
+                        href="/scorecard/scores"
                         className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
                     >
                         Back to Rounds
@@ -118,7 +118,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                 {/* Header */}
                 <div className="mb-8">
                     <Link
-                        href="/scores"
+                        href="/scorecard/scores"
                         className="text-vibrant-green font-semibold mb-4 inline-block hover:text-fairway-green"
                     >
                         ← Back to Rounds
@@ -278,7 +278,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                 {/* CTA */}
                 <div className="text-center">
                     <Link
-                        href="/round/new"
+                        href="/scorecard/round/new"
                         className="inline-block px-6 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
                     >
                         Start a New Round

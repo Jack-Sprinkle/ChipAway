@@ -183,7 +183,7 @@ export default function ScoresPage() {
                                         <div className="flex items-center gap-2">
                                             {round.completed ? (
                                                 <Link
-                                                    href={`/round/${round.id}/view`}
+                                                    href={`/scorecard/round/${round.id}/view`}
                                                     className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
                                                 >
                                                     View Round
@@ -224,7 +224,7 @@ export default function ScoresPage() {
                         Home
                     </Link>
                     <Link
-                        href="/round/new"
+                        href="/scorecard/round/new"
                         className="inline-block rounded-lg bg-vibrant-green px-6 py-3 font-semibold text-white transition-colors hover:bg-fairway-green"
                     >
                         Start a New Round

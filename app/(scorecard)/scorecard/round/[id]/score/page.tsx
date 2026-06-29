@@ -2,7 +2,7 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useRound } from "@/app/context/RoundContext";
+import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
 import { getRound } from "@/lib/db";
 
 export default function ScoringPage({ params }: { params: Promise<{ id: string }> }) {

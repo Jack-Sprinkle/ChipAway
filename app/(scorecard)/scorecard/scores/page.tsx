@@ -38,7 +38,7 @@ export default function ScoresPage() {
         const inProgRound = await getRound(roundId);
         const nextHoleIndex = inProgRound?.holes.findIndex((hole) => !hole.isComplete) ?? 0;
         const nextHole = nextHoleIndex + 1;
-        router.push(`/round/${inProgRound?.id}/score?hole=${nextHole}`);
+        router.push(`/scorecard/round/${inProgRound?.id}/score?hole=${nextHole}`);
     };
 
     const handleDeleteRound = async (roundId: string) => {

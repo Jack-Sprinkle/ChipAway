@@ -10,7 +10,7 @@ const brandPillars = [
     {
         title: "Audio and video",
         description:
-            "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful rather than noisy.",
+            "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful.",
     },
     {
         title: "Useful tools",
@@ -19,14 +19,14 @@ const brandPillars = [
     },
 ];
 
-const principles = ["Progress over perfection", "Teach through experience", "Build useful things"];
+const principles = [{title: "Progress over perfection", description: ""}, {title: "Teach through experience", description: ""}, {title: "Build useful things", description: ""}];
 
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-cream text-text-dark">
             <section className="px-6 pt-14 pb-20 md:pt-20 md:pb-28">
-                <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-12 items-center">
-                    <div>
+                <div className="max-w-6xl mx-auto">
+                    <div className="flex flex-col items-center">
                         <Image
                             src="/brand/cag_full_logo.svg"
                             alt="Chip Away Golf"
@@ -36,13 +36,13 @@ export default function HomePage() {
                             priority
                         />
                         <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-5">
-                            Play. Breathe. Enjoy.
+                            Golf is hard. Enjoy it anyway.
                         </p>
-                        <h1 className="text-5xl md:text-7xl font-bold text-fairway-green mb-7 max-w-4xl">
+                        <h1 className="text-5xl md:text-7xl font-bold text-fairway-green mb-7 max-w-4xl text-center">
                             A thoughtful golf home for the long game.
                         </h1>
-                        <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8">
-                            Chip Away Golf is being built for golfers who want to improve with patience, enjoy the walk,
+                        <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8 text-center">
+                            Built for golfers who want to improve with patience, enjoy the walk,
                             and stay curious about the game one shot at a time.
                         </p>
 
@@ -61,20 +61,6 @@ export default function HomePage() {
                             </Link>
                         </div>
                     </div>
-
-                    <div className="bg-white border border-light-sand rounded-lg p-8">
-                        <p className="text-sm uppercase tracking-[0.16em] text-vibrant-green font-bold mb-4">
-                            Brand promise
-                        </p>
-                        <p className="text-2xl font-bold leading-snug text-fairway-green mb-5">
-                            No perfect swing promises. No clickbait. Just useful things that make golfers excited to
-                            tee it up again.
-                        </p>
-                        <p className="leading-relaxed">
-                            Content, tools, and future products will all come back to the same idea: enjoy the game more
-                            while improving one shot at a time.
-                        </p>
-                    </div>
                 </div>
             </section>
 
@@ -91,16 +77,14 @@ export default function HomePage() {
                             A place golfers can trust.
                         </h2>
                         <p className="text-lg leading-relaxed">
-                            The goal is not to become another loud golf content channel. It is to build a calm,
-                            welcoming place for blog posts, future podcast conversations, video content, and small tools
-                            that genuinely help golfers enjoy the game.
+                            Dedicated to helping everyday golfers improve through thoughtful content, useful software, and a mindset that values progress over perfection.
                         </p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-6">
-                        {brandPillars.map((pillar) => (
+                        {brandPillars.map((pillar, idx) => (
                             <article
-                                key={pillar.title}
+                                key={idx}
                                 className="bg-cream rounded-lg p-6"
                             >
                                 <h3 className="text-xl font-bold text-fairway-green mb-3">{pillar.title}</h3>
@@ -123,16 +107,13 @@ export default function HomePage() {
                     </div>
 
                     <div className="space-y-5">
-                        {principles.map((principle) => (
+                        {principles.map((principle, idx) => (
                             <div
-                                key={principle}
+                                key={idx}
                                 className="border-l-4 border-warm-gold pl-5 py-1"
                             >
-                                <h3 className="text-xl font-bold text-fairway-green mb-2">{principle}</h3>
-                                <p className="leading-relaxed">
-                                    Chip Away Golf will favor patient improvement, honest learning, and practical ideas
-                                    that make rounds more enjoyable.
-                                </p>
+                                <h3 className="text-xl font-bold text-fairway-green mb-2">{principle.title}</h3>
+                                <p className="leading-relaxed">{principle.description}</p>
                             </div>
                         ))}
                     </div>

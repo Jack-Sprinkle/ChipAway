@@ -21,7 +21,7 @@ export function Footer() {
                 </Link>
 
                 <p className="max-w-md text-sm leading-relaxed text-text-light/85 sm:text-right">
-                    Play. Breathe. Enjoy.
+                    Golf is hard. Enjoy it anyway. 
                 </p>
             </div>
         </footer>

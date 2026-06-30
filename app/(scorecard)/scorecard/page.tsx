@@ -1,5 +1,93 @@
-import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
+
+function IconShell({ children }: { children: ReactNode }) {
+    return (
+        <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white text-vibrant-green">
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.8}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="h-6 w-6"
+            >
+                {children}
+            </svg>
+        </span>
+    );
+}
+
+function FlagIcon() {
+    return (
+        <IconShell>
+            <path d="M6 21V4" />
+            <path d="M6 4h11l-2 4 2 4H6" />
+        </IconShell>
+    );
+}
+
+function CircleStackIcon() {
+    return (
+        <IconShell>
+            <path d="M12 8c4.4 0 8-1.3 8-3s-3.6-3-8-3-8 1.3-8 3 3.6 3 8 3Z" />
+            <path d="M4 5v5c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
+            <path d="M4 10v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5" />
+        </IconShell>
+    );
+}
+
+function BoltIcon() {
+    return (
+        <IconShell>
+            <path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z" />
+        </IconShell>
+    );
+}
+
+function MapPinIcon() {
+    return (
+        <IconShell>
+            <path d="M12 21s7-5.3 7-12a7 7 0 1 0-14 0c0 6.7 7 12 7 12Z" />
+            <path d="M12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+        </IconShell>
+    );
+}
+
+function ChartBarIcon() {
+    return (
+        <IconShell>
+            <path d="M4 20h16" />
+            <path d="M7 16V9" />
+            <path d="M12 16V5" />
+            <path d="M17 16v-3" />
+        </IconShell>
+    );
+}
+
+function KeyIcon() {
+    return (
+        <IconShell>
+            <path d="M15 7a4 4 0 1 1-2.1 3.5L4 19.4V22h2.6l1.1-1.1H10v-2.3l1.1-1.1h2.3l2.1-2.1A4 4 0 0 1 15 7Z" />
+            <path d="M17 7h.01" />
+        </IconShell>
+    );
+}
+
+function BanknotesIcon() {
+    return (
+        <IconShell>
+            <path d="M3 7h18v10H3z" />
+            <path d="M7 7a4 4 0 0 1-4 4" />
+            <path d="M17 7a4 4 0 0 0 4 4" />
+            <path d="M7 17a4 4 0 0 0-4-4" />
+            <path d="M17 17a4 4 0 0 1 4-4" />
+            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+        </IconShell>
+    );
+}
 
 export default function HomePage() {
     return (
@@ -9,14 +97,6 @@ export default function HomePage() {
                 <div className="max-w-2xl mx-auto">
                     {/* Logo / Title */}
                     <div className="mb-6">
-                        <Image
-                            src="/brand/cag_full_logo.svg"
-                            alt="Chip Away Golf"
-                            width={688}
-                            height={384}
-                            className="mx-auto mb-6 w-full max-w-[520px] rounded-lg"
-                            priority
-                        />
                         <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Scorecard</h1>
                         <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>
                     </div>
@@ -53,7 +133,10 @@ export default function HomePage() {
                     <div className="grid md:grid-cols-3 gap-8">
                         {/* Card 1: Simplicity */}
                         <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">⛳ Simple & Fast</h3>
+                            <div className="flex gap-2">
+                                <FlagIcon />
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Simple & Fast</h3>
+                            </div>
                             <p className="text-text-dark">
                                 Enter your course name. Input par, score, and putts for each hole. That&apos;s it. No
                                 signup forms, no complexity.
@@ -62,7 +145,10 @@ export default function HomePage() {
 
                         {/* Card 2: Local First */}
                         <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">💾 Local First</h3>
+                            <div className="flex gap-2">
+                                <CircleStackIcon />
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Local First</h3>
+                            </div>
                             <p className="text-text-dark">
                                 Every round, every score lives on your phone. No cloud. No GPS tracking. No personal
                                 information collected or sent anywhere.
@@ -71,7 +157,13 @@ export default function HomePage() {
 
                         {/* Card 3: Uninterrupted Play */}
                         <div className="bg-cream p-6 rounded-lg">
-                            <h3 className="text-xl font-semibold text-fairway-green mb-3">⚡ Uninterrupted Play</h3>
+                            <div className="flex gap-2">
+                                <BoltIcon />
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">
+                                    Uninterrupted Play
+                                </h3>
+                            </div>
+
                             <p className="text-text-dark">
                                 Start a round online, then play completely offline. Your scores stay on your phone. No
                                 internet needed during your round.
@@ -90,7 +182,7 @@ export default function HomePage() {
 
                     <div className="space-y-4 text-text-dark">
                         <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">📍</span>
+                            <MapPinIcon />
                             <div>
                                 <p className="font-semibold">GPS Tracking</p>
                                 <p className="text-sm">Constantly tracking your location and course data.</p>
@@ -98,7 +190,7 @@ export default function HomePage() {
                         </div>
 
                         <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">📊</span>
+                            <ChartBarIcon />
                             <div>
                                 <p className="font-semibold">Data Collection</p>
                                 <p className="text-sm">
@@ -108,7 +200,7 @@ export default function HomePage() {
                         </div>
 
                         <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">🔑</span>
+                            <KeyIcon />
                             <div>
                                 <p className="font-semibold">Account Requirements</p>
                                 <p className="text-sm">
@@ -118,7 +210,7 @@ export default function HomePage() {
                         </div>
 
                         <div className="flex gap-4">
-                            <span className="flex-shrink-0 w-8 text-center text-2xl">💸</span>
+                            <BanknotesIcon />
                             <div>
                                 <p className="font-semibold">Ads & Upsells</p>
                                 <p className="text-sm">Bombarded with ads, premium tiers, and in-app purchases.</p>
@@ -127,7 +219,7 @@ export default function HomePage() {
                     </div>
 
                     <p className="mt-8 text-center text-vibrant-green font-semibold">
-                        ChipAway takes a different approach: just scoring, no fuss, no surveillance.
+                        We take a different approach: just scoring, no fuss, no problem.
                     </p>
                 </div>
             </section>

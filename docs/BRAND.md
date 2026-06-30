@@ -306,12 +306,28 @@ Before publishing any content, shipping a feature, or designing a product, ask:
 * Does it encourage progress rather than perfection?
 * Does it feel authentic?
 * Would it feel at home on a peaceful morning walking nine holes?
-* Does it reinforce **Play. Breathe. Enjoy.**
+* Does it reinforce **Golf is hard. Enjoy it anyway.**
 
 If the answer is "yes," it belongs in Chip Away Golf.
 
 ---
 
+# Brand Personality
+
+| Attribute  | Chip Away Golf       |
+| ---------- | -------------------- |
+| Energy     | Calm                 |
+| Confidence | Quiet                |
+| Tone       | Encouraging          |
+| Design     | Minimal              |
+| Voice      | Conversational       |
+| Humor      | Dry & Occasional     |
+| Expertise  | Earned, never forced |
+| Style      | Timeless             |
+| Community  | Welcoming            |
+| Goal       | Inspire progress     |
+
+
 # Tagline
 
-**Play. Breathe. Enjoy.**
+**Golf is hard. Enjoy it anyway.**

@@ -42,18 +42,18 @@ export default function NewRoundPage() {
             // cache hole 1 while online before going offline
             await cacheUrls([
                 [
-                    `/round/${newRound.id}/score?hole=1`,
+                    `/scorecard/round/${newRound.id}/score?hole=1`,
                     {
                         headers: {
                             accept: "text/html",
                         },
                     },
                 ],
-                "/scores",
+                "/scorecard/scores",
             ]);
 
             // Navigate to scoring page
-            router.push(`/round/${newRound.id}/score?hole=1`);
+            router.push(`/scorecard/round/${newRound.id}/score?hole=1`);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to create round");
             setIsLoading(false);

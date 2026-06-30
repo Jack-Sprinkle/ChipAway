@@ -113,7 +113,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
             setError(null);
             const targetHole = currentHoleNum - 1;
             try {
-                router.push(`/round/${roundId}/score?hole=${targetHole}`);
+                router.push(`/scorecard/round/${roundId}/score?hole=${targetHole}`);
                 setIsSaving(false);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Failed to save round progress");
@@ -137,7 +137,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeIndex: currentHoleIndex,
                 holeData: { isComplete: true },
             });
-            router.push(`/round/${roundId}/score?hole=${currentHoleNum + 1}`);
+            router.push(`/scorecard/round/${roundId}/score?hole=${currentHoleNum + 1}`);
             setIsSaving(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to save round progress");
@@ -193,7 +193,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeData: { isComplete: true },
             });
             // Navigate to past rounds or home
-            router.push("/scores");
+            router.push("/scorecard/scores");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to complete round");
             setIsSaving(false);
@@ -212,7 +212,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         ← Home
                     </button>
                     <button
-                        onClick={() => router.push("/scores")}
+                        onClick={() => router.push("/scorecard/scores")}
                         className="text-fairway-green hover:text-vibrant-green font-medium transition-colors"
                     >
                         View Scores

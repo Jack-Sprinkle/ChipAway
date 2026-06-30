@@ -1,17 +1,7 @@
-import Image from "next/image";
-
 export default function AboutPage() {
     return (
         <main className="bg-cream px-6 py-16 text-text-dark">
             <section className="max-w-4xl mx-auto">
-                <Image
-                    src="/brand/cag_full_logo.svg"
-                    alt="Chip Away Golf"
-                    width={688}
-                    height={384}
-                    className="mb-10 w-full max-w-[420px] rounded-lg"
-                    priority
-                />
                 <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-5">
                     About Chip Away Golf
                 </p>

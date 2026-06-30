@@ -16,6 +16,9 @@ export default function AboutPage() {
                 <p className="text-lg leading-relaxed">
                     The goal is simple: build useful things that make golfers excited to tee it up again.
                 </p>
+				<p className="text-lg leading-relaxed">
+					
+				</p>
             </section>
         </main>
     );

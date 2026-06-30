@@ -8,7 +8,7 @@ const brandPillars = [
             "Stories, reflections, and practical notes from the ongoing work of getting better without letting the game become a grind.",
     },
     {
-        title: "Audio and video",
+        title: "Stories & Conversations",
         description:
             "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful.",
     },
@@ -35,11 +35,8 @@ export default function HomePage() {
                             className="mb-8 w-full max-w-[520px] rounded-lg"
                             priority
                         />
-                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-5">
-                            Golf is hard. Enjoy it anyway.
-                        </p>
-                        <h1 className="text-5xl md:text-7xl font-bold text-fairway-green mb-7 max-w-4xl text-center">
-                            A thoughtful golf home for the long game.
+                        <h1 className="text-2xl md:text-4xl font-bold text-fairway-green mb-7 max-w-4xl text-center">
+                            Golf is hard.<hr/>Enjoy it anyway.
                         </h1>
                         <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8 text-center">
                             Built for golfers who want to improve with patience, enjoy the walk,
@@ -48,10 +45,10 @@ export default function HomePage() {
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link
-                                href="#vision"
+                                href="/about"
                                 className="px-8 py-3 bg-fairway-green text-white font-semibold rounded-lg hover:bg-vibrant-green transition-colors text-center"
                             >
-                                See the Vision
+                                The Story
                             </Link>
                             <Link
                                 href="/scorecard"

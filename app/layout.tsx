@@ -6,9 +6,19 @@ import { Header } from "./components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "ChipAway | Golf Score Tracking",
-    description: "Simple, offline golf score tracking. No accounts, no GPS, no data selling. Privacy-first golf app.",
-    applicationName: "ChipAway",
+    title: "Chip Away Golf | Golf Blog, Scorekeeper & Tools for Everyday Golfers",
+    description:
+        "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
+    applicationName: "Chip Away Golf",
+    keywords: [
+        "golf",
+        "golf scorekeeper",
+        "golf blog",
+        "golf app",
+        "golf journal",
+        "golf improvement",
+        "everyday golfers",
+    ],
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

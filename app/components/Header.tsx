@@ -2,9 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
-    { href: "/scorecard", label: "Scorecard" },
     { href: "/about", label: "About" },
     { href: "/blog", label: "Blog" },
+	{ href: "/scorecard", label: "Scorecard" }
 ];
 
 export function Header() {

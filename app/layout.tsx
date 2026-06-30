@@ -1,6 +1,8 @@
 import { GeistSans } from "geist/font/sans";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,8 +35,10 @@ export default function RootLayout({
             lang="en"
             className={GeistSans.className}
         >
-            <body>
-                <main>{children}</main>
+            <body className="bg-cream text-text-dark antialiased">
+                <Header />
+                {children}
+                <Footer />
                 <Analytics />
             </body>
         </html>

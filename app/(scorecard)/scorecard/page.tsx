@@ -10,14 +10,14 @@ export default function HomePage() {
                     {/* Logo / Title */}
                     <div className="mb-6">
                         <Image
-                            src="/brand/cag_monogram_logo.png"
-                            alt="ChipAway Golf monogram"
-                            width={96}
-                            height={96}
-                            className="mx-auto rounded-lg border border-light-sand mb-5"
+                            src="/brand/cag_full_logo.svg"
+                            alt="Chip Away Golf"
+                            width={688}
+                            height={384}
+                            className="mx-auto mb-6 w-full max-w-[520px] rounded-lg"
                             priority
                         />
-                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Chip Away Golf</h1>
+                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Scorecard</h1>
                         <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>
                     </div>
 

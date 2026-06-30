@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 
 const brandPillars = [
     {
@@ -24,35 +24,17 @@ const principles = ["Progress over perfection", "Teach through experience", "Bui
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-cream text-text-dark">
-            <section className="px-6 py-6">
-                <nav className="max-w-6xl mx-auto flex items-center justify-between gap-4">
-                    <Link
-                        href="/"
-                        className="flex items-center gap-3 text-xl md:text-2xl font-bold text-fairway-green"
-                    >
+            <section className="px-6 pt-14 pb-20 md:pt-20 md:pb-28">
+                <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-12 items-center">
+                    <div>
                         <Image
-                            src="/brand/cag_monogram_logo.png"
-                            alt="Chip Away Golf monogram"
-                            width={44}
-                            height={44}
-                            className="rounded-lg border border-light-sand"
+                            src="/brand/cag_full_logo.svg"
+                            alt="Chip Away Golf"
+                            width={688}
+                            height={384}
+                            className="mb-8 w-full max-w-[520px] rounded-lg"
                             priority
                         />
-                        <span>Chip Away Golf</span>
-                    </Link>
-
-                    <Link
-                        href="/scorecard"
-                        className="px-4 py-2 bg-fairway-green text-white text-sm font-semibold rounded-lg hover:bg-vibrant-green transition-colors"
-                    >
-                        Scorecard
-                    </Link>
-                </nav>
-            </section>
-
-            <section className="px-6 pt-14 pb-20 md:pt-20 md:pb-28">
-                <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_360px] gap-12 items-center">
-                    <div>
                         <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-5">
                             Play. Breathe. Enjoy.
                         </p>
@@ -81,14 +63,6 @@ export default function HomePage() {
                     </div>
 
                     <div className="bg-white border border-light-sand rounded-lg p-8">
-                        <Image
-                            src="/brand/cag_monogram_logo.png"
-                            alt="Chip Away Golf monogram"
-                            width={168}
-                            height={168}
-                            className="rounded-lg border border-light-sand mb-8"
-                            priority
-                        />
                         <p className="text-sm uppercase tracking-[0.16em] text-vibrant-green font-bold mb-4">
                             Brand promise
                         </p>

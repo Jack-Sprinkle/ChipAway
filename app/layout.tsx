@@ -7,7 +7,7 @@ import { Header } from "./components/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Chip Away Golf | Golf Blog, Scorekeeper & Tools for Everyday Golfers",
+    title: "Chip Away Golf | Golf Journal, Scorekeeper & Tools for Everyday Golfers",
     description:
         "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
     applicationName: "Chip Away Golf",

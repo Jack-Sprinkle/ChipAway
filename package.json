@@ -13,8 +13,10 @@
         "@vercel/analytics": "^2.0.1",
         "@vercel/speed-insights": "^2.0.0",
         "geist": "^1.7.0",
+        "gray-matter": "^4.0.3",
         "idb": "^8.0.3",
         "next": "^16.2.3",
+        "next-mdx-remote": "^6.0.0",
         "react": "^19.2.5",
         "react-dom": "^19.2.5"
     },

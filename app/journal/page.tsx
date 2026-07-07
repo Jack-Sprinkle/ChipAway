@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getAllEntries } from "@/lib/journal";
+import NewsletterSignup from "../components/NewsletterSignup";
 
 export default function JournalPage() {
     const posts = getAllEntries();
-	console.log(posts)
+	const pageType: string = "journal"
 
     return (
         <main className="bg-white px-6 py-16 text-text-dark">
@@ -50,6 +51,7 @@ export default function JournalPage() {
                         </article>
                     ))}
                 </div>
+				<NewsletterSignup pageType={pageType}/>
             </section>
         </main>
     );

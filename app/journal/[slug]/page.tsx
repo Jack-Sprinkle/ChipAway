@@ -2,10 +2,12 @@ import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import { getEntry } from "@/lib/journal";
 import Link from "next/link";
 import Image from "next/image";
+import NewsletterSignup from "@/app/components/NewsletterSignup";
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const { meta, content } = getEntry(slug);
+	const pageType: string = "entry"
 
     const components: MDXRemoteProps["components"] = {
         img: (props) => (
@@ -71,39 +73,42 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     return (
         <main className="bg-white px-6 py-16 text-text-dark">
             <article className="mx-auto max-w-3xl">
-                <Link
-                    href="/journal"
-                    className="mb-10 inline-flex text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green hover:text-fairway-green"
-                >
-                    Back to journal
-                </Link>
+                <div className="border-b-2 border-light-sand">
+                    <Link
+                        href="/journal"
+                        className="mb-10 inline-flex text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green hover:text-fairway-green"
+                    >
+                        Back to journal
+                    </Link>
 
-                <header className="border-b border-light-sand pb-8">
-                    <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-semibold text-vibrant-green">
-                        <time dateTime={meta.date}>{meta.date}</time>
-                        <span aria-hidden="true">/</span>
-                        <span>{meta.author}</span>
-                    </div>
-                    <h1 className="mb-5 text-4xl font-bold leading-tight text-fairway-green md:text-6xl">
-                        {meta.title}
-                    </h1>
-                    <p className="text-xl leading-relaxed">{meta.description}</p>
-                    <div className="mt-6 flex flex-wrap gap-2">
-                        {meta.tags.map((tag: string) => (
-                            <span
-                                key={tag}
-                                className="rounded-full bg-cream px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-fairway-green"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                </header>
+                    <header className="border-b border-light-sand pb-8">
+                        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm font-semibold text-vibrant-green">
+                            <time dateTime={meta.date}>{meta.date}</time>
+                            <span aria-hidden="true">/</span>
+                            <span>{meta.author}</span>
+                        </div>
+                        <h1 className="mb-5 text-4xl font-bold leading-tight text-fairway-green md:text-6xl">
+                            {meta.title}
+                        </h1>
+                        <p className="text-xl leading-relaxed">{meta.description}</p>
+                        <div className="mt-6 flex flex-wrap gap-2">
+                            {meta.tags.map((tag: string) => (
+                                <span
+                                    key={tag}
+                                    className="rounded-full bg-cream px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-fairway-green"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </header>
 
-                <MDXRemote
-                    source={content}
-                    components={components}
-                />
+                    <MDXRemote
+                        source={content}
+                        components={components}
+                    />
+                </div>
+                <NewsletterSignup pageType={pageType} />
             </article>
         </main>
     );

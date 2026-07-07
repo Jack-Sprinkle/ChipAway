@@ -19,22 +19,24 @@ export default function AboutPage() {
                 </p>
 
                 <p className="text-lg leading-relaxed mb-5">
-                    Golf has a way of both humbling us and teaching us patience. Some days everything clicks. Other days, it feels like
-                    we&apos;ve forgotten how to swing a club. Most of us spend years chasing lower scores, only to
-                    realize that the rounds where we learn the most had very little to do with the number on the scorecard.
+                    Golf has a way of both humbling us and teaching us patience. Some days everything clicks. Other
+                    days, it feels like we&apos;ve forgotten how to swing a club. Most of us spend years chasing lower
+                    scores, only to realize that the rounds where we learn the most had very little to do with the
+                    number on the scorecard.
                 </p>
 
                 <p className="text-lg leading-relaxed mb-5">
-                    Chip Away Golf was born from that realization. Improvement is, of course, worth pursuing but enjoying the game
-                    shouldn&apos;t depend on playing your best golf. The goal is to build tools, share stories, and
-                    create useful resources that help golfers get a little more out of every round.
+                    Chip Away Golf was born from that realization. Improvement is, of course, worth pursuing but
+                    enjoying the game shouldn&apos;t depend on playing your best golf. The goal is to build tools, share
+                    stories, and create useful resources that help golfers get a little more out of every round.
                 </p>
 
                 <p className="text-lg leading-relaxed mb-5">
                     Hi, I&apos;m <span className="font-semibold text-fairway-green">Jack</span>. I&apos;m a software
-                    developer and an everyday golfer who loves to tinker. I&apos;m always looking to learn and grow, and add my flair to the golf world.
-					Chip Away Golf is where those two worlds collide. As I continue chasing better golf, I&apos;ll be sharing what I&apos;m
-                    learning along the way, with the hope that it helps you enjoy your own journey just a little more.
+                    developer and an everyday golfer who loves to tinker. I&apos;m always looking to learn and grow, and
+                    add my flair to the golf world. Chip Away Golf is where those two worlds collide. As I continue
+                    chasing better golf, I&apos;ll be sharing what I&apos;m learning along the way, with the hope that
+                    it helps you enjoy your own journey just a little more.
                 </p>
 
                 <div className="border-l-4 border-warm-gold pl-6 mt-12">
@@ -48,8 +50,8 @@ export default function AboutPage() {
 
                     <p className="max-w-2xl mx-auto text-lg leading-relaxed mb-8">
                         We&apos;re just getting started. I&apos;ll be sharing stories from my own game, lessons I&apos;m
-                        learning, updates on the software I&apos;m building, and honest reflections from the journey. I&apos;d
-                        love to have you along for the walk.
+                        learning, updates on the software I&apos;m building, and honest reflections from the journey.
+                        I&apos;d love to have you along for the walk.
                     </p>
 
                     <Link

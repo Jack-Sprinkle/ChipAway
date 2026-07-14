@@ -12,7 +12,9 @@ export default function NewRoundPage() {
     const router = useRouter();
     const { setCurrentRound } = useRound();
 
-    const [courseName, setCourseName] = useState("");
+    const [courseName, setCourseName] = useState<string>("");
+    const [courseRating, setCourseRating] = useState<number | "">("");
+    const [courseSlope, setCourseSlope] = useState<number | "">("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +33,7 @@ export default function NewRoundPage() {
         try {
             // Create round with just course name
             // Par values will be entered hole-by-hole during scoring
-            const newRound = createRound(courseName.trim());
+            const newRound = createRound(courseName.trim(), Number(courseRating), Number(courseSlope));
 
             // Save to IndexedDB
             await saveRound(newRound);
@@ -85,23 +87,69 @@ export default function NewRoundPage() {
                     className="space-y-6"
                 >
                     {/* Course Name */}
-                    <div>
-                        <label
-                            htmlFor="courseName"
-                            className="block font-semibold text-fairway-green mb-2"
-                        >
-                            Course Name
-                        </label>
-                        <input
-                            id="courseName"
-                            type="text"
-                            value={courseName}
-                            onChange={(e) => setCourseName(e.target.value)}
-                            placeholder="e.g., Pebble Beach Golf Links"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-vibrant-green focus:outline-none transition-colors text-lg"
-                            disabled={isLoading}
-                            autoFocus
-                        />
+                    <div className="flex flex-col gap-4">
+                        <div>
+                            <label
+                                htmlFor="courseName"
+                                className="block font-semibold text-fairway-green mb-2"
+                            >
+                                Course Name
+                            </label>
+                            <input
+                                id="courseName"
+                                type="text"
+                                value={courseName}
+                                onChange={(e) => setCourseName(e.target.value)}
+                                placeholder="e.g., Pebble Beach Golf Links"
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-vibrant-green focus:outline-none transition-colors text-lg"
+                                disabled={isLoading}
+                                autoFocus
+                            />
+                        </div>
+                        <div>
+                            <label
+                                htmlFor="courseRating"
+                                className="block font-semibold text-fairway-green mb-2"
+                            >
+                                Course Rating
+                            </label>
+                            <input
+                                id="courseRating"
+                                type="number"
+                                step="any"
+                                value={courseRating}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setCourseRating(value === "" ? "" : Number(value));
+                                }}
+                                placeholder="73.4"
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-vibrant-green focus:outline-none transition-colors text-lg"
+                                disabled={isLoading}
+                                autoFocus
+                            />
+                        </div>
+                        <div>
+                            <label
+                                htmlFor="courseSlope"
+                                className="block font-semibold text-fairway-green mb-2"
+                            >
+                                Course Slope
+                            </label>
+                            <input
+                                id="courseSlope"
+                                type="number"
+                                step="1"
+                                value={courseSlope}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setCourseSlope(value === "" ? "" : Number(value));
+                                }}
+                                placeholder="137"
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-vibrant-green focus:outline-none transition-colors text-lg"
+                                disabled={isLoading}
+                                autoFocus
+                            />
+                        </div>
                     </div>
 
                     {/* Submit Button */}

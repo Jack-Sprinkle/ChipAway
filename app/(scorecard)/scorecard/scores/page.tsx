@@ -126,6 +126,8 @@ export default function ScoresPage() {
                                     <div className="mb-4 flex items-start justify-between gap-4">
                                         <div>
                                             <h2 className="text-lg font-bold text-fairway-green">{round.courseName}</h2>
+											<p className="text-sm text-text-dark">Rating: {round.courseRating}</p>
+											<p className="text-sm text-text-dark">Slope: {round.courseSlope}</p>
                                             <p className="text-sm text-text-dark">{formattedDate}</p>
                                         </div>
                                         <div className="text-right">
@@ -222,6 +224,12 @@ export default function ScoresPage() {
                         className="inline-flex items-center rounded-lg border border-fairway-green/15 bg-light-sand px-6 py-3 font-semibold text-fairway-green transition-colors hover:border-fairway-green/30 hover:bg-cream"
                     >
                         Home
+                    </Link>
+                    <Link
+                        href="/scorecard/stats"
+                        className="inline-block rounded-lg bg-vibrant-green px-6 py-3 font-semibold text-white transition-colors hover:bg-fairway-green"
+                    >
+                        View Stats
                     </Link>
                     <Link
                         href="/scorecard/round/new"

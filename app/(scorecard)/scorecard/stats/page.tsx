@@ -2,7 +2,79 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getAllRounds } from "@/lib/db";
-import { calculateHandicap, type Round } from "@/lib/types";
+import { calculateHandicap, calculateScoringStats, type Round } from "@/lib/types";
+
+function getPerformanceTone(value: number | null, metric: "three-putt" | "gir") {
+    if (value === null) {
+        return {
+            label: "Needs data",
+            badgeClass: "border-slate-200 bg-slate-100 text-slate-700",
+            textClass: "text-slate-700",
+        };
+    }
+
+    if (metric === "three-putt") {
+        if (value <= 3) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value <= 6) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value <= 11) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+    }
+
+    if (value >= 65) {
+        return {
+            label: "Pro",
+            badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+            textClass: "text-emerald-800",
+        };
+    }
+
+    if (value >= 50) {
+        return {
+            label: "Excellent",
+            badgeClass: "border-green-200 bg-green-50 text-green-700",
+            textClass: "text-green-700",
+        };
+    }
+
+    if (value >= 33) {
+        return {
+            label: "Good",
+            badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+            textClass: "text-amber-700",
+        };
+    }
+
+    return {
+        label: "Needs Improvement",
+        badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+        textClass: "text-rose-700",
+    };
+}
 
 export default function StatsPage() {
     const [rounds, setRounds] = useState<Round[]>([]);
@@ -27,6 +99,9 @@ export default function StatsPage() {
     }, []);
 
     const handicap = calculateHandicap(rounds);
+    const scoringStats = calculateScoringStats(rounds);
+    const threePuttTone = getPerformanceTone(scoringStats.threePuttPercentage, "three-putt");
+    const girTone = getPerformanceTone(scoringStats.greensInRegulationPercentage, "gir");
     const completedRounds = rounds.filter((round) => round.completed).length;
     const roundsWithScores = rounds.filter((round) =>
         round.holes.some((hole) => hole.score !== undefined && hole.parValue !== undefined),
@@ -94,7 +169,6 @@ export default function StatsPage() {
                             : "Record at least 3 completed rounds with scores to calculate your handicap."}
                     </p>
                 </div>
-
                 <div className="grid gap-4 sm:grid-cols-2">
                     <div className="rounded-2xl border border-slate-200 p-4">
                         <p className="text-sm font-medium text-slate-500">Rounds analyzed</p>
@@ -105,7 +179,44 @@ export default function StatsPage() {
                         <p className="mt-2 text-2xl font-semibold text-slate-900">{completedRounds}</p>
                     </div>
                 </div>
-
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-slate-200 p-4">
+                        <p className="text-sm font-medium text-slate-500">3-putt percentage</p>
+                        <p className={`mt-2 text-2xl font-semibold ${threePuttTone.textClass}`}>
+                            {scoringStats.threePuttPercentage !== null
+                                ? `${scoringStats.threePuttPercentage.toFixed(1)}%`
+                                : "—"}
+                        </p>
+                        <span
+                            className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${threePuttTone.badgeClass}`}
+                        >
+                            {threePuttTone.label}
+                        </span>
+                        <p className="mt-2 text-sm text-slate-600">
+                            {scoringStats.eligibleThreePuttHoles > 0
+                                ? `${scoringStats.threePuttHoles} of ${scoringStats.eligibleThreePuttHoles} eligible holes`
+                                : "Add hole-by-hole putts to start tracking"}
+                        </p>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 p-4">
+                        <p className="text-sm font-medium text-slate-500">Greens in regulation</p>
+                        <p className={`mt-2 text-2xl font-semibold ${girTone.textClass}`}>
+                            {scoringStats.greensInRegulationPercentage !== null
+                                ? `${scoringStats.greensInRegulationPercentage.toFixed(1)}%`
+                                : "—"}
+                        </p>
+                        <span
+                            className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${girTone.badgeClass}`}
+                        >
+                            {girTone.label}
+                        </span>
+                        <p className="mt-2 text-sm text-slate-600">
+                            {scoringStats.eligibleGreensInRegulationHoles > 0
+                                ? `${scoringStats.greensInRegulationHoles} of ${scoringStats.eligibleGreensInRegulationHoles} eligible holes`
+                                : "Add scores to start tracking"}
+                        </p>
+                    </div>
+                </div>
                 {latestRound ? (
                     <div className="rounded-2xl border border-slate-200 p-4">
                         <p className="text-sm font-medium text-slate-500">Latest round</p>

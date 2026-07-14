@@ -67,6 +67,15 @@ export function getRoundTotals(round: Round) {
     };
 }
 
+export interface ScoringStats {
+    threePuttPercentage: number | null;
+    greensInRegulationPercentage: number | null;
+    threePuttHoles: number;
+    eligibleThreePuttHoles: number;
+    greensInRegulationHoles: number;
+    eligibleGreensInRegulationHoles: number;
+}
+
 // Calculate a simple handicap index from completed rounds.
 // This uses the course handicap differential formula based on the adjusted
 // gross score, course rating, and slope.
@@ -106,4 +115,64 @@ export function calculateHandicap(rounds: Round[]): number | null {
         bestDifferentials.reduce((sum, differential) => sum + differential, 0) / bestDifferentials.length;
 
     return Number(averageDifferential.toFixed(1));
+}
+
+export function calculateScoringStats(rounds: Round[]): ScoringStats {
+    const completedRounds = rounds.filter((round) => round.completed);
+
+    const threePuttHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter(
+                (hole) =>
+                    hole.putts !== undefined &&
+                    hole.score !== undefined &&
+                    hole.parValue !== undefined &&
+                    hole.putts >= 3,
+            ).length
+        );
+    }, 0);
+
+    const eligibleThreePuttHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter(
+                (hole) => hole.putts !== undefined && hole.score !== undefined && hole.parValue !== undefined,
+            ).length
+        );
+    }, 0);
+
+    const greensInRegulationHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter(
+                (hole) =>
+                    hole.putts !== undefined &&
+                    hole.score !== undefined &&
+                    hole.parValue !== undefined &&
+                    (hole.score - hole.putts) <= (hole.parValue - 2),
+            ).length
+        );
+    }, 0);
+
+    const eligibleGreensInRegulationHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter((hole) => hole.score !== undefined && hole.parValue !== undefined && hole.parValue >= 3)
+                .length
+        );
+    }, 0);
+
+    return {
+        threePuttPercentage:
+            eligibleThreePuttHoles > 0 ? Number(((threePuttHoles / eligibleThreePuttHoles) * 100).toFixed(1)) : null,
+        greensInRegulationPercentage:
+            eligibleGreensInRegulationHoles > 0
+                ? Number(((greensInRegulationHoles / eligibleGreensInRegulationHoles) * 100).toFixed(1))
+                : null,
+        threePuttHoles,
+        eligibleThreePuttHoles,
+        greensInRegulationHoles,
+        eligibleGreensInRegulationHoles,
+    };
 }

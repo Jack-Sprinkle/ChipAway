@@ -19,28 +19,34 @@ const brandPillars = [
     },
 ];
 
-const principles = [{title: "Progress over perfection", description: ""}, {title: "Teach through experience", description: ""}, {title: "Build useful things", description: ""}];
+const principles = [
+    { title: "Progress over perfection", description: "" },
+    { title: "Teach through experience", description: "" },
+    { title: "Build useful things", description: "" },
+];
 
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-cream text-text-dark">
-            <section className="px-6 pt-14 pb-20 md:pt-20 md:pb-28">
+            <section className="px-6 pt-4 pb-20 md:pt-7 md:pb-28">
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col items-center">
                         <Image
-                            src="/brand/cag_full_logo.svg"
+                            src="/brand/CAG_full_logo.svg"
                             alt="Chip Away Golf"
-                            width={688}
-                            height={384}
-                            className="mb-8 w-full max-w-[520px] rounded-lg"
+                            width={750}
+                            height={500}
+                            className="mb-8 rounded-lg"
                             priority
                         />
                         <h1 className="text-2xl md:text-4xl font-bold text-fairway-green mb-7 max-w-4xl text-center">
-                            Golf is hard.<hr/>Enjoy it anyway.
+                            Golf is hard.
+                            <hr />
+                            Enjoy it anyway.
                         </h1>
                         <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8 text-center">
-                            Built for golfers who want to improve with patience, enjoy the walk,
-                            and stay curious about the game one shot at a time.
+                            Built for golfers who want to improve with patience, enjoy the walk, and stay curious about
+                            the game one shot at a time.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -74,7 +80,8 @@ export default function HomePage() {
                             A place golfers can trust.
                         </h2>
                         <p className="text-lg leading-relaxed">
-                            Dedicated to helping everyday golfers improve through thoughtful content, useful software, and a mindset that values progress over perfection.
+                            Dedicated to helping everyday golfers improve through thoughtful content, useful software,
+                            and a mindset that values progress over perfection.
                         </p>
                     </div>
 

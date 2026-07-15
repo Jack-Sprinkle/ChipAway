@@ -5,11 +5,14 @@ import matter from 'gray-matter'
 const journalDir = path.join(process.cwd(), 'content/journal')
 
 export function getAllEntries() {
-  return fs.readdirSync(journalDir).map((file) => {
-    const raw = fs.readFileSync(path.join(journalDir, file), 'utf8')
-    const { data } = matter(raw)
-    return { slug: file.replace(/\.mdx?$/, ''), meta: data }
-  })
+  return fs
+    .readdirSync(journalDir)
+    .map((file) => {
+      const raw = fs.readFileSync(path.join(journalDir, file), 'utf8')
+      const { data } = matter(raw)
+      return { slug: file.replace(/\.mdx?$/, ''), meta: data }
+    })
+    .sort((a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime())
 }
 
 export function getEntry(slug: string) {

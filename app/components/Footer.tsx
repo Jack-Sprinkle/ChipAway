@@ -11,10 +11,10 @@ export function Footer() {
                     aria-label="Chip Away Golf home"
                 >
                     <Image
-                        src="/brand/cag_simple_logo_alt.svg"
+                        src="/brand/CAG_mono_logo_alt.svg"
                         alt="Chip Away Golf Simple Logo"
-                        width={44}
-                        height={44}
+                        width={100}
+                        height={100}
                         className="rounded-lg border border-warm-gold/60"
                     />
                     <span className="text-xl font-bold">Chip Away Golf</span>

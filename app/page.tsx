@@ -32,7 +32,7 @@ export default function HomePage() {
                 <div className="max-w-6xl mx-auto">
                     <div className="flex flex-col items-center">
                         <Image
-                            src="/brand/CAG_full_logo.svg"
+                            src="/brand/CAG_full_logo_simple.svg"
                             alt="Chip Away Golf"
                             width={750}
                             height={500}

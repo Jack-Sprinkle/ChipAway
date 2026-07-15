@@ -6,8 +6,28 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chipawaygolf.com";
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Organization",
+            name: "Chip Away Golf",
+            url: siteUrl,
+            logo: `${siteUrl}/brand/CAG_mono_logo.svg`,
+        },
+        {
+            "@type": "WebSite",
+            name: "Chip Away Golf",
+            url: siteUrl,
+        },
+    ],
+};
+
 export const metadata: Metadata = {
-    title: "Chip Away Golf | Golf Journal, Scorekeeper & Tools for Everyday Golfers",
+    metadataBase: new URL(siteUrl),
+    title: "Chip Away Golf | Golf Journal & Scorekeeper",
     description:
         "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
     applicationName: "Chip Away Golf",
@@ -34,6 +54,9 @@ export const metadata: Metadata = {
         apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     },
     manifest: "/manifest.webmanifest",
+    alternates: {
+        canonical: "/",
+    },
 };
 
 export default function RootLayout({
@@ -47,11 +70,15 @@ export default function RootLayout({
             className={GeistSans.className}
         >
             <body className="bg-cream text-text-dark antialiased">
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+                />
                 <Header />
                 {children}
                 <Footer />
                 <Analytics />
-				<SpeedInsights />
+                <SpeedInsights />
             </body>
         </html>
     );

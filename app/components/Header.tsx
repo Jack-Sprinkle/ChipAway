@@ -17,19 +17,8 @@ export function Header() {
     return (
         <header className="bg-cream/95 border-b border-light-sand">
             <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <Link
-                    href="/"
-                    className="inline-flex items-center"
-                    aria-label="Chip Away Golf home"
-                >
-                    <Image
-                        src="/brand/CAG_mono_logo.svg"
-                        alt="Chip Away Golf"
-                        width={100}
-                        height={100}
-                        className="rounded-lg"
-                        priority
-                    />
+                <Link href="/" className="inline-flex items-center" aria-label="Chip Away Golf home">
+                    <Image src="/brand/CAG_mono_logo.svg" alt="Chip Away Golf" width={100} height={100} className="rounded-lg" priority />
                 </Link>
 
                 <div className="flex items-center flex-row-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">

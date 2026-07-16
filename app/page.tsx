@@ -4,18 +4,15 @@ import Image from "next/image";
 const brandPillars = [
     {
         title: "Honest golf writing",
-        description:
-            "Stories, reflections, and practical notes from the ongoing work of getting better without letting the game become a grind.",
+        description: "Stories, reflections, and practical notes from the ongoing work of getting better without letting the game become a grind.",
     },
     {
         title: "Stories & Conversations",
-        description:
-            "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful.",
+        description: "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful.",
     },
     {
         title: "Useful tools",
-        description:
-            "Simple software for rounds, practice, and course notes, built to support the way golfers actually play.",
+        description: "Simple software for rounds, practice, and course notes, built to support the way golfers actually play.",
     },
 ];
 
@@ -45,8 +42,7 @@ export default function HomePage() {
                             Enjoy it anyway.
                         </h1>
                         <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8 text-center">
-                            Built for golfers who want to improve with patience, enjoy the walk, and stay curious about
-                            the game one shot at a time.
+                            Built for golfers who want to improve with patience, enjoy the walk, and stay curious about the game one shot at a time.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -67,30 +63,20 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <section
-                id="vision"
-                className="bg-white px-6 py-18 md:py-20"
-            >
+            <section id="vision" className="bg-white px-6 py-18 md:py-20">
                 <div className="max-w-6xl mx-auto">
                     <div className="max-w-3xl mb-10">
-                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">
-                            What Chip Away Golf is becoming
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-fairway-green mb-5">
-                            A place golfers can trust.
-                        </h2>
+                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">What Chip Away Golf is becoming</p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-fairway-green mb-5">A place golfers can trust.</h2>
                         <p className="text-lg leading-relaxed">
-                            Dedicated to helping everyday golfers improve through thoughtful content, useful software,
-                            and a mindset that values progress over perfection.
+                            Dedicated to helping everyday golfers improve through thoughtful content, useful software, and a mindset that values
+                            progress over perfection.
                         </p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-6">
                         {brandPillars.map((pillar, idx) => (
-                            <article
-                                key={idx}
-                                className="bg-cream rounded-lg p-6"
-                            >
+                            <article key={idx} className="bg-cream rounded-lg p-6">
                                 <h3 className="text-xl font-bold text-fairway-green mb-3">{pillar.title}</h3>
                                 <p className="leading-relaxed">{pillar.description}</p>
                             </article>
@@ -102,9 +88,7 @@ export default function HomePage() {
             <section className="px-6 py-18 md:py-20">
                 <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.8fr_1fr] gap-10 items-start">
                     <div>
-                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">
-                            The approach
-                        </p>
+                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">The approach</p>
                         <h2 className="text-3xl md:text-4xl font-bold text-fairway-green mb-5">
                             Better golf, without losing the reason you started.
                         </h2>
@@ -112,10 +96,7 @@ export default function HomePage() {
 
                     <div className="space-y-5">
                         {principles.map((principle, idx) => (
-                            <div
-                                key={idx}
-                                className="border-l-4 border-warm-gold pl-5 py-1"
-                            >
+                            <div key={idx} className="border-l-4 border-warm-gold pl-5 py-1">
                                 <h3 className="text-xl font-bold text-fairway-green mb-2">{principle.title}</h3>
                                 <p className="leading-relaxed">{principle.description}</p>
                             </div>
@@ -127,13 +108,11 @@ export default function HomePage() {
             <section className="bg-fairway-green px-6 py-16 text-text-light">
                 <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_auto] gap-8 items-center">
                     <div>
-                        <p className="text-sm uppercase tracking-[0.18em] text-warm-gold font-bold mb-4">
-                            First useful tool
-                        </p>
+                        <p className="text-sm uppercase tracking-[0.18em] text-warm-gold font-bold mb-4">First useful tool</p>
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">Keep score without the clutter.</h2>
                         <p className="text-lg leading-relaxed max-w-2xl">
-                            The scorecard app is the first step: simple round tracking that keeps the focus on playing,
-                            not managing another complicated golf app.
+                            The scorecard app is the first step: simple round tracking that keeps the focus on playing, not managing another
+                            complicated golf app.
                         </p>
                     </div>
 

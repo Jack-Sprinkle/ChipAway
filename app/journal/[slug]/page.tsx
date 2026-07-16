@@ -7,7 +7,7 @@ import NewsletterSignup from "@/app/components/NewsletterSignup";
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const { meta, content } = getEntry(slug);
-	const pageType: string = "entry"
+    const pageType: string = "entry";
 
     const components: MDXRemoteProps["components"] = {
         img: (props) => (
@@ -20,41 +20,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 style={{ width: "100%", height: "auto" }} // Keeps image responsive
             />
         ),
-        h2: (props) => (
-            <h2
-                {...props}
-                className="mt-12 text-3xl font-bold text-fairway-green border-b-2 border-light-sand"
-            />
-        ),
-        h3: (props) => (
-            <h3
-                {...props}
-                className="mt-9 text-2xl font-bold text-fairway-green"
-            />
-        ),
-        p: (props) => (
-            <p
-                {...props}
-                className="my-6 text-lg leading-8"
-            />
-        ),
-        ul: (props) => (
-            <ul
-                {...props}
-                className="my-7 space-y-3 pl-6"
-            />
-        ),
-        li: (props) => (
-            <li
-                {...props}
-                className="list-disc leading-relaxed marker:text-warm-gold"
-            />
-        ),
+        h2: (props) => <h2 {...props} className="mt-12 text-3xl font-bold text-fairway-green border-b-2 border-light-sand" />,
+        h3: (props) => <h3 {...props} className="mt-9 text-2xl font-bold text-fairway-green" />,
+        p: (props) => <p {...props} className="my-6 text-lg leading-8" />,
+        ul: (props) => <ul {...props} className="my-7 space-y-3 pl-6" />,
+        li: (props) => <li {...props} className="list-disc leading-relaxed marker:text-warm-gold" />,
         a: (props) => (
-            <a
-                {...props}
-                className="font-semibold text-vibrant-green underline decoration-warm-gold underline-offset-4 hover:text-fairway-green"
-            />
+            <a {...props} className="font-semibold text-vibrant-green underline decoration-warm-gold underline-offset-4 hover:text-fairway-green" />
         ),
         blockquote: (props) => (
             <blockquote
@@ -62,12 +34,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 className="my-8 border-l-4 border-warm-gold bg-cream px-5 py-4 text-lg font-semibold leading-relaxed text-fairway-green"
             />
         ),
-        strong: (props) => (
-            <strong
-                {...props}
-                className="font-bold text-fairway-green"
-            />
-        ),
+        strong: (props) => <strong {...props} className="font-bold text-fairway-green" />,
     };
 
     return (
@@ -87,9 +54,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                             <span aria-hidden="true">/</span>
                             <span>{meta.author}</span>
                         </div>
-                        <h1 className="mb-5 text-4xl font-bold leading-tight text-fairway-green md:text-6xl">
-                            {meta.title}
-                        </h1>
+                        <h1 className="mb-5 text-4xl font-bold leading-tight text-fairway-green md:text-6xl">{meta.title}</h1>
                         <p className="text-xl leading-relaxed">{meta.description}</p>
                         <div className="mt-6 flex flex-wrap gap-2">
                             {meta.tags.map((tag: string) => (
@@ -103,10 +68,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                         </div>
                     </header>
 
-                    <MDXRemote
-                        source={content}
-                        components={components}
-                    />
+                    <MDXRemote source={content} components={components} />
                 </div>
                 <NewsletterSignup pageType={pageType} />
             </article>

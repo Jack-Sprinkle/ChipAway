@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getAllRounds, getRound, deleteRound } from "@/lib/db";
 import type { Round } from "@/lib/types";
-import { getRoundTotals } from "@/lib/types";
+import { getRoundTotals } from "@/lib/utils";
 
 export default function ScoresPage() {
     const router = useRouter();
@@ -73,10 +73,7 @@ export default function ScoresPage() {
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error}</p>
-                    <Link
-                        href="/"
-                        className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
-                    >
+                    <Link href="/" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
                         Return Home
                     </Link>
                 </div>
@@ -87,7 +84,6 @@ export default function ScoresPage() {
     return (
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-2xl mx-auto">
-                {/* Header */}
                 <div className="mb-8 flex items-start justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold text-fairway-green mb-2">Past Rounds</h1>
@@ -100,8 +96,6 @@ export default function ScoresPage() {
                         Home
                     </Link>
                 </div>
-
-                {/* Empty State */}
                 {rounds.length === 0 ? (
                     <div className="text-center py-12">
                         <p className="text-text-dark mb-6">No rounds recorded yet</p>
@@ -126,30 +120,22 @@ export default function ScoresPage() {
                                     <div className="mb-4 flex items-start justify-between gap-4">
                                         <div>
                                             <h2 className="text-lg font-bold text-fairway-green">{round.courseName}</h2>
-											<p className="text-sm text-text-dark">Rating: {round.courseRating}</p>
-											<p className="text-sm text-text-dark">Slope: {round.courseSlope}</p>
+                                            <p className="text-sm text-text-dark">Rating: {round.courseRating}</p>
+                                            <p className="text-sm text-text-dark">Slope: {round.courseSlope}</p>
                                             <p className="text-sm text-text-dark">{formattedDate}</p>
                                         </div>
                                         <div className="text-right">
                                             <div className="mb-2 flex items-baseline justify-end gap-3">
                                                 <div>
-                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
-                                                        Score
-                                                    </p>
-                                                    <p className="text-3xl font-bold text-vibrant-green">
-                                                        {totalScore}
-                                                    </p>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">Score</p>
+                                                    <p className="text-3xl font-bold text-vibrant-green">{totalScore}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
-                                                        Par
-                                                    </p>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">Par</p>
                                                     <p className="text-3xl font-bold text-fairway-green">{totalPar}</p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">
-                                                        +/-
-                                                    </p>
+                                                    <p className="text-xs uppercase tracking-[0.2em] text-text-dark font-semibold">+/-</p>
                                                     <p className={"text-3xl font-bold text-fairway-green"}>
                                                         {vsPar > 0 ? "+" : ""}
                                                         {vsPar === 0 ? "E" : vsPar}
@@ -158,30 +144,22 @@ export default function ScoresPage() {
                                             </div>
                                         </div>
                                     </div>
-
-                                    {/* Front 9 / Back 9 Split */}
                                     <div className="grid grid-cols-2 gap-3 border-t border-gray-200 pt-4 text-sm text-text-dark">
                                         <div className="rounded-xl bg-light-sand px-4 py-3">
-                                            <span className="font-semibold text-fairway-green">Front 9:</span>{" "}
-                                            {front9Score}
+                                            <span className="font-semibold text-fairway-green">Front 9:</span> {front9Score}
                                         </div>
                                         <div className="rounded-xl bg-light-sand px-4 py-3">
-                                            <span className="font-semibold text-fairway-green">Back 9:</span>{" "}
-                                            {back9Score}
+                                            <span className="font-semibold text-fairway-green">Back 9:</span> {back9Score}
                                         </div>
                                     </div>
-
                                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                                         <span
                                             className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                                                round.completed
-                                                    ? "bg-vibrant-green text-white"
-                                                    : "bg-warm-gold text-text-dark"
+                                                round.completed ? "bg-vibrant-green text-white" : "bg-warm-gold text-text-dark"
                                             }`}
                                         >
                                             {round.completed ? "Completed" : "In Progress"}
                                         </span>
-
                                         <div className="flex items-center gap-2">
                                             {round.completed ? (
                                                 <Link
@@ -216,8 +194,6 @@ export default function ScoresPage() {
                         })}
                     </div>
                 )}
-
-                {/* CTA Button */}
                 <div className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row">
                     <Link
                         href="/"

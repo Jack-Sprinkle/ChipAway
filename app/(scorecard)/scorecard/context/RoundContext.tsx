@@ -45,34 +45,37 @@ export function RoundProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     // Save current round to IndexedDB, optionally applying one last hole update first.
-    const saveToDatabase = useCallback(async (options?: SaveRoundOptions) => {
-        if (!currentRound) {
-            throw new Error("No round to save");
-        }
+    const saveToDatabase = useCallback(
+        async (options?: SaveRoundOptions) => {
+            if (!currentRound) {
+                throw new Error("No round to save");
+            }
 
-        const updatedHoles = [...currentRound.holes];
+            const updatedHoles = [...currentRound.holes];
 
-        if (options?.holeIndex !== undefined && options.holeData) {
-            updatedHoles[options.holeIndex] = {
-                ...updatedHoles[options.holeIndex],
-                ...options.holeData,
+            if (options?.holeIndex !== undefined && options.holeData) {
+                updatedHoles[options.holeIndex] = {
+                    ...updatedHoles[options.holeIndex],
+                    ...options.holeData,
+                };
+            }
+
+            const roundToSave: Round = {
+                ...currentRound,
+                holes: updatedHoles,
+                completed: updatedHoles.every((hole) => hole.isComplete),
             };
-        }
 
-        const roundToSave: Round = {
-            ...currentRound,
-            holes: updatedHoles,
-            completed: updatedHoles.every((hole) => hole.isComplete),
-        };
-
-        try {
-            await saveRound(roundToSave);
-            setCurrentRound(roundToSave);
-        } catch (error) {
-            console.error("Failed to save round:", error);
-            throw error;
-        }
-    }, [currentRound]);
+            try {
+                await saveRound(roundToSave);
+                setCurrentRound(roundToSave);
+            } catch (error) {
+                console.error("Failed to save round:", error);
+                throw error;
+            }
+        },
+        [currentRound],
+    );
 
     // Reset current round (clears context)
     const resetRound = useCallback(() => {

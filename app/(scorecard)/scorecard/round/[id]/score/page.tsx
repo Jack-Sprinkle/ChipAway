@@ -68,10 +68,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error || "Round not found"}</p>
-                    <button
-                        onClick={() => router.push("/")}
-                        className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
-                    >
+                    <button onClick={() => router.push("/")} className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
                         Return Home
                     </button>
                 </div>
@@ -203,12 +200,8 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     return (
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-md mx-auto">
-                {/* Quick Navigation */}
                 <div className="mb-8 flex justify-between text-sm">
-                    <button
-                        onClick={() => router.push("/")}
-                        className="text-fairway-green hover:text-vibrant-green font-medium transition-colors"
-                    >
+                    <button onClick={() => router.push("/")} className="text-fairway-green hover:text-vibrant-green font-medium transition-colors">
                         ← Home
                     </button>
                     <button
@@ -218,15 +211,11 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         View Scores
                     </button>
                 </div>
-
-                {/* Header */}
                 <div className="mb-8 text-center">
                     <p className="text-text-dark mb-1">{currentRound.courseName}</p>
                     <h1 className="text-4xl font-bold text-fairway-green mb-2">Hole {currentHoleNum}</h1>
                     <p className="text-text-dark text-sm">{currentHoleNum} of 18</p>
                 </div>
-
-                {/* Running Score Stats - Leaderboard Style */}
                 {scoredHoles > 0 && (
                     <div className="mb-8 p-6 bg-fairway-green text-white rounded-lg">
                         <div className="flex items-center justify-between mb-4">
@@ -235,11 +224,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                                 <p className="text-5xl font-bold">{runningScore}</p>
                             </div>
                             <div className="text-right">
-                                <p
-                                    className={`text-5xl font-bold ${
-                                        vsPar > 0 ? "text-red-300" : vsPar < 0 ? "text-green-300" : "text-white"
-                                    }`}
-                                >
+                                <p className={`text-5xl font-bold ${vsPar > 0 ? "text-red-300" : vsPar < 0 ? "text-green-300" : "text-white"}`}>
                                     {vsPar > 0 ? "+" : ""}
                                     {vsPar === 0 ? "E" : vsPar}
                                 </p>
@@ -248,20 +233,10 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         </div>
                     </div>
                 )}
-
-                {/* Error Message */}
-                {error && (
-                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">{error}</div>
-                )}
-
-                {/* Input Form */}
+                {error && <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">{error}</div>}
                 <form className="space-y-6 mb-8">
-                    {/* Par Input */}
                     <div>
-                        <label
-                            htmlFor="par"
-                            className="block font-semibold text-fairway-green mb-2"
-                        >
+                        <label htmlFor="par" className="block font-semibold text-fairway-green mb-2">
                             Par
                         </label>
                         <select
@@ -277,13 +252,8 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                             <option value={5}>5</option>
                         </select>
                     </div>
-
-                    {/* Score Input */}
                     <div>
-                        <label
-                            htmlFor="score"
-                            className="block font-semibold text-fairway-green mb-2"
-                        >
+                        <label htmlFor="score" className="block font-semibold text-fairway-green mb-2">
                             Score
                         </label>
                         <input
@@ -297,13 +267,8 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                             min={1}
                         />
                     </div>
-
-                    {/* Putts Input */}
                     <div>
-                        <label
-                            htmlFor="putts"
-                            className="block font-semibold text-fairway-green mb-2"
-                        >
+                        <label htmlFor="putts" className="block font-semibold text-fairway-green mb-2">
                             Putts
                         </label>
                         <input
@@ -318,10 +283,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         />
                     </div>
                 </form>
-
-                {/* Navigation & Save Buttons */}
                 <div className="space-y-3">
-                    {/* Previous/Next Row */}
                     <div className="flex gap-3">
                         <button
                             type="button"

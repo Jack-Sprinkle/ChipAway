@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
-import { createRound } from "@/lib/types";
+import { createRound } from "@/lib/utils";
 import { saveRound } from "@/lib/db";
 import { cacheUrls } from "@/lib/service-worker";
 
@@ -65,34 +65,18 @@ export default function NewRoundPage() {
     return (
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-lg mx-auto">
-                {/* Header */}
                 <div className="mb-8">
-                    <Link
-                        href="/scorecard"
-                        className="text-vibrant-green font-semibold hover:underline"
-                    >
+                    <Link href="/scorecard" className="text-vibrant-green font-semibold hover:underline">
                         ← Back to Home
                     </Link>
                     <h1 className="text-4xl font-bold text-fairway-green mt-4 mb-2">New Round</h1>
-                    <p className="text-text-dark">
-                        Enter your course name. You&apos;ll input par, score, and putts for each hole as you go.
-                    </p>
+                    <p className="text-text-dark">Enter your course name. You&apos;ll input par, score, and putts for each hole as you go.</p>
                 </div>
-
-                {/* Error Message */}
                 {error && <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">{error}</div>}
-
-                <form
-                    onSubmit={handleStartRound}
-                    className="space-y-6"
-                >
-                    {/* Course Name */}
+                <form onSubmit={handleStartRound} className="space-y-6">
                     <div className="flex flex-col gap-4">
                         <div>
-                            <label
-                                htmlFor="courseName"
-                                className="block font-semibold text-fairway-green mb-2"
-                            >
+                            <label htmlFor="courseName" className="block font-semibold text-fairway-green mb-2">
                                 Course Name
                             </label>
                             <input
@@ -107,10 +91,7 @@ export default function NewRoundPage() {
                             />
                         </div>
                         <div>
-                            <label
-                                htmlFor="courseRating"
-                                className="block font-semibold text-fairway-green mb-2"
-                            >
+                            <label htmlFor="courseRating" className="block font-semibold text-fairway-green mb-2">
                                 Course Rating
                             </label>
                             <input
@@ -129,10 +110,7 @@ export default function NewRoundPage() {
                             />
                         </div>
                         <div>
-                            <label
-                                htmlFor="courseSlope"
-                                className="block font-semibold text-fairway-green mb-2"
-                            >
+                            <label htmlFor="courseSlope" className="block font-semibold text-fairway-green mb-2">
                                 Course Slope
                             </label>
                             <input
@@ -151,8 +129,6 @@ export default function NewRoundPage() {
                             />
                         </div>
                     </div>
-
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         disabled={isLoading}

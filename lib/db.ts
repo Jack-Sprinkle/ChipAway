@@ -1,14 +1,13 @@
-// IndexedDB wrapper for ChipAway using idb library
-// Provides simple, promise-based CRUD operations for golf rounds
+// Imports for idb
 import { IDBPDatabase, openDB } from "idb";
 import { Round } from "./types";
 
+// Initialize db name, version, and store
 const DB_NAME = "chipaway-golf";
 const DB_VERSION = 1;
 const STORE_NAME = "rounds";
 
-// Database schema for ChipAway
-// Defines the structure of all object stores in IndexedDB
+// Database schema
 interface ChipAwayDB {
     rounds: {
         key: string;
@@ -19,7 +18,6 @@ interface ChipAwayDB {
 let db: IDBPDatabase<ChipAwayDB> | null = null;
 
 // Initialize database connection
-// Creates the object store if it doesn't exist
 export async function initDB(): Promise<IDBPDatabase<ChipAwayDB>> {
     if (db) {
         return db;
@@ -47,7 +45,6 @@ async function getDB(): Promise<IDBPDatabase<ChipAwayDB>> {
 }
 
 // Save a round to the database
-// Creates or updates an existing round
 export async function saveRound(round: Round): Promise<string> {
     const database = await getDB();
     const id = await database.put(STORE_NAME, round);
@@ -61,11 +58,10 @@ export async function getRound(id: string): Promise<Round | undefined> {
 }
 
 // Get all rounds from the database
-// Returns rounds sorted by date (newest first)
+// Returns sorted by date
 export async function getAllRounds(): Promise<Round[]> {
     const database = await getDB();
     const rounds = await database.getAll(STORE_NAME);
-    // Sort by date descending (newest first)
     return rounds.sort((a, b) => b.date - a.date);
 }
 
@@ -76,13 +72,11 @@ export async function deleteRound(id: string): Promise<void> {
 }
 
 // Update a specific hole in a round
-export async function updateRoundHole(
-    roundId: string,
-    holeIndex: number,
-    holeData: Partial<Round["holes"][0]>,
-): Promise<void> {
+export async function updateRoundHole(roundId: string, holeIndex: number, holeData: Partial<Round["holes"][0]>): Promise<void> {
+    // Get the round
     const round = await getRound(roundId);
 
+    // Handle any errors
     if (!round) {
         throw new Error(`Round with ID ${roundId} not found`);
     }
@@ -91,6 +85,7 @@ export async function updateRoundHole(
         throw new Error("Hole index must be between 0 and 17");
     }
 
+    // create shallow copy and update
     round.holes[holeIndex] = {
         ...round.holes[holeIndex],
         ...holeData,

@@ -8,38 +8,12 @@ import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chipawaygolf.com";
 
-const structuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "Organization",
-            name: "Chip Away Golf",
-            url: siteUrl,
-            logo: `${siteUrl}/brand/CAG_mono_logo.svg`,
-        },
-        {
-            "@type": "WebSite",
-            name: "Chip Away Golf",
-            url: siteUrl,
-        },
-    ],
-};
-
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
     title: "Chip Away Golf | Golf Journal & Scorekeeper",
-    description:
-        "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
+    description: "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
     applicationName: "Chip Away Golf",
-    keywords: [
-        "golf",
-        "golf scorekeeper",
-        "golf blog",
-        "golf app",
-        "golf journal",
-        "golf improvement",
-        "everyday golfers",
-    ],
+    keywords: ["golf", "golf scorekeeper", "golf blog", "golf app", "golf journal", "golf improvement", "everyday golfers"],
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",
@@ -65,15 +39,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html
-            lang="en"
-            className={GeistSans.className}
-        >
+        <html lang="en" className={GeistSans.className}>
             <body className="bg-cream text-text-dark antialiased">
-                <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-                />
                 <Header />
                 {children}
                 <Footer />

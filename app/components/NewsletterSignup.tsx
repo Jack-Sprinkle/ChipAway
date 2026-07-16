@@ -35,12 +35,9 @@ export default function NewsletterSignup({ pageType }: NewsletterSignupProps) {
         return (
             <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-50/80 p-4 text-sm text-stone-700">
                 <p className="text-sm font-semibold text-stone-900">You&apos;re in</p>
+                <p className="text-sm text-stone-600">Just one more step—check your inbox and click the confirmation link.</p>
                 <p className="text-sm text-stone-600">
-                    Just one more step—check your inbox and click the confirmation link.
-                </p>
-                <p className="text-sm text-stone-600">
-                    After that, I&apos;ll send the occasional journal entry, a few thoughts from the course, and updates
-                    on Chip Away Golf.
+                    After that, I&apos;ll send the occasional journal entry, a few thoughts from the course, and updates on Chip Away Golf.
                 </p>
                 <p className="text-sm text-stone-600">See you on the first tee.</p>
             </div>
@@ -48,18 +45,15 @@ export default function NewsletterSignup({ pageType }: NewsletterSignupProps) {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="mt-8 rounded-2xl border border-stone-200 bg-stone-50/80 p-4 shadow-sm"
-        >
+        <form onSubmit={handleSubmit} className="mt-8 rounded-2xl border border-stone-200 bg-stone-50/80 p-4 shadow-sm">
             <div className="mb-3 space-y-1">
                 <p className="text-sm font-semibold text-stone-900">The Chip Away Journal</p>
                 {pageType === "entry" ? (
                     <div>
                         <p className="text-sm text-stone-600">Enjoyed this entry?</p>
                         <p className="text-sm text-stone-600">
-                            Every couple of weeks I&apos;ll send a story from the course, lessons I&apos;m learning, and
-                            updates on the tools I&apos;m building.
+                            Every couple of weeks I&apos;ll send a story from the course, lessons I&apos;m learning, and updates on the tools I&apos;m
+                            building.
                         </p>
                     </div>
                 ) : (

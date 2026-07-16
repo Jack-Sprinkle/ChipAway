@@ -4,7 +4,7 @@ import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import { getRound } from "@/lib/db";
 import type { Round } from "@/lib/types";
-import { getRoundTotals } from "@/lib/types";
+import { getRoundTotals } from "@/lib/utils";
 
 export default function RoundViewPage({ params }: { params: Promise<{ id: string }> }) {
     const [round, setRound] = useState<Round | null>(null);
@@ -49,10 +49,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error || "Round not found"}</p>
-                    <Link
-                        href="/scorecard/scores"
-                        className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green"
-                    >
+                    <Link href="/scorecard/scores" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
                         Back to Rounds
                     </Link>
                 </div>
@@ -67,13 +64,14 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
         day: "numeric",
         year: "numeric",
     });
+
     const vsPar = totalScore - totalPar;
     const getScoreMarker = (score?: number, holeVsPar?: number | null) => {
         if (score === undefined) {
             return <span className="inline-flex h-11 items-center justify-center">—</span>;
         }
 
-        if (typeof holeVsPar === "number" && holeVsPar <= -2) {
+        if (holeVsPar && holeVsPar <= -2) {
             return (
                 <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-full border-2 border-fairway-green p-[3px]">
                     <span className="inline-flex h-full min-w-9 items-center justify-center rounded-full border-2 border-fairway-green px-2 text-sm font-bold leading-none text-fairway-green">
@@ -91,7 +89,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
             );
         }
 
-        if (typeof holeVsPar === "number" && holeVsPar >= 2) {
+        if (holeVsPar && holeVsPar >= 2) {
             return (
                 <span className="inline-flex h-11 min-w-11 items-center justify-center border-2 border-red-700 p-[3px]">
                     <span className="inline-flex h-full min-w-9 items-center justify-center border-2 border-red-700 px-2 text-sm font-bold leading-none text-red-700">
@@ -115,19 +113,13 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
     return (
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-2xl mx-auto">
-                {/* Header */}
                 <div className="mb-8">
-                    <Link
-                        href="/scorecard/scores"
-                        className="text-vibrant-green font-semibold mb-4 inline-block hover:text-fairway-green"
-                    >
+                    <Link href="/scorecard/scores" className="text-vibrant-green font-semibold mb-4 inline-block hover:text-fairway-green">
                         ← Back to Rounds
                     </Link>
                     <h1 className="text-3xl font-bold text-fairway-green mb-2">{round.courseName}</h1>
                     <p className="text-text-dark text-sm">{formattedDate}</p>
                 </div>
-
-                {/* Score Summary */}
                 <div className="grid grid-cols-3 gap-3 mb-8">
                     <div className="p-4 bg-cream border-2 border-fairway-green rounded-lg text-center">
                         <p className="text-text-dark text-xs font-semibold mb-1">SCORE</p>
@@ -145,38 +137,23 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                         </p>
                     </div>
                 </div>
-
-                {/* Scorecard */}
                 <div className="mb-8">
                     <h2 className="font-bold text-fairway-green text-lg mb-4">Scorecard</h2>
-
-                    {/* Front 9 */}
                     <div className="mb-8">
                         <h3 className="font-semibold text-vibrant-green text-md mb-3">Front Nine</h3>
                         <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                             <div className="grid grid-cols-5 gap-0 bg-cream">
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Hole
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Par
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Score
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Putts
-                                </div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Hole</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Par</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Score</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Putts</div>
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark">+/-</div>
                             </div>
 
                             {round.holes.slice(0, 9).map((hole) => {
                                 const vs_par = hole.score && hole.parValue ? hole.score - hole.parValue : null;
                                 return (
-                                    <div
-                                        key={hole.holeNumber}
-                                        className="grid grid-cols-5 gap-0 border-t border-gray-200"
-                                    >
+                                    <div key={hole.holeNumber} className="grid grid-cols-5 gap-0 border-t border-gray-200">
                                         <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark border-r border-gray-200">
                                             {hole.holeNumber}
                                         </div>
@@ -188,9 +165,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         </div>
                                         <div
                                             className={`flex items-center justify-center p-3 text-center font-semibold border-r border-gray-200 ${
-                                                hole.putts && hole.putts >= 3
-                                                    ? "bg-red-100 text-red-700"
-                                                    : "text-text-dark"
+                                                hole.putts && hole.putts >= 3 ? "bg-red-100 text-red-700" : "text-text-dark"
                                             }`}
                                         >
                                             {hole.putts ?? "—"}
@@ -211,34 +186,21 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                             </div>
                         </div>
                     </div>
-
-                    {/* Back 9 */}
                     <div>
                         <h3 className="font-semibold text-vibrant-green text-md mb-3">Back Nine</h3>
                         <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                             <div className="grid grid-cols-5 gap-0 bg-cream">
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Hole
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Par
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Score
-                                </div>
-                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">
-                                    Putts
-                                </div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Hole</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Par</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Score</div>
+                                <div className="p-3 text-center font-semibold text-xs text-text-dark border-r border-gray-200">Putts</div>
                                 <div className="p-3 text-center font-semibold text-xs text-text-dark">+/-</div>
                             </div>
 
                             {round.holes.slice(9, 18).map((hole) => {
                                 const vs_par = hole.score && hole.parValue ? hole.score - hole.parValue : null;
                                 return (
-                                    <div
-                                        key={hole.holeNumber}
-                                        className="grid grid-cols-5 gap-0 border-t border-gray-200"
-                                    >
+                                    <div key={hole.holeNumber} className="grid grid-cols-5 gap-0 border-t border-gray-200">
                                         <div className="flex items-center justify-center p-3 text-center font-semibold text-text-dark border-r border-gray-200">
                                             {hole.holeNumber}
                                         </div>
@@ -250,9 +212,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                                         </div>
                                         <div
                                             className={`flex items-center justify-center p-3 text-center font-semibold border-r border-gray-200 ${
-                                                hole.putts && hole.putts >= 3
-                                                    ? "bg-red-100 text-red-700"
-                                                    : "text-text-dark"
+                                                hole.putts && hole.putts >= 3 ? "bg-red-100 text-red-700" : "text-text-dark"
                                             }`}
                                         >
                                             {hole.putts ?? "—"}
@@ -274,8 +234,6 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                         </div>
                     </div>
                 </div>
-
-                {/* CTA */}
                 <div className="text-center">
                     <Link
                         href="/scorecard/round/new"

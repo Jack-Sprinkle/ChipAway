@@ -21,7 +21,10 @@ export interface Round {
 export interface ScoringStats {
     threePuttPercentage: number | null;
     GIRPercentage: number | null;
+	scramblingPercentage: number | null;
     threePuttHoles: number;
     GIRHoles: number;
+	scramblingHoles: number;
     eligibleHoles: number;
+	scramblingEligibleHoles: number;
 }

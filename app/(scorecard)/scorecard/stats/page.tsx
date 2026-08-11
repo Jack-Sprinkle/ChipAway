@@ -5,7 +5,7 @@ import { getAllRounds } from "@/lib/db";
 import { calculateHandicap, calculateScoringStats } from "@/lib/utils";
 import { Round } from "@/lib/types";
 
-function getPerformanceTone(value: number | null, metric: "three-putt" | "gir") {
+function getPerformanceTone(value: number | null, metric: "three-putt" | "gir" | "scrambling") {
     if (value === null) {
         return {
             label: "Needs data",
@@ -44,37 +44,67 @@ function getPerformanceTone(value: number | null, metric: "three-putt" | "gir") 
             badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
             textClass: "text-rose-700",
         };
-    }
+    } else if (metric === "gir") {
+        if (value >= 65) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
 
-    if (value >= 65) {
+        if (value >= 50) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value >= 33) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
         return {
-            label: "Pro",
-            badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
-            textClass: "text-emerald-800",
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+    } else {
+        if (value >= 57) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value >= 50) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value >= 35) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
         };
     }
-
-    if (value >= 50) {
-        return {
-            label: "Excellent",
-            badgeClass: "border-green-200 bg-green-50 text-green-700",
-            textClass: "text-green-700",
-        };
-    }
-
-    if (value >= 33) {
-        return {
-            label: "Good",
-            badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
-            textClass: "text-amber-700",
-        };
-    }
-
-    return {
-        label: "Needs Improvement",
-        badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
-        textClass: "text-rose-700",
-    };
 }
 
 export default function StatsPage() {
@@ -103,6 +133,7 @@ export default function StatsPage() {
     const scoringStats = calculateScoringStats(rounds);
     const threePuttTone = getPerformanceTone(scoringStats.threePuttPercentage, "three-putt");
     const girTone = getPerformanceTone(scoringStats.GIRPercentage, "gir");
+    const scramblingTone = getPerformanceTone(scoringStats.scramblingPercentage, "scrambling");
     const completedRounds = rounds.filter((round) => round.completed).length;
 
     const roundsWithScores = rounds.filter((round) => round.holes.some((hole) => hole.score !== undefined && hole.parValue !== undefined)).length;
@@ -200,6 +231,20 @@ export default function StatsPage() {
                         <p className="mt-2 text-sm text-slate-600">
                             {scoringStats.eligibleHoles > 0
                                 ? `${scoringStats.GIRHoles} of ${scoringStats.eligibleHoles} eligible holes`
+                                : "Add scores to start tracking"}
+                        </p>
+                    </div>
+                    <div className="rounded-2xl border border-slate-200 p-4">
+                        <p className="text-sm font-medium text-slate-500">Scrambling</p>
+                        <p className={`mt-2 text-2xl font-semibold ${scramblingTone.textClass}`}>
+                            {scoringStats.scramblingPercentage !== null ? `${scoringStats.scramblingPercentage.toFixed(1)}%` : "—"}
+                        </p>
+                        <span className={`mt-2 inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${scramblingTone.badgeClass}`}>
+                            {scramblingTone.label}
+                        </span>
+                        <p className="mt-2 text-sm text-slate-600">
+                            {scoringStats.scramblingEligibleHoles > 0
+                                ? `${scoringStats.scramblingHoles} of ${scoringStats.scramblingEligibleHoles} eligible holes`
                                 : "Add scores to start tracking"}
                         </p>
                     </div>

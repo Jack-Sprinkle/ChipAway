@@ -130,11 +130,45 @@ export function calculateScoringStats(rounds: Round[]): ScoringStats {
         );
     }, 0);
 
+    // Scrambling: made par or better while not making GIR
+    const scramblingEligibleHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter((hole) => {
+                if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.parValue < 3) {
+                    return false;
+                }
+
+                const isGIR = hole.score - hole.putts <= hole.parValue - 2;
+                return !isGIR;
+            }).length
+        );
+    }, 0);
+
+    const scramblingHoles = completedRounds.reduce((count, round) => {
+        return (
+            count +
+            round.holes.filter((hole) => {
+                if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.parValue < 3) {
+                    return false;
+                }
+
+                const isGIR = hole.score - hole.putts <= hole.parValue - 2;
+                const madeParOrBetter = hole.score <= hole.parValue;
+
+                return !isGIR && madeParOrBetter;
+            }).length
+        );
+    }, 0);
+
     return {
         threePuttPercentage: eligibleHoles > 0 ? Number(((threePuttHoles / eligibleHoles) * 100).toFixed(1)) : null,
         GIRPercentage: eligibleHoles > 0 ? Number(((GIRHoles / eligibleHoles) * 100).toFixed(1)) : null,
+        scramblingPercentage: eligibleHoles > 0 ? Number(((scramblingHoles / scramblingEligibleHoles) * 100).toFixed(1)) : null,
         threePuttHoles,
         GIRHoles,
+        scramblingHoles,
         eligibleHoles,
+		scramblingEligibleHoles
     };
 }

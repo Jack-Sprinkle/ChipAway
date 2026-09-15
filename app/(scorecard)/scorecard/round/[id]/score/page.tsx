@@ -51,7 +51,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     useEffect(() => {
         if (Number.isNaN(holeParam) || holeParam < 1 || holeParam > 18) {
-            router.replace(`/round/${roundId}/score?hole=1`);
+            router.replace(`/scorecard/round/${roundId}/score?hole=1`);
         }
     }, [holeParam, roundId, router]);
 

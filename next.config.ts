@@ -10,9 +10,11 @@ const revision = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf-8" }).
 const withSerwist = withSerwistInit({
     additionalPrecacheEntries: [
         { url: "/", revision },
-        { url: "/round/new", revision },
-        { url: "/scores", revision },
-        { url: "/~offline", revision },
+		{ url: "/scorecard", revision },
+        { url: "/scorecard/round/new", revision },
+        { url: "/scorecard/scores", revision },
+		{ url: "/scorecard/stats", revision },
+        { url: "/scorecard/~offline", revision },
     ],
     swSrc: "app/sw.ts",
     swDest: "public/sw.js",

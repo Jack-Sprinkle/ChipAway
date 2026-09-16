@@ -150,6 +150,14 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         }
     };
 
+	// Handle fairway input change
+	const handleFairwayChange = (value: string) => {
+		const fairway = parseInt(value, 10);
+		if (!isNaN(fairway) && fairway >= 0 && fairway <= 2) {
+			updateHole(currentHoleIndex, { fairway })
+		}
+	}
+
     // Handle score input change
     const handleScoreChange = (value: string) => {
         if (value === "") {
@@ -266,6 +274,23 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
                             min={1}
                         />
+                    </div>
+                    <div>
+                        <label htmlFor="fairway" className="block font-semibold text-fairway-green mb-2">
+                            Fairway
+                        </label>
+                        <select
+                            id="fairway"
+                            value={currentHole.fairway ?? ""}
+                            onChange={(e) => handleFairwayChange(e.target.value)}
+                            disabled={isSaving}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
+                        >
+                            <option value="">--</option>
+							<option value={0}>Hit</option>
+                            <option value={1}>Missed - Left</option>
+							<option value={2}>Missed - Right</option>
+                        </select>
                     </div>
                     <div>
                         <label htmlFor="putts" className="block font-semibold text-fairway-green mb-2">

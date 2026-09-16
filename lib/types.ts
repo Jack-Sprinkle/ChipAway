@@ -5,6 +5,7 @@ export interface Hole {
     parValue?: number; // Par value (entered by user during scoring)
     score?: number; // Strokes taken (entered by user during scoring)
     putts?: number; // Number of putts (entered by user during scoring)
+	fairway?: number; // unfortunately can't calculate fairways hit w/out user input...sad
     isComplete: boolean; // Marker for hole being complete to track ongoing round
 }
 

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
     alternates: {
         canonical: "/about",
-    }
+    },
 };
 
 export default function AboutPage() {
@@ -57,6 +57,19 @@ export default function AboutPage() {
                     >
                         Read the Journal →
                     </Link>
+                </div>
+
+                <div className="mt-10 rounded-xl border border-fairway-green/20 bg-white p-8 shadow-[0_10px_30px_rgba(45,80,22,0.04)]">
+                    <h2 className="mb-3 text-2xl font-bold text-fairway-green">Get in touch</h2>
+                    <p className="max-w-2xl text-lg leading-relaxed text-text-dark/80">
+                        Questions, feedback, or ideas for the site? I&apos;d love to hear from you.
+                    </p>
+                    <a
+                        href="mailto:jack@chipawaygolf.com"
+                        className="mt-5 inline-flex items-center rounded-lg border border-fairway-green/20 bg-cream px-5 py-3 font-medium text-fairway-green transition-colors hover:border-fairway-green hover:bg-white"
+                    >
+                        jack@chipawaygolf.com
+                    </a>
                 </div>
             </section>
         </main>

@@ -161,14 +161,176 @@ export function calculateScoringStats(rounds: Round[]): ScoringStats {
         );
     }, 0);
 
+	const fairwayEligibleHoles = completedRounds.reduce((count, round) => {
+		return (
+			count + 
+			round.holes.filter((hole) => {
+				if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.fairway === undefined || hole.parValue <= 3) {
+                    return false;
+                }
+
+				return true
+			}).length
+		)
+	}, 0)
+
+	const fairwaysHit = completedRounds.reduce((count, round) => {
+		return (
+			count +
+			round.holes.filter((hole) => {
+				if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.fairway === undefined || hole.parValue <= 3) {
+                    return false;
+                }
+
+				const hitFairway = hole.fairway === 0;
+				return hitFairway;
+			}).length
+		)
+	}, 0)
+
     return {
         threePuttPercentage: eligibleHoles > 0 ? Number(((threePuttHoles / eligibleHoles) * 100).toFixed(1)) : null,
         GIRPercentage: eligibleHoles > 0 ? Number(((GIRHoles / eligibleHoles) * 100).toFixed(1)) : null,
         scramblingPercentage: eligibleHoles > 0 ? Number(((scramblingHoles / scramblingEligibleHoles) * 100).toFixed(1)) : null,
+		fairwayPercentage: eligibleHoles > 0 ? Number(((fairwaysHit / fairwayEligibleHoles) * 100).toFixed(1)) : null,
         threePuttHoles,
         GIRHoles,
         scramblingHoles,
         eligibleHoles,
-		scramblingEligibleHoles
+		scramblingEligibleHoles,
+		fairwayEligibleHoles,
+		fairwaysHit
     };
+}
+
+export function getPerformanceTone(value: number | null, metric: "three-putt" | "gir" | "scrambling" | "fairways") {
+    if (value === null) {
+        return {
+            label: "Needs data",
+            badgeClass: "border-slate-200 bg-slate-100 text-slate-700",
+            textClass: "text-slate-700",
+        };
+    }
+
+    if (metric === "three-putt") {
+        if (value <= 3) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value <= 6) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value <= 11) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+    } else if (metric === "gir") {
+        if (value >= 65) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value >= 50) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value >= 33) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+    } else if (metric === "scrambling") {
+        if (value >= 57) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value >= 50) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value >= 35) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+    } else if (metric === "fairways") {
+		if (value >= 59) {
+            return {
+                label: "Pro",
+                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+                textClass: "text-emerald-800",
+            };
+        }
+
+        if (value >= 56) {
+            return {
+                label: "Excellent",
+                badgeClass: "border-green-200 bg-green-50 text-green-700",
+                textClass: "text-green-700",
+            };
+        }
+
+        if (value >= 49) {
+            return {
+                label: "Good",
+                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+                textClass: "text-amber-700",
+            };
+        }
+
+        return {
+            label: "Needs Improvement",
+            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+            textClass: "text-rose-700",
+        };
+	}
 }

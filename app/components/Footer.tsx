@@ -18,6 +18,17 @@ export function Footer() {
 
                 <p className="max-w-md text-sm leading-relaxed text-text-light/85 sm:text-right">Golf is hard. Enjoy it anyway.</p>
             </div>
+            <div className="max-w-6xl mx-auto mt-6 border-t border-white/10 pt-5 text-center text-sm text-text-light/80 sm:text-left">
+                <p>© 2026 ChipAway Golf</p>
+                <div className="mt-2 flex flex-col gap-1 sm:flex-row sm:gap-4">
+                    <Link href="/privacy-policy" className="hover:text-white transition-colors">
+                        Privacy Policy
+                    </Link>
+                    <Link href="/terms-of-use" className="hover:text-white transition-colors">
+                        Terms of Use
+                    </Link>
+                </div>
+            </div>
         </footer>
     );
 }

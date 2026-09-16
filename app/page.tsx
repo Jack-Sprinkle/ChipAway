@@ -1,5 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    alternates: {
+        canonical: "/",
+    }
+};
 
 const brandPillars = [
     {

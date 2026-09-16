@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { getAllEntries } from "@/lib/journal";
 import NewsletterSignup from "../components/NewsletterSignup";
+
+export const metadata: Metadata = {
+    alternates: {
+        canonical: "/journal",
+    }
+};
 
 export default function JournalPage() {
     const posts = getAllEntries();

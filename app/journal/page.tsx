@@ -22,6 +22,12 @@ export default function JournalPage() {
                     The journal will collect reflections, course notes, practice ideas, and useful lessons from the ongoing work of improving one shot
                     at a time.
                 </p>
+                <Link
+                    href="/rss.xml"
+                    className="mt-6 inline-flex rounded-full bg-fairway-green px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition-colors hover:bg-vibrant-green"
+                >
+                    Subscribe via RSS
+                </Link>
 
                 <div className="mt-12 space-y-6">
                     {posts.map((post) => (

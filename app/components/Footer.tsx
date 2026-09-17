@@ -27,6 +27,9 @@ export function Footer() {
                     <Link href="/terms-of-use" className="hover:text-white transition-colors">
                         Terms of Use
                     </Link>
+                    <Link href="/rss.xml" className="hover:text-white transition-colors">
+                        RSS
+                    </Link>
                 </div>
             </div>
         </footer>

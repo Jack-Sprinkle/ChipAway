@@ -1,4 +1,4 @@
-import { Round, ScoringStats } from "./types";
+import { Hole, Round, ScoringStats } from "./types";
 
 // Helper function to create a new round
 // Initialize all holes, but with a isComplete, updated once user goes to next hole. This is for the running scoreboard
@@ -93,258 +93,142 @@ export function calculateHandicap(rounds: Round[]): number | null {
     return Number(averageDifferential.toFixed(1));
 }
 
-// I should really look at doing something with this
-// it's getting out of hand
+function hasScoringData(hole: Hole): hole is Hole & Required<Pick<Hole, "putts" | "score" | "parValue">> {
+    return hole.putts !== undefined && hole.score !== undefined && hole.parValue !== undefined;
+}
+
+function isGreenInRegulation(hole: Hole & Required<Pick<Hole, "putts" | "score" | "parValue">>) {
+    // A GIR leaves at most two putts to make par.
+    return hole.score - hole.putts <= hole.parValue - 2;
+}
+
+function toPercentage(numerator: number, denominator: number): number | null {
+    return denominator > 0 ? Number(((numerator / denominator) * 100).toFixed(1)) : null;
+}
+
 export function calculateScoringStats(rounds: Round[]): ScoringStats {
-    // get only our completed rounds
-    const completedRounds = rounds.filter((round) => round.completed);
+    const counts = {
+        eligibleHoles: 0,
+        threePuttHoles: 0,
+        GIRHoles: 0,
+        scramblingEligibleHoles: 0,
+        scramblingHoles: 0,
+        fairwayEligibleHoles: 0,
+        fairwaysHit: 0,
+    };
 
-    // safeguard to only get holes that have the correct data
-    const eligibleHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => hole.putts !== undefined && hole.score !== undefined && hole.parValue !== undefined && hole.parValue >= 3)
-                .length
-        );
-    }, 0);
+    for (const round of rounds) {
+        if (!round.completed) continue;
 
-    // get holes with data, and our putts are 3 or more
-    const threePuttHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => hole.putts !== undefined && hole.score !== undefined && hole.parValue !== undefined && hole.putts >= 3)
-                .length
-        );
-    }, 0);
+        for (const hole of round.holes) {
+            if (!hasScoringData(hole) || hole.parValue < 3) continue;
 
-    // get GIR holes, (score - putts) must be less than par -2
-    // assumed you get on green and two putt to make par
-    const GIRHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter(
-                (hole) =>
-                    hole.putts !== undefined &&
-                    hole.score !== undefined &&
-                    hole.parValue !== undefined &&
-                    hole.score - hole.putts <= hole.parValue - 2,
-            ).length
-        );
-    }, 0);
+            counts.eligibleHoles++;
 
-    // Scrambling: made par or better while not making GIR
-    const scramblingEligibleHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => {
-                if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.parValue < 3) {
-                    return false;
-                }
+            if (hole.putts >= 3) counts.threePuttHoles++;
 
-                const isGIR = hole.score - hole.putts <= hole.parValue - 2;
-                return !isGIR;
-            }).length
-        );
-    }, 0);
+            const hitGreenInRegulation = isGreenInRegulation(hole);
+            if (hitGreenInRegulation) {
+                counts.GIRHoles++;
+            } else {
+                // Scrambling means saving par (or better) after missing the GIR.
+                counts.scramblingEligibleHoles++;
+                if (hole.score <= hole.parValue) counts.scramblingHoles++;
+            }
 
-    const scramblingHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => {
-                if (hole.putts === undefined || hole.score === undefined || hole.parValue === undefined || hole.parValue < 3) {
-                    return false;
-                }
-
-                const isGIR = hole.score - hole.putts <= hole.parValue - 2;
-                const madeParOrBetter = hole.score <= hole.parValue;
-
-                return !isGIR && madeParOrBetter;
-            }).length
-        );
-    }, 0);
-
-    const fairwayEligibleHoles = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => {
-                if (
-                    hole.putts === undefined ||
-                    hole.score === undefined ||
-                    hole.parValue === undefined ||
-                    hole.fairway === undefined ||
-                    hole.parValue <= 3
-                ) {
-                    return false;
-                }
-
-                return true;
-            }).length
-        );
-    }, 0);
-
-    const fairwaysHit = completedRounds.reduce((count, round) => {
-        return (
-            count +
-            round.holes.filter((hole) => {
-                if (
-                    hole.putts === undefined ||
-                    hole.score === undefined ||
-                    hole.parValue === undefined ||
-                    hole.fairway === undefined ||
-                    hole.parValue <= 3
-                ) {
-                    return false;
-                }
-
-                const hitFairway = hole.fairway === 0;
-                return hitFairway;
-            }).length
-        );
-    }, 0);
+            // Fairways are only tracked on holes longer than par 3.
+            if (hole.parValue > 3 && hole.fairway !== undefined) {
+                counts.fairwayEligibleHoles++;
+                if (hole.fairway === 0) counts.fairwaysHit++;
+            }
+        }
+    }
 
     return {
-        threePuttPercentage: eligibleHoles > 0 ? Number(((threePuttHoles / eligibleHoles) * 100).toFixed(1)) : null,
-        GIRPercentage: eligibleHoles > 0 ? Number(((GIRHoles / eligibleHoles) * 100).toFixed(1)) : null,
-        scramblingPercentage: eligibleHoles > 0 ? Number(((scramblingHoles / scramblingEligibleHoles) * 100).toFixed(1)) : null,
-        fairwayPercentage: eligibleHoles > 0 ? Number(((fairwaysHit / fairwayEligibleHoles) * 100).toFixed(1)) : null,
-        threePuttHoles,
-        GIRHoles,
-        scramblingHoles,
-        eligibleHoles,
-        scramblingEligibleHoles,
-        fairwayEligibleHoles,
-        fairwaysHit,
+        threePuttPercentage: toPercentage(counts.threePuttHoles, counts.eligibleHoles),
+        GIRPercentage: toPercentage(counts.GIRHoles, counts.eligibleHoles),
+        scramblingPercentage: toPercentage(counts.scramblingHoles, counts.scramblingEligibleHoles),
+        fairwayPercentage: toPercentage(counts.fairwaysHit, counts.fairwayEligibleHoles),
+        ...counts,
     };
 }
 
-export function getPerformanceTone(value: number | null, metric: "three-putt" | "gir" | "scrambling" | "fairways") {
-    if (value === null) {
-        return {
-            label: "Needs data",
-            badgeClass: "border-slate-200 bg-slate-100 text-slate-700",
-            textClass: "text-slate-700",
-        };
-    }
+type PerformanceMetric = "three-putt" | "gir" | "scrambling" | "fairways";
+type ToneName = "pro" | "excellent" | "good" | "needsImprovement";
 
-    if (metric === "three-putt") {
-        if (value <= 3) {
-            return {
-                label: "Pro",
-                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
-                textClass: "text-emerald-800",
-            };
-        }
+const PERFORMANCE_TONES: Record<ToneName | "needsData", { label: string; badgeClass: string; textClass: string }> = {
+    needsData: {
+        label: "Needs data",
+        badgeClass: "border-slate-200 bg-slate-100 text-slate-700",
+        textClass: "text-slate-700",
+    },
+    pro: {
+        label: "Pro",
+        badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
+        textClass: "text-emerald-800",
+    },
+    excellent: {
+        label: "Excellent",
+        badgeClass: "border-green-200 bg-green-50 text-green-700",
+        textClass: "text-green-700",
+    },
+    good: {
+        label: "Good",
+        badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
+        textClass: "text-amber-700",
+    },
+    needsImprovement: {
+        label: "Needs Improvement",
+        badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
+        textClass: "text-rose-700",
+    },
+};
 
-        if (value <= 6) {
-            return {
-                label: "Excellent",
-                badgeClass: "border-green-200 bg-green-50 text-green-700",
-                textClass: "text-green-700",
-            };
-        }
+const PERFORMANCE_TONE_RULES: Record<
+    PerformanceMetric,
+    { higherIsBetter: boolean; thresholds: ReadonlyArray<{ value: number; tone: ToneName }> }
+> = {
+    "three-putt": {
+        higherIsBetter: false,
+        thresholds: [
+            { value: 3, tone: "pro" },
+            { value: 6, tone: "excellent" },
+            { value: 11, tone: "good" },
+        ],
+    },
+    gir: {
+        higherIsBetter: true,
+        thresholds: [
+            { value: 65, tone: "pro" },
+            { value: 50, tone: "excellent" },
+            { value: 33, tone: "good" },
+        ],
+    },
+    scrambling: {
+        higherIsBetter: true,
+        thresholds: [
+            { value: 57, tone: "pro" },
+            { value: 50, tone: "excellent" },
+            { value: 35, tone: "good" },
+        ],
+    },
+    fairways: {
+        higherIsBetter: true,
+        thresholds: [
+            { value: 59, tone: "pro" },
+            { value: 56, tone: "excellent" },
+            { value: 49, tone: "good" },
+        ],
+    },
+};
 
-        if (value <= 11) {
-            return {
-                label: "Good",
-                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
-                textClass: "text-amber-700",
-            };
-        }
+export function getPerformanceTone(value: number | null, metric: PerformanceMetric) {
+    if (value === null) return PERFORMANCE_TONES.needsData;
 
-        return {
-            label: "Needs Improvement",
-            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
-            textClass: "text-rose-700",
-        };
-    } else if (metric === "gir") {
-        if (value >= 65) {
-            return {
-                label: "Pro",
-                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
-                textClass: "text-emerald-800",
-            };
-        }
+    const rules = PERFORMANCE_TONE_RULES[metric];
+    const matchingThreshold = rules.thresholds.find(({ value: threshold }) =>
+        rules.higherIsBetter ? value >= threshold : value <= threshold,
+    );
 
-        if (value >= 50) {
-            return {
-                label: "Excellent",
-                badgeClass: "border-green-200 bg-green-50 text-green-700",
-                textClass: "text-green-700",
-            };
-        }
-
-        if (value >= 33) {
-            return {
-                label: "Good",
-                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
-                textClass: "text-amber-700",
-            };
-        }
-
-        return {
-            label: "Needs Improvement",
-            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
-            textClass: "text-rose-700",
-        };
-    } else if (metric === "scrambling") {
-        if (value >= 57) {
-            return {
-                label: "Pro",
-                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
-                textClass: "text-emerald-800",
-            };
-        }
-
-        if (value >= 50) {
-            return {
-                label: "Excellent",
-                badgeClass: "border-green-200 bg-green-50 text-green-700",
-                textClass: "text-green-700",
-            };
-        }
-
-        if (value >= 35) {
-            return {
-                label: "Good",
-                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
-                textClass: "text-amber-700",
-            };
-        }
-
-        return {
-            label: "Needs Improvement",
-            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
-            textClass: "text-rose-700",
-        };
-    } else if (metric === "fairways") {
-        if (value >= 59) {
-            return {
-                label: "Pro",
-                badgeClass: "border-emerald-300 bg-emerald-100 text-emerald-800",
-                textClass: "text-emerald-800",
-            };
-        }
-
-        if (value >= 56) {
-            return {
-                label: "Excellent",
-                badgeClass: "border-green-200 bg-green-50 text-green-700",
-                textClass: "text-green-700",
-            };
-        }
-
-        if (value >= 49) {
-            return {
-                label: "Good",
-                badgeClass: "border-amber-200 bg-amber-50 text-amber-700",
-                textClass: "text-amber-700",
-            };
-        }
-
-        return {
-            label: "Needs Improvement",
-            badgeClass: "border-rose-200 bg-rose-50 text-rose-700",
-            textClass: "text-rose-700",
-        };
-    }
+    return PERFORMANCE_TONES[matchingThreshold?.tone ?? "needsImprovement"];
 }

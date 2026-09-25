@@ -15,6 +15,7 @@ const scorecardItems = [
     { href: "/scorecard/round/new", label: "New round", description: "Start keeping score" },
     { href: "/scorecard/scores", label: "Your rounds", description: "View saved scorecards" },
     { href: "/scorecard/stats", label: "Stats", description: "Review your game" },
+    { href: "/scorecard/practice", label: "Practice", description: "Log practice shot misses" },
 ];
 
 export function Header() {

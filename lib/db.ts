@@ -1,17 +1,22 @@
 // Imports for idb
 import { IDBPDatabase, openDB } from "idb";
-import { Round } from "./types";
+import { PracticeSession, Round } from "./types";
 
 // Initialize db name, version, and store
 const DB_NAME = "chipaway-golf";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STORE_NAME = "rounds";
+const PRACTICE_STORE_NAME = "practiceSessions";
 
 // Database schema
 interface ChipAwayDB {
     rounds: {
         key: string;
         value: Round;
+    };
+    practiceSessions: {
+        key: string;
+        value: PracticeSession;
     };
 }
 
@@ -29,10 +34,34 @@ export async function initDB(): Promise<IDBPDatabase<ChipAwayDB>> {
             if (!db.objectStoreNames.contains(STORE_NAME)) {
                 db.createObjectStore(STORE_NAME, { keyPath: "id" });
             }
+            if (!db.objectStoreNames.contains(PRACTICE_STORE_NAME)) {
+                db.createObjectStore(PRACTICE_STORE_NAME, { keyPath: "id" });
+            }
         },
     });
 
     return db;
+}
+
+export async function savePracticeSession(session: PracticeSession): Promise<string> {
+    const database = await getDB();
+    return (await database.put(PRACTICE_STORE_NAME, session)) as string;
+}
+
+export async function getPracticeSession(id: string): Promise<PracticeSession | undefined> {
+    const database = await getDB();
+    return database.get(PRACTICE_STORE_NAME, id);
+}
+
+export async function getAllPracticeSessions(): Promise<PracticeSession[]> {
+    const database = await getDB();
+    const sessions = await database.getAll(PRACTICE_STORE_NAME);
+    return sessions.sort((a, b) => b.startedAt - a.startedAt);
+}
+
+export async function getActivePracticeSession(): Promise<PracticeSession | undefined> {
+    const sessions = await getAllPracticeSessions();
+    return sessions.find((session) => session.endedAt === undefined);
 }
 
 // Get database connection

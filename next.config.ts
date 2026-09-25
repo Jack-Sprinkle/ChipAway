@@ -14,6 +14,7 @@ const withSerwist = withSerwistInit({
         { url: "/scorecard/round/new", revision },
         { url: "/scorecard/scores", revision },
 		{ url: "/scorecard/stats", revision },
+        { url: "/scorecard/practice", revision },
         { url: "/scorecard/~offline", revision },
     ],
     swSrc: "app/sw.ts",

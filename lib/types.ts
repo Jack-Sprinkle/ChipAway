@@ -19,6 +19,25 @@ export interface Round {
     completed: boolean; // Whether the full 18 holes have been scored
 }
 
+export type PracticeContact = "fat" | "thin" | "good";
+export type PracticeDirection = "left" | "right" | "straight";
+
+export interface PracticeShot {
+    id: string;
+    club: string;
+    contact: PracticeContact;
+    startDirection: PracticeDirection;
+    curve: PracticeDirection;
+    recordedAt: number;
+}
+
+export interface PracticeSession {
+    id: string;
+    startedAt: number;
+    endedAt?: number;
+    shots: PracticeShot[];
+}
+
 export interface ScoringStats {
     threePuttPercentage: number | null;
     GIRPercentage: number | null;

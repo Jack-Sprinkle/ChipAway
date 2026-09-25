@@ -1,23 +1,139 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getAllRounds } from "@/lib/db";
+import { getAllPracticeSessions, getAllRounds } from "@/lib/db";
 import { calculateHandicap, calculateScoringStats, getPerformanceTone } from "@/lib/utils";
-import { Round } from "@/lib/types";
+import { PracticeDirection, PracticeSession, PracticeShot, Round } from "@/lib/types";
+
+const contactOptions = ["fat", "thin", "good"] as const;
+const directionOptions: PracticeDirection[] = ["left", "straight", "right"];
+
+function getBreakdown<T extends string>(values: T[], options: readonly T[]) {
+    return options.map((value) => {
+        const count = values.filter((entry) => entry === value).length;
+        return { value, count, percentage: values.length === 0 ? 0 : (count / values.length) * 100 };
+    });
+}
+
+function CategoryBreakdown<T extends string>({ title, values, options }: { title: string; values: T[]; options: readonly T[] }) {
+    return (
+        <div>
+            <h4 className="text-sm font-semibold text-slate-700">{title}</h4>
+            <ul className="mt-2 space-y-2">
+                {getBreakdown(values, options).map(({ value, count, percentage }) => (
+                    <li key={value} className="flex items-center justify-between gap-3 text-sm">
+                        <span className="capitalize text-slate-600">{value}</span>
+                        <span className="whitespace-nowrap font-medium text-slate-800">{count} ({percentage.toFixed(0)}%)</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function OverallTendencies({ shots }: { shots: PracticeShot[] }) {
+    const tendencies = [
+        { title: "Most common contact", ...getBreakdown(shots.map((shot) => shot.contact), contactOptions).sort((a, b) => b.count - a.count)[0] },
+        { title: "Most common start", ...getBreakdown(shots.map((shot) => shot.startDirection), directionOptions).sort((a, b) => b.count - a.count)[0] },
+        { title: "Most common curve", ...getBreakdown(shots.map((shot) => shot.curve), directionOptions).sort((a, b) => b.count - a.count)[0] },
+    ];
+
+    return (
+        <div className="rounded-xl border border-vibrant-green/20 bg-cream p-4">
+            <div className="mb-3">
+                <h3 className="font-semibold text-fairway-green">Overall tendencies</h3>
+                <p className="text-xs text-slate-600">Most common result in each category across all clubs</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+                {tendencies.map(({ title, value, count, percentage }) => (
+                    <div key={title} className="rounded-lg bg-white p-3">
+                        <p className="text-xs font-medium text-slate-500">{title}</p>
+                        <p className="mt-1 text-lg font-semibold capitalize text-slate-900">{value}</p>
+                        <p className="text-sm text-slate-600">{count} of {shots.length} ({percentage.toFixed(0)}%)</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function PracticeStats({ sessions }: { sessions: PracticeSession[] }) {
+    const shotsByClub = new Map<string, PracticeSession["shots"]>();
+    for (const session of sessions) {
+        for (const shot of session.shots) {
+            const clubShots = shotsByClub.get(shot.club) ?? [];
+            clubShots.push(shot);
+            shotsByClub.set(shot.club, clubShots);
+        }
+    }
+    const clubs = [...shotsByClub.entries()].sort(([clubA], [clubB]) => clubA.localeCompare(clubB));
+    const shotCount = clubs.reduce((total, [, shots]) => total + shots.length, 0);
+    const allShots = clubs.flatMap(([, shots]) => shots);
+
+    return (
+        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <details className="group">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 marker:content-none [&::-webkit-details-marker]:hidden">
+                    <span>
+                        <span className="block text-2xl font-bold text-fairway-green">Practice Stats</span>
+                        <span className="mt-1 block text-sm text-slate-600">All sessions · {shotCount} shot(s) logged</span>
+                    </span>
+                    <span className="text-sm font-semibold text-vibrant-green">
+                        <span className="group-open:hidden">Expand</span>
+                        <span className="hidden group-open:inline">Collapse</span>
+                    </span>
+                </summary>
+                <div className="space-y-4 border-t border-slate-200 p-5">
+                    {clubs.length === 0 ? (
+                        <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+                            <p className="font-semibold text-slate-800">No practice shots recorded yet</p>
+                            <p className="mt-1 text-sm text-slate-600">Start a practice session to see your breakdown by club.</p>
+                            <Link href="/scorecard/practice" className="mt-4 inline-flex rounded-lg bg-vibrant-green px-4 py-2 text-sm font-semibold text-white hover:bg-fairway-green">
+                                Start Practicing
+                            </Link>
+                        </div>
+                    ) : (
+                        <>
+                            <OverallTendencies shots={allShots} />
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-semibold text-fairway-green">By club</h3>
+                                {clubs.map(([club, shots]) => (
+                                    <article key={club} className="rounded-xl border border-slate-200 p-5">
+                                        <div className="mb-4 flex items-baseline justify-between gap-4">
+                                            <h4 className="text-lg font-semibold text-slate-900">{club}</h4>
+                                            <p className="text-sm text-slate-600">{shots.length} shot(s)</p>
+                                        </div>
+                                        <div className="grid gap-5 sm:grid-cols-3">
+                                            <CategoryBreakdown title="Contact" values={shots.map((shot) => shot.contact)} options={contactOptions} />
+                                            <CategoryBreakdown title="Start direction" values={shots.map((shot) => shot.startDirection)} options={directionOptions} />
+                                            <CategoryBreakdown title="Curve" values={shots.map((shot) => shot.curve)} options={directionOptions} />
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                </div>
+            </details>
+        </section>
+    );
+}
 
 export default function StatsPage() {
     const [rounds, setRounds] = useState<Round[]>([]);
+    const [practiceSessions, setPracticeSessions] = useState<PracticeSession[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const loadRounds = async () => {
             try {
-                const allRounds = await getAllRounds();
+                const [allRounds, allPracticeSessions] = await Promise.all([getAllRounds(), getAllPracticeSessions()]);
                 allRounds.sort((a, b) => b.date - a.date);
                 setRounds(allRounds);
+                setPracticeSessions(allPracticeSessions);
             } catch (err) {
-                setError("Failed to load past rounds");
+                setError("Failed to load stats");
                 console.error(err);
             } finally {
                 setIsLoading(false);
@@ -44,7 +160,7 @@ export default function StatsPage() {
     if (isLoading) {
         return (
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
-                <p className="text-text-dark">Loading rounds...</p>
+                <p className="text-text-dark">Loading stats...</p>
             </main>
         );
     }
@@ -175,6 +291,7 @@ export default function StatsPage() {
                         </p>
                     </div>
                 ) : null}
+                <PracticeStats sessions={practiceSessions} />
             </div>
         </main>
     );

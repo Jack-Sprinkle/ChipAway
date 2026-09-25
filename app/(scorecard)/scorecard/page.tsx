@@ -121,6 +121,12 @@ export default function HomePage() {
                         >
                             View Stats
                         </Link>
+                        <Link
+                            href="/scorecard/practice"
+                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                        >
+                            Practice
+                        </Link>
                     </div>
                 </div>
             </section>

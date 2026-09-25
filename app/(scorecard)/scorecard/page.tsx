@@ -93,7 +93,7 @@ export default function HomePage() {
     return (
         <main className="min-h-screen bg-gradient-to-b from-white to-cream flex flex-col">
             <section className="flex-1 flex flex-col justify-center items-center px-6 py-20 text-center">
-                <div className="max-w-2xl mx-auto">
+                <div className="max-w-3xl mx-auto">
                     <div className="mb-6">
                         <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Scorecard</h1>
                         <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>

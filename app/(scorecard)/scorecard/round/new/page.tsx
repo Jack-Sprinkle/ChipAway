@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
 import { createRound } from "@/lib/utils";
-import { saveRound } from "@/lib/db";
+import { getAllYardageBooks, normalizeCourseName, saveRound } from "@/lib/db";
 import { cacheUrls } from "@/lib/service-worker";
+import type { YardageBook } from "@/lib/types";
 
 export default function NewRoundPage() {
     const router = useRouter();
@@ -15,8 +16,35 @@ export default function NewRoundPage() {
     const [courseName, setCourseName] = useState<string>("");
     const [courseRating, setCourseRating] = useState<number | "">("");
     const [courseSlope, setCourseSlope] = useState<number | "">("");
+    const [yardageBooks, setYardageBooks] = useState<YardageBook[]>([]);
+    const [isLoadingYardageBooks, setIsLoadingYardageBooks] = useState(true);
+    const [yardageBooksError, setYardageBooksError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        let isCurrent = true;
+
+        async function loadYardageBooks() {
+            try {
+                const books = await getAllYardageBooks();
+                if (isCurrent) setYardageBooks(books);
+            } catch (loadError) {
+                console.error(loadError);
+                if (isCurrent) setYardageBooksError("Could not load saved yardage books.");
+            } finally {
+                if (isCurrent) setIsLoadingYardageBooks(false);
+            }
+        }
+
+        void loadYardageBooks();
+        return () => {
+            isCurrent = false;
+        };
+    }, []);
+
+    const selectedYardageBookKey = courseName.trim() ? normalizeCourseName(courseName) : "";
+    const matchingYardageBook = yardageBooks.find((book) => book.courseKey === selectedYardageBookKey);
 
     // Handle form submission to create and start a round
     const handleStartRound = async (e: React.FormEvent) => {
@@ -75,6 +103,48 @@ export default function NewRoundPage() {
                 {error && <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">{error}</div>}
                 <form onSubmit={handleStartRound} className="space-y-6">
                     <div className="flex flex-col gap-4">
+                        <div>
+                            <label htmlFor="savedYardageBook" className="block font-semibold text-fairway-green mb-2">
+                                Use a saved yardage book (optional)
+                            </label>
+                            <select
+                                id="savedYardageBook"
+                                value={matchingYardageBook?.courseKey ?? ""}
+                                onChange={(event) => {
+                                    const book = yardageBooks.find((yardageBook) => yardageBook.courseKey === event.target.value);
+                                    if (book) {
+                                        setCourseName(book.courseName);
+                                    } else if (event.target.value === "") {
+                                        setCourseName("");
+                                    }
+                                }}
+                                disabled={isLoadingYardageBooks || isLoading}
+                                className="w-full rounded-lg border-2 border-gray-300 bg-white px-4 py-3 focus:border-vibrant-green focus:outline-none"
+                            >
+                                <option value="">
+                                    {isLoadingYardageBooks ? "Loading saved courses..." : "Select a saved course"}
+                                </option>
+                                {yardageBooks.map((book) => (
+                                    <option key={book.courseKey} value={book.courseKey}>
+                                        {book.courseName}
+                                    </option>
+                                ))}
+                            </select>
+                            {matchingYardageBook ? (
+                                <p className="mt-2 text-sm text-vibrant-green">
+                                    This course&apos;s saved hole notes will be available while scoring.
+                                </p>
+                            ) : yardageBooks.length === 0 && !isLoadingYardageBooks ? (
+                                <p className="mt-2 text-sm text-text-dark">
+                                    No saved books yet. You can add course notes while scoring or in{" "}
+                                    <Link href="/scorecard/yardage-books" className="font-semibold text-vibrant-green underline">
+                                        Yardage Books
+                                    </Link>
+                                    .
+                                </p>
+                            ) : null}
+                            {yardageBooksError && <p role="alert" className="mt-2 text-sm text-red-700">{yardageBooksError}</p>}
+                        </div>
                         <div>
                             <label htmlFor="courseName" className="block font-semibold text-fairway-green mb-2">
                                 Course Name

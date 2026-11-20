@@ -2,8 +2,9 @@
 
 import { useEffect, useState, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
-import { getRound } from "@/lib/db";
+import { getRound, getYardageBookHoleNote, saveYardageBookHoleNote } from "@/lib/db";
 import { GOLF_CLUBS } from "@/lib/types";
 
 export default function ScoringPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,6 +22,17 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const [isLoading, setIsLoading] = useState(!currentRound || currentRound.id !== roundId);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [yardageNote, setYardageNote] = useState("");
+    const [savedYardageNote, setSavedYardageNote] = useState("");
+    const [yardageNoteUpdatedAt, setYardageNoteUpdatedAt] = useState<number | undefined>();
+    const [isLoadingYardageNote, setIsLoadingYardageNote] = useState(true);
+    const [isSavingYardageNote, setIsSavingYardageNote] = useState(false);
+    const [yardageNoteError, setYardageNoteError] = useState<string | null>(null);
+    const [yardageNoteLoadError, setYardageNoteLoadError] = useState<string | null>(null);
+    const [yardageNoteStatus, setYardageNoteStatus] = useState<string | null>(null);
+    const [yardageNoteReloadKey, setYardageNoteReloadKey] = useState(0);
+
+    const yardageCourseName = currentRound?.id === roundId ? currentRound.courseName : null;
 
     // Load round from IndexedDB if not in context
     // This handles page refresh or direct URL access
@@ -55,6 +67,48 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
             router.replace(`/scorecard/round/${roundId}/score?hole=1`);
         }
     }, [holeParam, roundId, router]);
+
+    useEffect(() => {
+        if (!yardageCourseName) {
+            setIsLoadingYardageNote(false);
+            return;
+        }
+
+        const courseName = yardageCourseName;
+        let isCurrent = true;
+        setIsLoadingYardageNote(true);
+        setYardageNoteError(null);
+        setYardageNoteLoadError(null);
+        setYardageNoteStatus(null);
+        setYardageNote("");
+        setSavedYardageNote("");
+        setYardageNoteUpdatedAt(undefined);
+
+        async function loadYardageNote() {
+            try {
+                const holeNote = await getYardageBookHoleNote(courseName, currentHoleNum);
+                if (!isCurrent) return;
+                const savedNote = holeNote?.note ?? "";
+                setYardageNote(savedNote);
+                setSavedYardageNote(savedNote);
+                setYardageNoteUpdatedAt(holeNote?.updatedAt);
+            } catch (yardageError) {
+                console.error(yardageError);
+                if (isCurrent) {
+                    const message = "Could not load this course's yardage-book note.";
+                    setYardageNoteError(message);
+                    setYardageNoteLoadError(message);
+                }
+            } finally {
+                if (isCurrent) setIsLoadingYardageNote(false);
+            }
+        }
+
+        void loadYardageNote();
+        return () => {
+            isCurrent = false;
+        };
+    }, [yardageCourseName, currentHoleNum, yardageNoteReloadKey]);
 
     if (isLoading) {
         return (
@@ -214,6 +268,33 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         const penaltyCount = Number(value);
         if (Number.isInteger(penaltyCount) && penaltyCount >= 0) {
             updateHole(currentHoleIndex, { penaltyCount });
+        }
+    };
+
+    const handleYardageNoteChange = (value: string) => {
+        setYardageNote(value);
+        setYardageNoteError(null);
+        setYardageNoteStatus(null);
+    };
+
+    const handleSaveYardageNote = async () => {
+        if (!yardageCourseName || yardageNote === savedYardageNote) return;
+
+        setIsSavingYardageNote(true);
+        setYardageNoteError(null);
+        setYardageNoteStatus(null);
+
+        try {
+            const updatedBook = await saveYardageBookHoleNote(yardageCourseName, currentHoleNum, yardageNote);
+            const updatedHoleNote = updatedBook.holes.find((hole) => hole.holeNumber === currentHoleNum);
+            setSavedYardageNote(updatedHoleNote?.note ?? yardageNote);
+            setYardageNoteUpdatedAt(updatedHoleNote?.updatedAt);
+            setYardageNoteStatus("Saved to this course's yardage book.");
+        } catch (yardageError) {
+            console.error(yardageError);
+            setYardageNoteError(yardageError instanceof Error ? yardageError.message : "Could not save this yardage-book note.");
+        } finally {
+            setIsSavingYardageNote(false);
         }
     };
 
@@ -424,12 +505,80 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         />
                     </div>
                 </form>
+                <section className="mb-8 rounded-xl border border-light-sand bg-cream p-5" aria-labelledby="yardage-note-heading">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                        <div>
+                            <h2 id="yardage-note-heading" className="font-semibold text-fairway-green">
+                                Course note · Hole {currentHoleNum}
+                            </h2>
+                            <p className="mt-1 text-sm text-text-dark">
+                                {isLoadingYardageNote
+                                    ? "Loading saved course note..."
+                                    : savedYardageNote
+                                      ? `Saved yardage-book note for ${currentRound.courseName}.`
+                                      : `No saved yardage-book note for this hole at ${currentRound.courseName} yet.`}
+                            </p>
+                        </div>
+                        <Link href="/scorecard/yardage-books" className="text-sm font-semibold text-vibrant-green underline">
+                            All yardage books
+                        </Link>
+                    </div>
+                    <label htmlFor="yardageNote" className="sr-only">
+                        Yardage-book note for hole {currentHoleNum}
+                    </label>
+                    <textarea
+                        id="yardageNote"
+                        rows={3}
+                        value={yardageNote}
+                        onChange={(event) => handleYardageNoteChange(event.target.value)}
+                        placeholder="Add a note about this hole..."
+                        disabled={isLoadingYardageNote || yardageNoteLoadError !== null || isSavingYardageNote}
+                        className="mt-4 w-full resize-y rounded-lg border-2 border-gray-300 bg-white px-3 py-2 text-text-dark focus:border-vibrant-green focus:outline-none disabled:bg-gray-100"
+                    />
+                    {yardageNoteUpdatedAt !== undefined && savedYardageNote && (
+                        <p className="mt-2 text-xs text-text-dark/70">
+                            Last updated {new Date(yardageNoteUpdatedAt).toLocaleString()}
+                        </p>
+                    )}
+                    {yardageNoteError && (
+                        <p role="alert" className="mt-3 text-sm text-red-700">
+                            {yardageNoteError}
+                        </p>
+                    )}
+                    {yardageNoteLoadError && (
+                    <button
+                        type="button"
+                        onClick={() => setYardageNoteReloadKey((key) => key + 1)}
+                        className="mt-3 text-sm font-semibold text-vibrant-green underline"
+                    >
+                        Retry loading note
+                    </button>
+                    )}
+                    {yardageNoteStatus && (
+                        <p role="status" className="mt-3 text-sm text-green-800">
+                            {yardageNoteStatus}
+                        </p>
+                    )}
+                    <button
+                        type="button"
+                        onClick={() => void handleSaveYardageNote()}
+                        disabled={
+                            isLoadingYardageNote ||
+                            yardageNoteLoadError !== null ||
+                            isSavingYardageNote ||
+                            yardageNote === savedYardageNote
+                        }
+                        className="mt-4 rounded-lg bg-vibrant-green px-5 py-3 font-semibold text-white transition-colors hover:bg-fairway-green disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                        {isSavingYardageNote ? "Saving note..." : "Save course note"}
+                    </button>
+                </section>
                 <div className="space-y-3">
                     <div className="flex gap-3">
                         <button
                             type="button"
                             onClick={handlePrevious}
-                            disabled={isFirstHole || isSaving}
+                            disabled={isFirstHole || isSaving || isSavingYardageNote}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             ← Previous
@@ -437,7 +586,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         <button
                             type="button"
                             onClick={() => void handleNext()}
-                            disabled={isLastHole || isSaving || !isHoleComplete(currentHole)}
+                            disabled={isLastHole || isSaving || isSavingYardageNote || !isHoleComplete(currentHole)}
                             className="flex-1 px-4 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Next →
@@ -448,7 +597,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         <button
                             type="button"
                             onClick={handleCompleteRound}
-                            disabled={isSaving || !isHoleComplete(currentHole)}
+                            disabled={isSaving || isSavingYardageNote || !isHoleComplete(currentHole)}
                             className="w-full px-4 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isSaving ? "Completing..." : "Complete Round"}

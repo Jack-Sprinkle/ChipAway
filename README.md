@@ -56,6 +56,8 @@ ChipAway is an in-progress personal project built around a local-first, offline-
 - Add and edit notes for each of the 18 holes
 - See when each course yardage book was last updated
 - Store yardage books locally in IndexedDB
+- Load the matching course and hole note when starting or resuming a round
+- Edit and save the current hole's course note while scoring
 
 ### PWA and Offline Support
 
@@ -75,7 +77,6 @@ ChipAway is an in-progress personal project built around a local-first, offline-
 
 ## Planned Next Steps
 
-- Show course yardage-book notes during matching rounds and support in-round editing
 - Combine richer round data, yardage notes, and recent practice tendencies for an AI-generated pre-round game plan
 - Better round recovery and persistence behavior
 - Course templates and reusable course setup

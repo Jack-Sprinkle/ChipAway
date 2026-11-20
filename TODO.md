@@ -58,13 +58,13 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 5. Reuse notes during rounds
 
-- [ ] Add an option to open or select a yardage book when starting a round.
-- [ ] Match a new or resumed round to prior notes using the course name.
-- [ ] Load and display the matching course-book note for the current hole without copying it into the round.
-- [ ] Allow the note to be edited during the round.
-- [ ] Save any in-round edit directly to the course yardage book.
-- [ ] Clearly show whether a hole has no saved note or is using a prior course note.
-- [ ] Do not overwrite a course note accidentally when creating a new round.
+- [x] Add an option to open or select a yardage book when starting a round.
+- [x] Match a new or resumed round to prior notes using the course name.
+- [x] Load and display the matching course-book note for the current hole without copying it into the round.
+- [x] Allow the note to be edited during the round.
+- [x] Save any in-round edit directly to the course yardage book.
+- [x] Clearly show whether a hole has no saved note or is using a prior course note.
+- [x] Do not overwrite a course note accidentally when creating a new round.
 
 ## 6. Update round review
 

@@ -139,7 +139,7 @@ export function calculateScoringStats(rounds: Round[]): ScoringStats {
             // Fairways are only tracked on holes longer than par 3.
             if (hole.parValue > 3 && hole.fairway !== undefined) {
                 counts.fairwayEligibleHoles++;
-                if (hole.fairway === 0) counts.fairwaysHit++;
+                if (hole.fairway === "hit") counts.fairwaysHit++;
             }
         }
     }

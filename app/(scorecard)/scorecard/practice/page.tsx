@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { getActivePracticeSession, savePracticeSession } from "@/lib/db";
+import { GOLF_CLUBS } from "@/lib/types";
 import type { PracticeContact, PracticeDirection, PracticeSession } from "@/lib/types";
 
-const clubs = ["Driver", "3 Wood", "5 Wood", "Hybrid", "4 Iron", "5 Iron", "6 Iron", "7 Iron", "8 Iron", "9 Iron", "Pitching Wedge", "Gap Wedge", "Sand Wedge", "Lob Wedge", "Putter"];
+const clubs = GOLF_CLUBS;
 const contacts: { value: PracticeContact; label: string }[] = [
     { value: "fat", label: "Fat" },
     { value: "thin", label: "Thin" },

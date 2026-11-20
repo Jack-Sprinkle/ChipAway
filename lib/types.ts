@@ -1,11 +1,36 @@
 // Core types for ChipAway golf scoring app
 
+export const GOLF_CLUBS = [
+    "Driver",
+    "3 Wood",
+    "5 Wood",
+    "Hybrid",
+    "4 Iron",
+    "5 Iron",
+    "6 Iron",
+    "7 Iron",
+    "8 Iron",
+    "9 Iron",
+    "Pitching Wedge",
+    "Gap Wedge",
+    "Sand Wedge",
+    "Lob Wedge",
+    "Putter",
+] as const;
+
+export type GolfClub = (typeof GOLF_CLUBS)[number];
+export type FairwayOutcome = "hit" | "left" | "right";
+export type GIRMissDirection = "left" | "right" | "short" | "long";
+
 export interface Hole {
     holeNumber: number; // 1-18
     parValue?: number; // Par value (entered by user during scoring)
     score?: number; // Strokes taken (entered by user during scoring)
     putts?: number; // Number of putts (entered by user during scoring)
-	fairway?: number; // unfortunately can't calculate fairways hit w/out user input...sad
+    fairway?: FairwayOutcome;
+    girMissDirection?: GIRMissDirection;
+    teeClub?: GolfClub;
+    penaltyCount?: number;
     isComplete: boolean; // Marker for hole being complete to track ongoing round
 }
 

@@ -15,14 +15,13 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 1. Extend the scoring data model
 
-- [ ] Add typed FIR outcomes: hit, missed left, or missed right.
-- [ ] Replace the current numeric fairway field with typed values.
-- [ ] Add typed GIR miss directions: left, right, short, or long.
-- [ ] Add a tee club field to each hole.
-- [ ] Add a penalty count to each hole.
-- [ ] Add a yardage-book note field to each hole.
-- [ ] Keep all richer fields optional until the user provides a value.
-- [ ] Update the IndexedDB schema version as needed; no migration of existing round data is required.
+- [x] Add typed FIR outcomes: hit, missed left, or missed right.
+- [x] Replace the current numeric fairway field with typed values.
+- [x] Add typed GIR miss directions: left, right, short, or long.
+- [x] Add a tee club field to each hole.
+- [x] Add a penalty count to each hole.
+- [x] Keep all richer fields optional until the user provides a value.
+- [x] Confirm no IndexedDB version bump is needed for optional fields on existing round records; no data migration is included.
 - [ ] Clear existing local round data during development if old records conflict with the new model.
 
 ## 2. Add richer data capture to hole scoring
@@ -39,9 +38,9 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 3. Create the digital yardage book data model
 
-- [ ] Define a course-level yardage book record.
+- [ ] Define a `YardageBook` record stored separately from `Round` and `Hole`.
 - [ ] Store books by normalized course name.
-- [ ] Store one 18-hole collection per course.
+- [ ] Store one note per hole in the yardage book's 18-hole collection.
 - [ ] Support dates or timestamps for when a hole note was last updated.
 - [ ] Add a yardage-books object store through an IndexedDB schema version upgrade.
 - [ ] Add CRUD helpers for saving and loading a course yardage book.
@@ -62,9 +61,9 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 - [ ] Add an option to open or select a yardage book when starting a round.
 - [ ] Match a new or resumed round to prior notes using the course name.
-- [ ] Display the saved note for the current hole on the scoring page.
+- [ ] Load and display the matching course-book note for the current hole without copying it into the round.
 - [ ] Allow the note to be edited during the round.
-- [ ] Save any in-round edit back to the course yardage book.
+- [ ] Save any in-round edit directly to the course yardage book.
 - [ ] Clearly show whether a hole has no saved note or is using a prior course note.
 - [ ] Do not overwrite a course note accidentally when creating a new round.
 
@@ -74,7 +73,7 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 - [ ] Show FIR result and miss direction for par 4 and par 5 holes.
 - [ ] Show GIR miss direction where applicable.
 - [ ] Show penalty count for each hole.
-- [ ] Show the hole's yardage-book note.
+- [ ] If notes are shown in round review, load them from the associated yardage book rather than the round record.
 
 ## 7. Expand scoring statistics
 

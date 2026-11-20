@@ -150,13 +150,14 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         }
     };
 
-	// Handle fairway input change
-	const handleFairwayChange = (value: string) => {
-		const fairway = parseInt(value, 10);
-		if (!isNaN(fairway) && fairway >= 0 && fairway <= 2) {
-			updateHole(currentHoleIndex, { fairway })
-		}
-	}
+    // Handle fairway input change
+    const handleFairwayChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { fairway: undefined });
+        } else if (value === "hit" || value === "left" || value === "right") {
+            updateHole(currentHoleIndex, { fairway: value });
+        }
+    };
 
     // Handle score input change
     const handleScoreChange = (value: string) => {
@@ -287,9 +288,9 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
                         >
                             <option value="">--</option>
-							<option value={0}>Hit</option>
-                            <option value={1}>Missed - Left</option>
-							<option value={2}>Missed - Right</option>
+                            <option value="hit">Hit</option>
+                            <option value="left">Missed - Left</option>
+                            <option value="right">Missed - Right</option>
                         </select>
                     </div>
                     <div>

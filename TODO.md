@@ -47,14 +47,14 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 4. Build the yardage book catalogue
 
-- [ ] Add a `/scorecard/yardage-books` route.
-- [ ] List saved course yardage books with their course name and last-updated date.
-- [ ] Provide an empty state for users with no saved books.
-- [ ] Allow selecting a course from the catalogue.
-- [ ] Display holes 1 through 18 for the selected course.
-- [ ] Add a small text area for each hole note.
-- [ ] Provide save feedback and error handling.
-- [ ] Make the interface usable on mobile.
+- [x] Add a `/scorecard/yardage-books` route.
+- [x] List saved course yardage books with their course name and last-updated date.
+- [x] Provide an empty state for users with no saved books.
+- [x] Allow selecting a course from the catalogue.
+- [x] Display holes 1 through 18 for the selected course.
+- [x] Add a small text area for each hole note.
+- [x] Provide save feedback and error handling.
+- [x] Make the interface usable on mobile.
 
 ## 5. Reuse notes during rounds
 

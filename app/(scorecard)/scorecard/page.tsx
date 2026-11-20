@@ -127,6 +127,12 @@ export default function HomePage() {
                         >
                             Practice
                         </Link>
+                        <Link
+                            href="/scorecard/yardage-books"
+                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                        >
+                            Yardage Books
+                        </Link>
                     </div>
                 </div>
             </section>

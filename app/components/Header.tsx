@@ -16,6 +16,7 @@ const scorecardItems = [
     { href: "/scorecard/scores", label: "Your rounds", description: "View saved scorecards" },
     { href: "/scorecard/stats", label: "Stats", description: "Review your game" },
     { href: "/scorecard/practice", label: "Practice", description: "Log practice shot misses" },
+    { href: "/scorecard/yardage-books", label: "Yardage books", description: "Keep course hole notes" },
 ];
 
 export function Header() {

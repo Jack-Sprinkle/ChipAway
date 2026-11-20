@@ -20,7 +20,7 @@ ChipAway is an in-progress personal project built around a local-first, offline-
 ### Round Tracking
 
 - Create a round with a course name, course rating, and course slope
-- Track par, score, putts, and fairway result for each hole
+- Track par, score, putts, tee club, fairway outcome, GIR miss direction, and penalties
 - Move forward and backward through all 18 holes
 - View running score and score relative to par during a round
 - Automatically save in-progress rounds to IndexedDB
@@ -50,6 +50,13 @@ ChipAway is an in-progress personal project built around a local-first, offline-
 - Review overall practice tendencies across all sessions
 - Review contact, start, and curve breakdowns by club
 
+### Yardage Books
+
+- Create and catalogue course-specific yardage books
+- Add and edit notes for each of the 18 holes
+- See when each course yardage book was last updated
+- Store yardage books locally in IndexedDB
+
 ### PWA and Offline Support
 
 - Installable PWA metadata and app icons
@@ -68,15 +75,7 @@ ChipAway is an in-progress personal project built around a local-first, offline-
 
 ## Planned Next Steps
 
-- Expand hole-level scoring data:
-  - Fairway hit or miss left/right
-  - Green in regulation miss direction: left, right, short, or long
-  - Tee club selection
-  - Penalty tracking
-- Add digital yardage books:
-  - Course-specific hole notes
-  - Previous notes shown when replaying the same course
-  - A catalogue of saved course yardage books
+- Show course yardage-book notes during matching rounds and support in-round editing
 - Combine richer round data, yardage notes, and recent practice tendencies for an AI-generated pre-round game plan
 - Better round recovery and persistence behavior
 - Course templates and reusable course setup

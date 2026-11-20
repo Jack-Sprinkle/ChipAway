@@ -102,36 +102,42 @@ export default function HomePage() {
                         Track your golf round without the bloat. All data lives on your phone. No GPS. No personal data collection. No accounts. Just
                         you, your score, and your phone.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <div className="mx-auto mb-4 w-full max-w-sm">
                         <Link
                             href="/scorecard/round/new"
-                            className="px-8 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
+                            className="flex min-h-14 items-center justify-center rounded-lg bg-vibrant-green px-8 py-3 font-semibold text-white transition-colors hover:bg-fairway-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             Start New Round
                         </Link>
+                    </div>
+                    <div className="mx-auto mb-12 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
                         <Link
                             href="/scorecard/scores"
-                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                            className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
-                            View Scores
+                            <span className="text-lg font-semibold">View Scores</span>
+                            <span className="mt-1 text-sm">Review and resume rounds</span>
                         </Link>
                         <Link
                             href="/scorecard/stats"
-                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                            className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
-                            View Stats
+                            <span className="text-lg font-semibold">Stats</span>
+                            <span className="mt-1 text-sm">See trends from your rounds</span>
                         </Link>
                         <Link
                             href="/scorecard/practice"
-                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                            className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
-                            Practice
+                            <span className="text-lg font-semibold">Practice</span>
+                            <span className="mt-1 text-sm">Log practice shot tendencies</span>
                         </Link>
                         <Link
                             href="/scorecard/yardage-books"
-                            className="px-8 py-3 border-2 border-vibrant-green text-vibrant-green font-semibold rounded-lg hover:bg-cream transition-colors"
+                            className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
-                            Yardage Books
+                            <span className="text-lg font-semibold">Yardage Books</span>
+                            <span className="mt-1 text-sm">Keep notes for each course</span>
                         </Link>
                     </div>
                 </div>

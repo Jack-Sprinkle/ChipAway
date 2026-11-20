@@ -88,7 +88,7 @@ function PracticeStats({ sessions }: { sessions: PracticeSession[] }) {
                         <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
                             <p className="font-semibold text-slate-800">No practice shots recorded yet</p>
                             <p className="mt-1 text-sm text-slate-600">Start a practice session to see your breakdown by club.</p>
-                            <Link href="/scorecard/practice" className="mt-4 inline-flex rounded-lg bg-vibrant-green px-4 py-2 text-sm font-semibold text-white hover:bg-fairway-green">
+                            <Link href="/toolkit/practice" className="mt-4 inline-flex rounded-lg bg-vibrant-green px-4 py-2 text-sm font-semibold text-white hover:bg-fairway-green">
                                 Start Practicing
                             </Link>
                         </div>
@@ -188,7 +188,7 @@ export default function StatsPage() {
                     </div>
                     <div className="flex gap-4">
                         <Link
-                            href="/scorecard/scores"
+                            href="/toolkit/scores"
                             className="inline-flex items-center rounded-full border border-fairway-green/15 bg-light-sand px-4 py-2 text-sm font-semibold text-fairway-green transition-colors hover:border-fairway-green/30 hover:bg-cream"
                         >
                             Rounds

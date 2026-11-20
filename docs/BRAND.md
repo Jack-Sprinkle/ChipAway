@@ -1,36 +1,36 @@
 # Chip Away Golf Brand Guide
 
-> **Version:** 0.2
+> **Version:** 0.3
 > **Status:** Living Document
-> **Last Updated:** June 2026
+> **Last Updated:** November 2026
 
 ---
 
 # Purpose
 
-Chip Away Golf exists to help golfers improve their game without losing sight of why they started playing.
+Chip Away Golf is building a player's digital toolkit: a trusted place to record rounds, understand patterns in their game, learn the courses they play, and turn that knowledge into practical plans.
 
-Golf is difficult, frustrating, and often humbling. It's easy to become consumed by scorecards, swing thoughts, and expectations. Chip Away Golf encourages a different approach: consistent improvement through patience, curiosity, and enjoyment.
+The long-term ambition is to make that connected toolkit feel like a digital caddy: a thoughtful companion that helps a player prepare, make informed decisions, and learn from each round without replacing their judgment or the human enjoyment of golf. That is a direction we are building toward, not a feature claim about what is available today.
 
-This isn't a brand about perfect golf.
+Golf is difficult, frustrating, and often humbling. Chip Away Golf uses data and technology to encourage a different approach: steady improvement through patience, curiosity, and enjoyment.
 
-It's about building a lifelong relationship with the game.
+This isn't a brand about perfect golf. It's about building a lifelong relationship with the game and better tools for understanding your own.
 
 ---
 
 # Mission
 
-Help golfers enjoy the game more while improving one shot at a time.
+Help golfers understand their game and the courses they play, make thoughtful plans, and enjoy improving one shot at a time.
 
 ---
 
 # Brand Promise
 
-We won't promise overnight improvement.
+We won't promise overnight improvement or lower scores on demand.
 
 We won't chase clickbait.
 
-We'll build thoughtful content, useful software, and authentic experiences that make golfers excited to tee it up again.
+We'll build a calm, trustworthy toolkit that helps golfers capture useful information, make sense of it, and prepare with confidence. Over time, that toolkit can grow into a personal digital caddy, with the player in control of their data and decisions.
 
 ---
 
@@ -42,9 +42,33 @@ Improvement happens gradually.
 
 ---
 
+## Help Players Understand Their Game
+
+Capture the details that make a round or practice session meaningful, then surface patterns in a clear, useful way.
+
+---
+
+## Learn Before Advising
+
+Game plans should be grounded in a player's own tendencies and knowledge of the course. Be transparent about what an insight is based on, and never present a suggestion as a guarantee.
+
+---
+
+## Build Toward a Digital Caddy
+
+Connect scoring, practice, and course knowledge into a practical companion for preparing and learning. Keep the player—not the software—in charge.
+
+---
+
+## Respect the Player's Trust
+
+Treat golf history and practice data with care. Make it clear where information is stored and require a player's informed choice before using their data in future analysis services.
+
+---
+
 ## Build Useful Things
 
-Software, articles, videos, and products should all solve real problems.
+Software, articles, videos, and products should solve real problems and support the player's experience of golf.
 
 ---
 
@@ -304,6 +328,8 @@ Before publishing any content, shipping a feature, or designing a product, ask:
 
 * Does this genuinely help golfers?
 * Does it encourage progress rather than perfection?
+* Does it help a player understand their own game, their course, or a useful next step?
+* Does it keep the player in control and treat their data with care?
 * Does it feel authentic?
 * Would it feel at home on a peaceful morning walking nine holes?
 * Does it reinforce **Golf is hard. Enjoy it anyway.**

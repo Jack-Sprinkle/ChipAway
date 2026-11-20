@@ -101,7 +101,7 @@ export default function PracticePage() {
     return (
         <main className="min-h-screen bg-white px-6 py-12">
             <div className="mx-auto max-w-xl">
-                <Link href="/scorecard" className="font-semibold text-vibrant-green hover:underline">← Back to Scorecard</Link>
+                <Link href="/toolkit" className="font-semibold text-vibrant-green hover:underline">← Back to Toolkit</Link>
                 <h1 className="mt-4 text-4xl font-bold text-fairway-green">Practice</h1>
                 <p className="mt-2 text-text-dark">Record your shot misses as you practice. Your data stays on this device.</p>
 

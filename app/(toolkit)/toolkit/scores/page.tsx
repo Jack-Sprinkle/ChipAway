@@ -38,7 +38,7 @@ export default function ScoresPage() {
         const inProgRound = await getRound(roundId);
         const nextHoleIndex = inProgRound?.holes.findIndex((hole) => !hole.isComplete) ?? 0;
         const nextHole = nextHoleIndex + 1;
-        router.push(`/scorecard/round/${inProgRound?.id}/score?hole=${nextHole}`);
+        router.push(`/toolkit/round/${inProgRound?.id}/score?hole=${nextHole}`);
     };
 
     const handleDeleteRound = async (roundId: string) => {
@@ -163,7 +163,7 @@ export default function ScoresPage() {
                                         <div className="flex items-center gap-2">
                                             {round.completed ? (
                                                 <Link
-                                                    href={`/scorecard/round/${round.id}/view`}
+                                                    href={`/toolkit/round/${round.id}/view`}
                                                     className="inline-flex items-center rounded-full border border-fairway-green px-3 py-2 text-sm font-semibold text-fairway-green transition-colors hover:bg-fairway-green hover:text-white"
                                                 >
                                                     View Round
@@ -202,13 +202,13 @@ export default function ScoresPage() {
                         Home
                     </Link>
                     <Link
-                        href="/scorecard/stats"
+                        href="/toolkit/stats"
                         className="inline-block rounded-lg bg-vibrant-green px-6 py-3 font-semibold text-white transition-colors hover:bg-fairway-green"
                     >
                         View Stats
                     </Link>
                     <Link
-                        href="/scorecard/round/new"
+                        href="/toolkit/round/new"
                         className="inline-block rounded-lg bg-vibrant-green px-6 py-3 font-semibold text-white transition-colors hover:bg-fairway-green"
                     >
                         Start a New Round

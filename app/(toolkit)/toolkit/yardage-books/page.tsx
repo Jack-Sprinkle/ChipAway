@@ -140,8 +140,8 @@ export default function YardageBooksPage() {
     return (
         <main className="min-h-screen bg-white px-6 py-12">
             <div className="mx-auto max-w-6xl">
-                <Link href="/scorecard" className="font-semibold text-vibrant-green hover:underline">
-                    ← Back to Scorecard
+                <Link href="/toolkit" className="font-semibold text-vibrant-green hover:underline">
+                    ← Back to Toolkit
                 </Link>
                 <div className="mt-4">
                     <h1 className="text-4xl font-bold text-fairway-green">Yardage Books</h1>

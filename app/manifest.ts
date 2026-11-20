@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: "Chip Away Golf",
         short_name: "Chip Away Golf",
         description:
-            "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
+            "A digital golf toolkit to track rounds, understand your game, learn courses, and build toward personalized pre-round plans.",
         start_url: "/",
         display: "standalone",
         background_color: "#f5f1e8",

@@ -49,7 +49,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
             <main className="min-h-screen bg-white py-12 px-6 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-700 font-semibold mb-4">{error || "Round not found"}</p>
-                    <Link href="/scorecard/scores" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
+                    <Link href="/toolkit/scores" className="px-4 py-2 bg-vibrant-green text-white rounded-lg hover:bg-fairway-green">
                         Back to Rounds
                     </Link>
                 </div>
@@ -114,7 +114,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-2xl mx-auto">
                 <div className="mb-8">
-                    <Link href="/scorecard/scores" className="text-vibrant-green font-semibold mb-4 inline-block hover:text-fairway-green">
+                    <Link href="/toolkit/scores" className="text-vibrant-green font-semibold mb-4 inline-block hover:text-fairway-green">
                         ← Back to Rounds
                     </Link>
                     <h1 className="text-3xl font-bold text-fairway-green mb-2">{round.courseName}</h1>
@@ -236,7 +236,7 @@ export default function RoundViewPage({ params }: { params: Promise<{ id: string
                 </div>
                 <div className="text-center">
                     <Link
-                        href="/scorecard/round/new"
+                        href="/toolkit/round/new"
                         className="inline-block px-6 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
                     >
                         Start a New Round

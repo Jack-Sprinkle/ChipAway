@@ -10,10 +10,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://chipawaygolf.com";
 
 export const metadata: Metadata = {
     metadataBase: new URL(siteUrl),
-    title: "Chip Away Golf | Golf Journal & Scorekeeper",
-    description: "Thoughtful golf writing, a free scorekeeper, and practical tools for golfers who believe progress matters more than perfection.",
+    title: "Chip Away Golf | Your Digital Golf Toolkit",
+    description:
+        "A thoughtful digital golf toolkit to track rounds, understand your game, learn courses, and build toward personalized pre-round plans.",
     applicationName: "Chip Away Golf",
-    keywords: ["golf", "golf scorekeeper", "golf blog", "golf app", "golf journal", "golf improvement", "everyday golfers"],
+    keywords: ["golf", "golf toolkit", "golf scorekeeper", "golf app", "golf journal", "golf improvement", "everyday golfers"],
     appleWebApp: {
         capable: true,
         statusBarStyle: "default",

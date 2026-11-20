@@ -47,7 +47,7 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 4. Build the yardage book catalogue
 
-- [x] Add a `/scorecard/yardage-books` route.
+- [x] Add a `/toolkit/yardage-books` route.
 - [x] List saved course yardage books with their course name and last-updated date.
 - [x] Provide an empty state for users with no saved books.
 - [x] Allow selecting a course from the catalogue.

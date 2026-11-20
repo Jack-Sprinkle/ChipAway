@@ -3,30 +3,56 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+    title: "Your Digital Golf Toolkit | Chip Away Golf",
+    description:
+        "Track rounds, understand your game, and keep notes for the courses you play. Chip Away Golf is building a thoughtful digital toolkit for golfers.",
     alternates: {
         canonical: "/",
-    }
+    },
 };
 
-const brandPillars = [
+const toolkitFeatures = [
     {
-        title: "Honest golf writing",
-        description: "Stories, reflections, and practical notes from the ongoing work of getting better without letting the game become a grind.",
+        title: "Track your rounds",
+        status: "Available",
+        description: "Keep score hole by hole, record the details that matter, and pick up an in-progress round later.",
+        href: "/toolkit/round/new",
+        linkLabel: "Start a round",
     },
     {
-        title: "Stories & Conversations",
-        description: "A future home for conversations, course thoughts, short-form clips, and longer videos that feel useful.",
+        title: "Learn your tendencies",
+        status: "Available",
+        description: "Review scoring stats and practice-shot patterns to notice where your game is trending.",
+        href: "/toolkit/stats",
+        linkLabel: "Explore your stats",
     },
     {
-        title: "Useful tools",
-        description: "Simple software for rounds, practice, and course notes, built to support the way golfers actually play.",
+        title: "Get to know the course",
+        status: "Available",
+        description: "Keep a yardage book with hole-by-hole notes you can return to the next time you play.",
+        href: "/toolkit/yardage-books",
+        linkLabel: "Open yardage books",
+    },
+    {
+        title: "Build a plan before you play",
+        status: "In development",
+        description: "We’re working toward a pre-round plan informed by your recent rounds, practice tendencies, and course notes.",
     },
 ];
 
 const principles = [
-    { title: "Progress over perfection", description: "" },
-    { title: "Teach through experience", description: "" },
-    { title: "Build useful things", description: "" },
+    {
+        title: "Progress over perfection",
+        description: "Use your history to notice patterns, not to judge yourself by one score or one swing.",
+    },
+    {
+        title: "Learn from every course",
+        description: "Keep the small details you discover so the next round at a familiar course feels a little less unfamiliar.",
+    },
+    {
+        title: "Tools that stay out of the way",
+        description: "Round, practice, and course data stays in your browser. No account or GPS tracking required.",
+    },
 ];
 
 export default function HomePage() {
@@ -43,49 +69,62 @@ export default function HomePage() {
                             className="mb-8 rounded-lg"
                             priority
                         />
-                        <h1 className="text-2xl md:text-4xl font-bold text-fairway-green mb-7 max-w-4xl text-center">
-                            Golf is hard.
-                            <hr />
-                            Enjoy it anyway.
+                        <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green">Tools to play, learn, and plan</p>
+                        <h1 className="mb-4 max-w-4xl text-center text-3xl font-bold text-fairway-green md:text-5xl">
+                            A digital golf toolkit, built one useful tool at a time.
                         </h1>
-                        <p className="text-lg md:text-xl leading-relaxed max-w-2xl mb-8 text-center">
-                            Built for golfers who want to improve with patience, enjoy the walk, and stay curious about the game one shot at a time.
+                        <p className="mb-5 text-lg font-semibold text-fairway-green md:text-xl">Golf is hard. Enjoy it anyway.</p>
+                        <p className="mb-8 max-w-2xl text-center text-lg leading-relaxed md:text-xl">
+                            Track your rounds, understand patterns in your game, and keep the notes that make each course more familiar. We&apos;re
+                            building tools to help you bring what you learn into your next round.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link
-                                href="/about"
-                                className="px-8 py-3 bg-fairway-green text-white font-semibold rounded-lg hover:bg-vibrant-green transition-colors text-center"
+                                href="/toolkit"
+                                className="rounded-lg bg-fairway-green px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-vibrant-green"
                             >
-                                The Story
+                                Explore the Toolkit
                             </Link>
                             <Link
-                                href="/scorecard"
-                                className="px-8 py-3 border-2 border-fairway-green text-fairway-green font-semibold rounded-lg hover:bg-white transition-colors text-center"
+                                href="/journal"
+                                className="rounded-lg border-2 border-fairway-green px-8 py-3 text-center font-semibold text-fairway-green transition-colors hover:bg-white"
                             >
-                                Open Scorecard
+                                Read the Journal
                             </Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="vision" className="bg-white px-6 py-18 md:py-20">
+            <section id="toolkit" className="bg-white px-6 py-18 md:py-20">
                 <div className="max-w-6xl mx-auto">
                     <div className="max-w-3xl mb-10">
-                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">What Chip Away Golf is becoming</p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-fairway-green mb-5">A place golfers can trust.</h2>
+                        <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green">Your digital golf toolkit</p>
+                        <h2 className="mb-5 text-3xl font-bold text-fairway-green md:text-4xl">Useful on the course, between rounds, and at practice.</h2>
                         <p className="text-lg leading-relaxed">
-                            Dedicated to helping everyday golfers improve through thoughtful content, useful software, and a mindset that values
-                            progress over perfection.
+                            Start with the tool you need today. Over time, these pieces are designed to work together and help you learn more about
+                            your game.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {brandPillars.map((pillar, idx) => (
-                            <article key={idx} className="bg-cream rounded-lg p-6">
-                                <h3 className="text-xl font-bold text-fairway-green mb-3">{pillar.title}</h3>
-                                <p className="leading-relaxed">{pillar.description}</p>
+                    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                        {toolkitFeatures.map((feature) => (
+                            <article key={feature.title} className="flex flex-col rounded-xl border border-light-sand bg-cream p-6">
+                                <span
+                                    className={`mb-4 self-start rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${
+                                        feature.href ? "bg-white text-vibrant-green" : "bg-warm-gold/30 text-fairway-green"
+                                    }`}
+                                >
+                                    {feature.status}
+                                </span>
+                                <h3 className="mb-3 text-xl font-bold text-fairway-green">{feature.title}</h3>
+                                <p className="flex-1 leading-relaxed">{feature.description}</p>
+                                {feature.href && (
+                                    <Link href={feature.href} className="mt-5 inline-flex font-semibold text-vibrant-green underline underline-offset-4">
+                                        {feature.linkLabel} →
+                                    </Link>
+                                )}
                             </article>
                         ))}
                     </div>
@@ -95,15 +134,17 @@ export default function HomePage() {
             <section className="px-6 py-18 md:py-20">
                 <div className="max-w-6xl mx-auto grid lg:grid-cols-[0.8fr_1fr] gap-10 items-start">
                     <div>
-                        <p className="text-sm uppercase tracking-[0.18em] text-vibrant-green font-bold mb-4">The approach</p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-fairway-green mb-5">
-                            Better golf, without losing the reason you started.
-                        </h2>
+                        <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green">The approach</p>
+                        <h2 className="mb-5 text-3xl font-bold text-fairway-green md:text-4xl">Make the game easier to learn, not harder to enjoy.</h2>
+                        <p className="text-lg leading-relaxed">
+                            A score tells part of the story. Your practice and course notes add context. We believe good tools can help you connect
+                            those pieces without adding noise to the game.
+                        </p>
                     </div>
 
                     <div className="space-y-5">
-                        {principles.map((principle, idx) => (
-                            <div key={idx} className="border-l-4 border-warm-gold pl-5 py-1">
+                        {principles.map((principle) => (
+                            <div key={principle.title} className="border-l-4 border-warm-gold py-1 pl-5">
                                 <h3 className="text-xl font-bold text-fairway-green mb-2">{principle.title}</h3>
                                 <p className="leading-relaxed">{principle.description}</p>
                             </div>
@@ -115,19 +156,18 @@ export default function HomePage() {
             <section className="bg-fairway-green px-6 py-16 text-text-light">
                 <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_auto] gap-8 items-center">
                     <div>
-                        <p className="text-sm uppercase tracking-[0.18em] text-warm-gold font-bold mb-4">First useful tool</p>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">Keep score without the clutter.</h2>
-                        <p className="text-lg leading-relaxed max-w-2xl">
-                            The scorecard app is the first step: simple round tracking that keeps the focus on playing, not managing another
-                            complicated golf app.
+                        <p className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-warm-gold">Start with your next round</p>
+                        <h2 className="mb-4 text-3xl font-bold md:text-4xl">Build your game, one shot at a time.</h2>
+                        <p className="max-w-2xl text-lg leading-relaxed">
+                            Open the toolkit to track a round, explore your stats, practice with purpose, or add notes to a course you know.
                         </p>
                     </div>
 
                     <Link
-                        href="/scorecard"
-                        className="px-8 py-3 bg-warm-gold text-text-dark font-bold rounded-lg hover:bg-light-sand transition-colors text-center"
+                        href="/toolkit"
+                        className="rounded-lg bg-warm-gold px-8 py-3 text-center font-bold text-text-dark transition-colors hover:bg-light-sand"
                     >
-                        Launch Scorecard
+                        Open the Toolkit
                     </Link>
                 </div>
             </section>

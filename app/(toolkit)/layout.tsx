@@ -1,6 +1,6 @@
-import { RoundProvider } from "./scorecard/context/RoundContext";
+import { RoundProvider } from "./toolkit/context/RoundContext";
 
-export default function ScorecardLayout({
+export default function ToolkitLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;

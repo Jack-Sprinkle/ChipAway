@@ -10,22 +10,22 @@ const navItems = [
     { href: "/journal", label: "Journal" },
 ];
 
-const scorecardItems = [
-    { href: "/scorecard", label: "Scorecard home", description: "Your scorecard dashboard" },
-    { href: "/scorecard/round/new", label: "New round", description: "Start keeping score" },
-    { href: "/scorecard/scores", label: "Your rounds", description: "View saved scorecards" },
-    { href: "/scorecard/stats", label: "Stats", description: "Review your game" },
-    { href: "/scorecard/practice", label: "Practice", description: "Log practice shot misses" },
-    { href: "/scorecard/yardage-books", label: "Yardage books", description: "Keep course hole notes" },
+const toolkitItems = [
+    { href: "/toolkit", label: "Toolkit home", description: "Your golf dashboard" },
+    { href: "/toolkit/round/new", label: "New round", description: "Start keeping score" },
+    { href: "/toolkit/scores", label: "Your rounds", description: "View saved scorecards" },
+    { href: "/toolkit/stats", label: "Stats", description: "Review your game" },
+    { href: "/toolkit/practice", label: "Practice", description: "Log practice shot misses" },
+    { href: "/toolkit/yardage-books", label: "Yardage books", description: "Keep course hole notes" },
 ];
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isScorecardMenuOpen, setIsScorecardMenuOpen] = useState(false);
+    const [isToolkitMenuOpen, setIsToolkitMenuOpen] = useState(false);
 
     const closeMenus = () => {
         setIsMenuOpen(false);
-        setIsScorecardMenuOpen(false);
+        setIsToolkitMenuOpen(false);
     };
 
     return (
@@ -61,39 +61,39 @@ export function Header() {
 
                     <div
                         className="relative flex items-center"
-                        onMouseEnter={() => setIsScorecardMenuOpen(true)}
-                        onMouseLeave={() => setIsScorecardMenuOpen(false)}
+                        onMouseEnter={() => setIsToolkitMenuOpen(true)}
+                        onMouseLeave={() => setIsToolkitMenuOpen(false)}
                     >
                         <Link
-                            href="/scorecard"
+                            href="/toolkit"
                             className="rounded-l-lg py-2 pl-4 pr-1 text-sm font-semibold text-fairway-green transition-colors hover:bg-white"
                         >
-                            Scorecard
+                            Toolkit
                         </Link>
                         <button
                             type="button"
                             className="rounded-r-lg py-2 pl-1 pr-3 text-fairway-green transition-colors hover:bg-white"
-                            onClick={() => setIsScorecardMenuOpen((open) => !open)}
-                            aria-expanded={isScorecardMenuOpen}
-                            aria-controls="scorecard-navigation"
-                            aria-label="Toggle Scorecard navigation"
+                            onClick={() => setIsToolkitMenuOpen((open) => !open)}
+                            aria-expanded={isToolkitMenuOpen}
+                            aria-controls="toolkit-navigation"
+                            aria-label="Toggle Toolkit navigation"
                         >
                             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4" aria-hidden="true">
                                 <path d="m5 7.5 5 5 5-5" />
                             </svg>
                         </button>
 
-                        {isScorecardMenuOpen ? (
+                        {isToolkitMenuOpen ? (
                             <div
-                                id="scorecard-navigation"
+                                id="toolkit-navigation"
                                 className="absolute right-0 top-full w-60 rounded-2xl border border-light-sand bg-cream/95 p-2 shadow-lg backdrop-blur-sm"
                             >
-                                {scorecardItems.map((item) => (
+                                {toolkitItems.map((item) => (
                                     <Link
                                         key={item.href}
                                         href={item.href}
                                         className="block rounded-xl px-3 py-3 transition-colors hover:bg-white"
-                                        onClick={() => setIsScorecardMenuOpen(false)}
+                                        onClick={() => setIsToolkitMenuOpen(false)}
                                     >
                                         <span className="block text-sm font-semibold text-fairway-green">{item.label}</span>
                                         <span className="mt-0.5 block text-xs text-text-dark/70">{item.description}</span>
@@ -125,17 +125,17 @@ export function Header() {
                             ))}
                         </div>
 
-                        <section className="rounded-3xl border border-white/20 bg-white/10 p-5 shadow-sm" aria-labelledby="mobile-scorecard-heading">
+                        <section className="rounded-3xl border border-white/20 bg-white/10 p-5 shadow-sm" aria-labelledby="mobile-toolkit-heading">
                             <Link
-                                id="mobile-scorecard-heading"
-                                href="/scorecard"
+                                id="mobile-toolkit-heading"
+                                href="/toolkit"
                                 className="text-xs font-bold uppercase tracking-[0.2em] text-sky-blue"
                                 onClick={closeMenus}
                             >
-                                Scorecard
+                                Toolkit
                             </Link>
                             <div className="mt-3 divide-y divide-white/15">
-                                {scorecardItems.map((item) => (
+                                {toolkitItems.map((item) => (
                                     <Link
                                         key={item.href}
                                         href={item.href}
@@ -146,7 +146,9 @@ export function Header() {
                                             <span className="block text-lg font-semibold text-cream">{item.label}</span>
                                             <span className="mt-0.5 block text-sm text-cream/70">{item.description}</span>
                                         </span>
-                                        <span className="text-xl text-sky-blue" aria-hidden="true">→</span>
+                                        <span className="text-xl text-sky-blue" aria-hidden="true">
+                                            →
+                                        </span>
                                     </Link>
                                 ))}
                             </div>

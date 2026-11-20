@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
+import { useRound } from "@/app/(toolkit)/toolkit/context/RoundContext";
 import { createRound } from "@/lib/utils";
 import { getAllYardageBooks, normalizeCourseName, saveRound } from "@/lib/db";
 import { cacheUrls } from "@/lib/service-worker";
@@ -72,18 +72,18 @@ export default function NewRoundPage() {
             // cache hole 1 while online before going offline
             await cacheUrls([
                 [
-                    `/scorecard/round/${newRound.id}/score?hole=1`,
+                    `/toolkit/round/${newRound.id}/score?hole=1`,
                     {
                         headers: {
                             accept: "text/html",
                         },
                     },
                 ],
-                "/scorecard/scores",
+                "/toolkit/scores",
             ]);
 
             // Navigate to scoring page
-            router.push(`/scorecard/round/${newRound.id}/score?hole=1`);
+            router.push(`/toolkit/round/${newRound.id}/score?hole=1`);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to create round");
             setIsLoading(false);
@@ -94,7 +94,7 @@ export default function NewRoundPage() {
         <main className="min-h-screen bg-white py-12 px-6">
             <div className="max-w-lg mx-auto">
                 <div className="mb-8">
-                    <Link href="/scorecard" className="text-vibrant-green font-semibold hover:underline">
+                    <Link href="/toolkit" className="text-vibrant-green font-semibold hover:underline">
                         ← Back to Home
                     </Link>
                     <h1 className="text-4xl font-bold text-fairway-green mt-4 mb-2">New Round</h1>
@@ -137,7 +137,7 @@ export default function NewRoundPage() {
                             ) : yardageBooks.length === 0 && !isLoadingYardageBooks ? (
                                 <p className="mt-2 text-sm text-text-dark">
                                     No saved books yet. You can add course notes while scoring or in{" "}
-                                    <Link href="/scorecard/yardage-books" className="font-semibold text-vibrant-green underline">
+                                    <Link href="/toolkit/yardage-books" className="font-semibold text-vibrant-green underline">
                                         Yardage Books
                                     </Link>
                                     .

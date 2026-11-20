@@ -29,24 +29,6 @@ function FlagIcon() {
     );
 }
 
-function CircleStackIcon() {
-    return (
-        <IconShell>
-            <path d="M12 8c4.4 0 8-1.3 8-3s-3.6-3-8-3-8 1.3-8 3 3.6 3 8 3Z" />
-            <path d="M4 5v5c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
-            <path d="M4 10v5c0 1.7 3.6 3 8 3s8-1.3 8-3v-5" />
-        </IconShell>
-    );
-}
-
-function BoltIcon() {
-    return (
-        <IconShell>
-            <path d="m13 2-9 12h7l-1 8 9-12h-7l1-8Z" />
-        </IconShell>
-    );
-}
-
 function MapPinIcon() {
     return (
         <IconShell>
@@ -67,44 +49,22 @@ function ChartBarIcon() {
     );
 }
 
-function KeyIcon() {
-    return (
-        <IconShell>
-            <path d="M15 7a4 4 0 1 1-2.1 3.5L4 19.4V22h2.6l1.1-1.1H10v-2.3l1.1-1.1h2.3l2.1-2.1A4 4 0 0 1 15 7Z" />
-            <path d="M17 7h.01" />
-        </IconShell>
-    );
-}
-
-function BanknotesIcon() {
-    return (
-        <IconShell>
-            <path d="M3 7h18v10H3z" />
-            <path d="M7 7a4 4 0 0 1-4 4" />
-            <path d="M17 7a4 4 0 0 0 4 4" />
-            <path d="M7 17a4 4 0 0 0-4-4" />
-            <path d="M17 17a4 4 0 0 1 4-4" />
-            <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
-        </IconShell>
-    );
-}
-
 export default function HomePage() {
     return (
         <main className="min-h-screen bg-gradient-to-b from-white to-cream flex flex-col">
             <section className="flex-1 flex flex-col justify-center items-center px-6 py-20 text-center">
                 <div className="max-w-3xl mx-auto">
                     <div className="mb-6">
-                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Scorecard</h1>
-                        <p className="text-xl text-vibrant-green font-semibold">Golf Score Tracking Made Simple</p>
+                        <h1 className="text-5xl md:text-6xl font-bold text-fairway-green mb-3">Golf Toolkit</h1>
+                        <p className="text-xl text-vibrant-green font-semibold">Your game, all in one place</p>
                     </div>
                     <p className="text-lg text-text-dark mb-8 leading-relaxed">
-                        Track your golf round without the bloat. All data lives on your phone. No GPS. No personal data collection. No accounts. Just
-                        you, your score, and your phone.
+                        Track more than your score. Record the details of each round, review your game and practice tendencies, and keep useful notes
+                        for the courses you play.
                     </p>
                     <div className="mx-auto mb-4 w-full max-w-sm">
                         <Link
-                            href="/scorecard/round/new"
+                            href="/toolkit/round/new"
                             className="flex min-h-14 items-center justify-center rounded-lg bg-vibrant-green px-8 py-3 font-semibold text-white transition-colors hover:bg-fairway-green focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             Start New Round
@@ -112,28 +72,28 @@ export default function HomePage() {
                     </div>
                     <div className="mx-auto mb-12 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
                         <Link
-                            href="/scorecard/scores"
+                            href="/toolkit/scores"
                             className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             <span className="text-lg font-semibold">View Scores</span>
                             <span className="mt-1 text-sm">Review and resume rounds</span>
                         </Link>
                         <Link
-                            href="/scorecard/stats"
+                            href="/toolkit/stats"
                             className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             <span className="text-lg font-semibold">Stats</span>
                             <span className="mt-1 text-sm">See trends from your rounds</span>
                         </Link>
                         <Link
-                            href="/scorecard/practice"
+                            href="/toolkit/practice"
                             className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             <span className="text-lg font-semibold">Practice</span>
                             <span className="mt-1 text-sm">Log practice shot tendencies</span>
                         </Link>
                         <Link
-                            href="/scorecard/yardage-books"
+                            href="/toolkit/yardage-books"
                             className="flex min-h-28 flex-col items-center justify-center rounded-lg border-2 border-vibrant-green px-5 py-4 text-vibrant-green transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fairway-green"
                         >
                             <span className="text-lg font-semibold">Yardage Books</span>
@@ -144,89 +104,55 @@ export default function HomePage() {
             </section>
             <section className="bg-white px-6 py-16">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-3xl font-bold text-fairway-green mb-12 text-center">Why ChipAway?</h2>
+                    <h2 className="text-3xl font-bold text-fairway-green mb-12 text-center">A toolkit for the whole game</h2>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <div className="bg-cream p-6 rounded-lg">
                             <div className="flex gap-2">
                                 <FlagIcon />
-                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Simple & Fast</h3>
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Richer Round Tracking</h3>
                             </div>
                             <p className="text-text-dark">
-                                Enter your course name. Input par, score, and putts for each hole. That&apos;s it. No signup forms, no complexity.
+                                Along with score and putts, record tee club, fairway results, green miss direction, and penalties hole by hole.
                             </p>
                         </div>
                         <div className="bg-cream p-6 rounded-lg">
                             <div className="flex gap-2">
-                                <CircleStackIcon />
-                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Local First</h3>
+                                <ChartBarIcon />
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Understand Your Tendencies</h3>
                             </div>
                             <p className="text-text-dark">
-                                Every round, every score lives on your phone. No cloud. No GPS tracking. No personal information collected or sent
-                                anywhere.
+                                Review handicap, fairway and green-in-regulation rates, three-putts, scrambling, and practice-shot patterns by club.
                             </p>
                         </div>
                         <div className="bg-cream p-6 rounded-lg">
                             <div className="flex gap-2">
-                                <BoltIcon />
-                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Uninterrupted Play</h3>
+                                <MapPinIcon />
+                                <h3 className="text-xl font-semibold text-fairway-green mt-4 mb-3">Learn Each Course</h3>
                             </div>
 
                             <p className="text-text-dark">
-                                Start a round online, then play completely offline. Your scores stay on your phone. No internet needed during your
-                                round.
+                                Build an 18-hole yardage book and revisit your notes the next time you play that course.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
             <section className="bg-cream px-6 py-16">
-                <div className="max-w-3xl mx-auto">
-                    <h2 className="text-3xl font-bold text-fairway-green mb-8 text-center">The Problem with Other Apps</h2>
-
-                    <div className="space-y-4 text-text-dark">
-                        <div className="flex gap-4">
-                            <MapPinIcon />
-                            <div>
-                                <p className="font-semibold">GPS Tracking</p>
-                                <p className="text-sm">Constantly tracking your location and course data.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <ChartBarIcon />
-                            <div>
-                                <p className="font-semibold">Data Collection</p>
-                                <p className="text-sm">Selling your scores, locations, and behavioral data to third parties.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <KeyIcon />
-                            <div>
-                                <p className="font-semibold">Account Requirements</p>
-                                <p className="text-sm">Forced to create accounts, remember passwords, manage profiles.</p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-4">
-                            <BanknotesIcon />
-                            <div>
-                                <p className="font-semibold">Ads & Upsells</p>
-                                <p className="text-sm">Bombarded with ads, premium tiers, and in-app purchases.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <p className="mt-8 text-center text-vibrant-green font-semibold">
-                        We take a different approach: just scoring, no fuss, no problem.
+                <div className="mx-auto max-w-4xl rounded-2xl bg-white p-8 text-center md:p-12">
+                    <p className="mb-3 text-sm font-bold uppercase tracking-[0.18em] text-vibrant-green">What we&apos;re building toward</p>
+                    <h2 className="text-3xl font-bold text-fairway-green md:text-4xl">Turn what you learn into a game plan.</h2>
+                    <p className="mx-auto mt-5 max-w-2xl leading-relaxed text-text-dark">
+                        Your round history, practice tendencies, and course notes can tell a bigger story together. We&apos;re working toward
+                        personalized pre-round plans that bring those pieces together to help you prepare for the course ahead.
                     </p>
+                    <p className="mt-5 text-sm font-semibold text-vibrant-green">Pre-round game plans are in development.</p>
                 </div>
             </section>
             <section className="bg-white px-6 py-12 text-center">
-                <h3 className="text-2xl font-bold text-fairway-green mb-4">Ready to score?</h3>
+                <h3 className="text-2xl font-bold text-fairway-green mb-4">Ready for your next round?</h3>
                 <Link
-                    href="/scorecard/round/new"
+                    href="/toolkit/round/new"
                     className="inline-block px-8 py-3 bg-vibrant-green text-white font-semibold rounded-lg hover:bg-fairway-green transition-colors"
                 >
                     Start Your First Round

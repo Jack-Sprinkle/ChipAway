@@ -1,36 +1,34 @@
 # Chip Away Golf Vision
 
-> **Version:** 0.1
+> **Version:** 0.2
 > **Status:** Living Document
-> **Last Updated:** June 2026
+> **Last Updated:** November 2026
 
 ---
 
 # Why We're Building This
 
-Chip Away Golf isn't being built to become another golf content channel.
+Chip Away Golf is being built as a player's digital toolkit, not just another golf content channel.
 
-It's being built to become a place golfers trust.
+The toolkit will help golfers capture what happens in their rounds and practice, understand their tendencies, learn the courses they play, and use that knowledge to prepare for the next round.
 
-The goal isn't to chase algorithms, publish endless swing tips, or convince people there's one secret to playing better golf.
+The long-term goal is a personal digital caddy: a thoughtful companion that can bring a player's scoring history, practice tendencies, and course notes together into useful, course-aware game plans. It should help players think through their choices—not pretend to be infallible or make decisions for them.
 
-The goal is to create products, content, and tools that make golfers excited to play again.
+This is the direction we are building toward; personalized game plans and the digital caddy are not available features today. The goal isn't to chase algorithms, publish endless swing tips, or promise a shortcut to better golf. It's to create useful tools that help golfers learn and stay excited to play.
 
 ---
 
 # Long-Term Vision
 
-Imagine a golfer discovering Chip Away Golf for the first time.
+Imagine a golfer using Chip Away Golf over the course of a season.
 
-They might watch a YouTube video.
+They record rounds with enough detail to see more than the final score.
 
-Then read a blog article.
+They review practice tendencies and keep notes for the courses they know.
 
-Then use the scorekeeper for their next round.
+Before a future round, they can bring those pieces together into a practical game plan tailored to their game and the course.
 
-Then subscribe to the newsletter.
-
-Months later, they're still using Chip Away because it has become part of how they experience golf.
+Over time, Chip Away becomes their digital caddy: a trusted way to prepare, reflect, and keep learning while the player remains in control.
 
 Every interaction should reinforce one simple idea:
 
@@ -46,7 +44,9 @@ Success means:
 
 * People spend more time enjoying golf.
 * Golfers become more patient with themselves.
-* The software solves real problems.
+* Players use the toolkit to understand their game and courses, not just collect numbers.
+* Game plans are useful, grounded in the player's own information, and clearly presented as guidance.
+* The software solves real problems and treats personal golf data with care.
 * The content feels genuine.
 * The community is welcoming and encouraging.
 * Every product reflects the same philosophy.
@@ -59,16 +59,14 @@ If Chip Away disappeared tomorrow, people would genuinely miss it.
 
 ## Software
 
-Useful tools that make playing and practicing golf easier.
+The player's digital toolkit is the center of the software vision. It should grow in deliberate stages:
 
-Examples include:
+1. **Capture:** reliable round scoring, useful hole-level details, practice tracking, and course-specific notes.
+2. **Understand:** clear analysis that helps players recognize scoring and practice tendencies over time.
+3. **Prepare:** course-aware pre-round game plans that connect a player's history, practice patterns, and yardage-book notes.
+4. **Become a digital caddy:** a personal companion that helps players plan, make informed choices, and learn from outcomes without taking control away from them.
 
-* Scorekeeper
-* Round statistics
-* Practice journal
-* Handicap tools
-* Course notes
-* Future ideas that genuinely help golfers.
+Each stage should earn the player's trust before the next. Any future service that analyzes or processes personal golf data must make its use clear and keep the player in control.
 
 ---
 
@@ -150,17 +148,9 @@ If the answer to any of these is "no," rethink it.
 
 # Five-Year Vision
 
-Chip Away Golf is recognized as a thoughtful golf brand built around progress, enjoyment, and useful tools.
+Chip Away Golf is recognized as a thoughtful golf toolkit that helps players understand their games, learn their courses, and prepare with confidence.
 
-People don't just consume the content.
-
-They participate.
-
-They use the software.
-
-They share their own journeys.
-
-They recommend Chip Away because it genuinely improves their experience of the game.
+Players use it to record rounds and practice, notice meaningful patterns, keep course knowledge, and build practical plans. They recommend Chip Away because it helps them enjoy and understand golf without making the game feel more complicated.
 
 ---
 

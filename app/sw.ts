@@ -10,7 +10,7 @@ declare global {
 
 declare const self: ServiceWorkerGlobalScope;
 
-const roundScorePath = /^\/scorecard\/round\/[^/]+\/score$/;
+const roundScorePath = /^\/toolkit\/round\/[^/]+\/score$/;
 
 function isHtmlDocumentRequest(request: Request) {
     return request.mode === "navigate" || request.headers.get("accept")?.includes("text/html") === true;
@@ -46,7 +46,7 @@ const serwist = new Serwist({
     fallbacks: {
         entries: [
             {
-                url: "/scorecard/~offline",
+                url: "/toolkit/~offline",
                 matcher({ request }) {
                     return request.destination === "document";
                 },

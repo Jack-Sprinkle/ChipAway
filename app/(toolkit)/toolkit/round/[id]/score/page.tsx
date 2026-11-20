@@ -3,7 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
+import { useRound } from "@/app/(toolkit)/toolkit/context/RoundContext";
 import { getRound, getYardageBookHoleNote, saveYardageBookHoleNote } from "@/lib/db";
 import { GOLF_CLUBS } from "@/lib/types";
 
@@ -64,7 +64,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     useEffect(() => {
         if (Number.isNaN(holeParam) || holeParam < 1 || holeParam > 18) {
-            router.replace(`/scorecard/round/${roundId}/score?hole=1`);
+            router.replace(`/toolkit/round/${roundId}/score?hole=1`);
         }
     }, [holeParam, roundId, router]);
 
@@ -190,7 +190,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                     holeIndex: currentHoleIndex,
                     holeData: { isComplete: isHoleComplete(currentHole) },
                 });
-                router.push(`/scorecard/round/${roundId}/score?hole=${targetHole}`);
+                router.push(`/toolkit/round/${roundId}/score?hole=${targetHole}`);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Failed to save round progress");
             } finally {
@@ -214,7 +214,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeIndex: currentHoleIndex,
                 holeData: { isComplete: true },
             });
-            router.push(`/scorecard/round/${roundId}/score?hole=${currentHoleNum + 1}`);
+            router.push(`/toolkit/round/${roundId}/score?hole=${currentHoleNum + 1}`);
             setIsSaving(false);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to save round progress");
@@ -338,7 +338,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeData: { isComplete: true },
             });
             // Navigate to past rounds or home
-            router.push("/scorecard/scores");
+            router.push("/toolkit/scores");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to complete round");
             setIsSaving(false);
@@ -353,7 +353,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         ← Home
                     </button>
                     <button
-                        onClick={() => router.push("/scorecard/scores")}
+                        onClick={() => router.push("/toolkit/scores")}
                         className="text-fairway-green hover:text-vibrant-green font-medium transition-colors"
                     >
                         View Scores
@@ -519,7 +519,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                                       : `No saved yardage-book note for this hole at ${currentRound.courseName} yet.`}
                             </p>
                         </div>
-                        <Link href="/scorecard/yardage-books" className="text-sm font-semibold text-vibrant-green underline">
+                        <Link href="/toolkit/yardage-books" className="text-sm font-semibold text-vibrant-green underline">
                             All yardage books
                         </Link>
                     </div>

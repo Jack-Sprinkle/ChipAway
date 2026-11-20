@@ -10,12 +10,12 @@ const revision = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf-8" }).
 const withSerwist = withSerwistInit({
     additionalPrecacheEntries: [
         { url: "/", revision },
-		{ url: "/scorecard", revision },
-        { url: "/scorecard/round/new", revision },
-        { url: "/scorecard/scores", revision },
-		{ url: "/scorecard/stats", revision },
-        { url: "/scorecard/practice", revision },
-        { url: "/scorecard/~offline", revision },
+		{ url: "/toolkit", revision },
+        { url: "/toolkit/round/new", revision },
+        { url: "/toolkit/scores", revision },
+		{ url: "/toolkit/stats", revision },
+        { url: "/toolkit/practice", revision },
+        { url: "/toolkit/~offline", revision },
     ],
     swSrc: "app/sw.ts",
     swDest: "public/sw.js",
@@ -23,7 +23,20 @@ const withSerwist = withSerwistInit({
 });
 
 const nextConfig: NextConfig = {
-    /* config options here */
+    async redirects() {
+        return [
+            {
+                source: "/scorecard",
+                destination: "/toolkit",
+                permanent: true,
+            },
+            {
+                source: "/scorecard/:path*",
+                destination: "/toolkit/:path*",
+                permanent: true,
+            },
+        ];
+    },
 };
 
 export default withSerwist(nextConfig);

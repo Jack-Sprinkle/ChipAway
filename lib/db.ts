@@ -1,12 +1,13 @@
 // Imports for idb
 import { IDBPDatabase, openDB } from "idb";
-import { PracticeSession, Round } from "./types";
+import type { PracticeSession, Round, YardageBook, YardageBookHole } from "./types";
 
 // Initialize db name, version, and store
 const DB_NAME = "chipaway-golf";
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const STORE_NAME = "rounds";
 const PRACTICE_STORE_NAME = "practiceSessions";
+const YARDAGE_BOOK_STORE_NAME = "yardageBooks";
 
 // Database schema
 interface ChipAwayDB {
@@ -17,6 +18,10 @@ interface ChipAwayDB {
     practiceSessions: {
         key: string;
         value: PracticeSession;
+    };
+    yardageBooks: {
+        key: string;
+        value: YardageBook;
     };
 }
 
@@ -36,6 +41,9 @@ export async function initDB(): Promise<IDBPDatabase<ChipAwayDB>> {
             }
             if (!db.objectStoreNames.contains(PRACTICE_STORE_NAME)) {
                 db.createObjectStore(PRACTICE_STORE_NAME, { keyPath: "id" });
+            }
+            if (!db.objectStoreNames.contains(YARDAGE_BOOK_STORE_NAME)) {
+                db.createObjectStore(YARDAGE_BOOK_STORE_NAME, { keyPath: "courseKey" });
             }
         },
     });
@@ -62,6 +70,88 @@ export async function getAllPracticeSessions(): Promise<PracticeSession[]> {
 export async function getActivePracticeSession(): Promise<PracticeSession | undefined> {
     const sessions = await getAllPracticeSessions();
     return sessions.find((session) => session.endedAt === undefined);
+}
+
+export function normalizeCourseName(courseName: string): string {
+    const normalizedName = courseName.trim().replace(/\s+/g, " ").toLowerCase();
+    if (!normalizedName) {
+        throw new Error("Course name is required");
+    }
+    return normalizedName;
+}
+
+function getCourseDisplayName(courseName: string): string {
+    const displayName = courseName.trim().replace(/\s+/g, " ");
+    if (!displayName) {
+        throw new Error("Course name is required");
+    }
+    return displayName;
+}
+
+function validateYardageBookHoleNumber(holeNumber: number): void {
+    if (!Number.isInteger(holeNumber) || holeNumber < 1 || holeNumber > 18) {
+        throw new Error("Hole number must be between 1 and 18");
+    }
+}
+
+export async function getYardageBook(courseName: string): Promise<YardageBook | undefined> {
+    const database = await getDB();
+    return database.get(YARDAGE_BOOK_STORE_NAME, normalizeCourseName(courseName));
+}
+
+export async function getAllYardageBooks(): Promise<YardageBook[]> {
+    const database = await getDB();
+    const yardageBooks = await database.getAll(YARDAGE_BOOK_STORE_NAME);
+    return yardageBooks.sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+export async function getYardageBookHoleNote(courseName: string, holeNumber: number): Promise<YardageBookHole | undefined> {
+    validateYardageBookHoleNumber(holeNumber);
+    const yardageBook = await getYardageBook(courseName);
+    return yardageBook?.holes.find((hole) => hole.holeNumber === holeNumber);
+}
+
+export async function saveYardageBookHoleNote(
+    courseName: string,
+    holeNumber: number,
+    note: string,
+): Promise<YardageBook> {
+    validateYardageBookHoleNumber(holeNumber);
+    const courseKey = normalizeCourseName(courseName);
+    const displayName = getCourseDisplayName(courseName);
+    const database = await getDB();
+    const transaction = database.transaction(YARDAGE_BOOK_STORE_NAME, "readwrite");
+    const store = transaction.objectStore(YARDAGE_BOOK_STORE_NAME);
+    const existingBook = await store.get(courseKey);
+    const now = Date.now();
+    const holes: YardageBookHole[] =
+        existingBook?.holes ??
+        Array.from({ length: 18 }, (_, index) => ({
+            holeNumber: index + 1,
+            note: "",
+        }));
+
+    holes[holeNumber - 1] = {
+        holeNumber,
+        note,
+        updatedAt: now,
+    };
+
+    const yardageBook: YardageBook = {
+        courseKey,
+        courseName: existingBook?.courseName ?? displayName,
+        holes,
+        updatedAt: now,
+    };
+
+    await store.put(yardageBook);
+    await transaction.done;
+    return yardageBook;
+}
+
+export async function deleteYardageBook(courseName: string): Promise<void> {
+    const database = await getDB();
+    await database.delete(YARDAGE_BOOK_STORE_NAME, normalizeCourseName(courseName));
 }
 
 // Get database connection

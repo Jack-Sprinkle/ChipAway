@@ -37,13 +37,13 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 3. Create the digital yardage book data model
 
-- [ ] Define a `YardageBook` record stored separately from `Round` and `Hole`.
-- [ ] Store books by normalized course name.
-- [ ] Store one note per hole in the yardage book's 18-hole collection.
-- [ ] Support dates or timestamps for when a hole note was last updated.
-- [ ] Add a yardage-books object store through an IndexedDB schema version upgrade.
-- [ ] Add CRUD helpers for saving and loading a course yardage book.
-- [ ] Add a helper for loading the notes for one course and hole.
+- [x] Define a `YardageBook` record stored separately from `Round` and `Hole`.
+- [x] Store books by normalized course name.
+- [x] Store one note per hole in the yardage book's 18-hole collection.
+- [x] Support dates or timestamps for when a hole note was last updated.
+- [x] Add a yardage-books object store through an IndexedDB schema version upgrade.
+- [x] Add CRUD helpers for saving and loading a course yardage book.
+- [x] Add a helper for loading the notes for one course and hole.
 
 ## 4. Build the yardage book catalogue
 

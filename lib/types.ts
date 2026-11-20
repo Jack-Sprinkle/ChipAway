@@ -44,6 +44,19 @@ export interface Round {
     completed: boolean; // Whether the full 18 holes have been scored
 }
 
+export interface YardageBookHole {
+    holeNumber: number;
+    note: string;
+    updatedAt?: number;
+}
+
+export interface YardageBook {
+    courseKey: string;
+    courseName: string;
+    holes: YardageBookHole[];
+    updatedAt: number;
+}
+
 export type PracticeContact = "fat" | "thin" | "good";
 export type PracticeDirection = "left" | "right" | "straight";
 

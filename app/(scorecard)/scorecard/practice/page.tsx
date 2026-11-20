@@ -20,7 +20,7 @@ const directions: { value: PracticeDirection; label: string }[] = [
 
 export default function PracticePage() {
     const [session, setSession] = useState<PracticeSession | null>(null);
-    const [club, setClub] = useState(clubs[0]);
+    const [club, setClub] = useState<string>(clubs[0]);
     const [contact, setContact] = useState<PracticeContact>("good");
     const [startDirection, setStartDirection] = useState<PracticeDirection>("straight");
     const [curve, setCurve] = useState<PracticeDirection>("straight");

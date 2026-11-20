@@ -22,19 +22,18 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 - [x] Add a penalty count to each hole.
 - [x] Keep all richer fields optional until the user provides a value.
 - [x] Confirm no IndexedDB version bump is needed for optional fields on existing round records; no data migration is included.
-- [ ] Clear existing local round data during development if old records conflict with the new model.
 
 ## 2. Add richer data capture to hole scoring
 
-- [ ] Add a tee club selector.
-- [ ] Add FIR controls for hit, missed left, and missed right.
-- [ ] Show FIR controls only for par 4 and par 5 holes.
-- [ ] Add GIR miss controls for left, right, short, and long.
-- [ ] Add a penalty count control.
-- [ ] Add accessible labels and mobile-friendly controls.
-- [ ] Add the same controls to direct round URL and resumed-round flows.
-- [ ] Save richer hole values as the user advances between holes.
-- [ ] Preserve the existing requirement that par, score, and putts are complete before advancing.
+- [x] Add a tee club selector.
+- [x] Add FIR controls for hit, missed left, and missed right.
+- [x] Show FIR controls only for par 4 and par 5 holes.
+- [x] Add GIR miss controls for left, right, short, and long.
+- [x] Add a penalty count control.
+- [x] Add accessible labels and mobile-friendly controls.
+- [x] Add the same controls to direct round URL and resumed-round flows.
+- [x] Save richer hole values as the user advances between holes.
+- [x] Preserve the existing requirement that par, score, and putts are complete before advancing.
 
 ## 3. Create the digital yardage book data model
 

@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRound } from "@/app/(scorecard)/scorecard/context/RoundContext";
 import { getRound } from "@/lib/db";
+import { GOLF_CLUBS } from "@/lib/types";
 
 export default function ScoringPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
@@ -97,23 +98,48 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
 
     const scoredHoles = currentRound.holes.filter((hole) => hole.isComplete).length;
     const vsPar = runningScore - runningPar;
+    const missedGreen =
+        currentHole.parValue !== undefined &&
+        currentHole.score !== undefined &&
+        currentHole.putts !== undefined &&
+        currentHole.score - currentHole.putts > currentHole.parValue - 2;
 
     // Validate that a hole has all required data before saving
     const isHoleComplete = (hole: typeof currentHole) => {
         return hole.parValue !== undefined && hole.score !== undefined && hole.putts !== undefined;
     };
 
-    // Handle back hole button click
-    const handlePrevious = () => {
+    // Keep dependent scoring details consistent when par, score, or putts change.
+    const updateScoringFields = (holeData: Partial<typeof currentHole>) => {
+        const updatedHole = { ...currentHole, ...holeData };
+        const isMissedGreen =
+            updatedHole.parValue !== undefined &&
+            updatedHole.score !== undefined &&
+            updatedHole.putts !== undefined &&
+            updatedHole.score - updatedHole.putts > updatedHole.parValue - 2;
+
+        updateHole(currentHoleIndex, {
+            ...holeData,
+            ...(updatedHole.parValue === 3 ? { fairway: undefined } : {}),
+            ...(!isMissedGreen ? { girMissDirection: undefined } : {}),
+        });
+    };
+
+    // Save this hole before moving away so partial scoring details are retained.
+    const handlePrevious = async () => {
         if (currentHoleNum > 1) {
             setIsSaving(true);
             setError(null);
             const targetHole = currentHoleNum - 1;
             try {
+                await saveToDatabase({
+                    holeIndex: currentHoleIndex,
+                    holeData: { isComplete: isHoleComplete(currentHole) },
+                });
                 router.push(`/scorecard/round/${roundId}/score?hole=${targetHole}`);
-                setIsSaving(false);
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Failed to save round progress");
+            } finally {
                 setIsSaving(false);
             }
         }
@@ -146,7 +172,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const handleParChange = (value: string) => {
         const parValue = parseInt(value, 10);
         if (!isNaN(parValue) && parValue >= 3 && parValue <= 5) {
-            updateHole(currentHoleIndex, { parValue });
+            updateScoringFields({ parValue });
         }
     };
 
@@ -159,27 +185,59 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
         }
     };
 
+    const handleTeeClubChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { teeClub: undefined });
+            return;
+        }
+
+        const teeClub = GOLF_CLUBS.find((club) => club === value);
+        if (teeClub) {
+            updateHole(currentHoleIndex, { teeClub });
+        }
+    };
+
+    const handleGIRMissDirectionChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { girMissDirection: undefined });
+        } else if (value === "left" || value === "right" || value === "short" || value === "long") {
+            updateHole(currentHoleIndex, { girMissDirection: value });
+        }
+    };
+
+    const handlePenaltyCountChange = (value: string) => {
+        if (value === "") {
+            updateHole(currentHoleIndex, { penaltyCount: undefined });
+            return;
+        }
+
+        const penaltyCount = Number(value);
+        if (Number.isInteger(penaltyCount) && penaltyCount >= 0) {
+            updateHole(currentHoleIndex, { penaltyCount });
+        }
+    };
+
     // Handle score input change
     const handleScoreChange = (value: string) => {
         if (value === "") {
-            updateHole(currentHoleIndex, { score: undefined });
+            updateScoringFields({ score: undefined });
             return;
         }
         const score = parseInt(value, 10);
         if (!isNaN(score) && score > 0) {
-            updateHole(currentHoleIndex, { score });
+            updateScoringFields({ score });
         }
     };
 
     // Handle putts input change
     const handlePuttsChange = (value: string) => {
         if (value === "") {
-            updateHole(currentHoleIndex, { putts: undefined });
+            updateScoringFields({ putts: undefined });
             return;
         }
         const putts = parseInt(value, 10);
         if (!isNaN(putts) && putts >= 0) {
-            updateHole(currentHoleIndex, { putts });
+            updateScoringFields({ putts });
         }
     };
 
@@ -262,6 +320,25 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         </select>
                     </div>
                     <div>
+                        <label htmlFor="teeClub" className="block font-semibold text-fairway-green mb-2">
+                            Tee Club
+                        </label>
+                        <select
+                            id="teeClub"
+                            value={currentHole.teeClub ?? ""}
+                            onChange={(e) => handleTeeClubChange(e.target.value)}
+                            disabled={isSaving}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
+                        >
+                            <option value="">Select club</option>
+                            {GOLF_CLUBS.map((club) => (
+                                <option key={club} value={club}>
+                                    {club}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
                         <label htmlFor="score" className="block font-semibold text-fairway-green mb-2">
                             Score
                         </label>
@@ -277,23 +354,6 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         />
                     </div>
                     <div>
-                        <label htmlFor="fairway" className="block font-semibold text-fairway-green mb-2">
-                            Fairway
-                        </label>
-                        <select
-                            id="fairway"
-                            value={currentHole.fairway ?? ""}
-                            onChange={(e) => handleFairwayChange(e.target.value)}
-                            disabled={isSaving}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
-                        >
-                            <option value="">--</option>
-                            <option value="hit">Hit</option>
-                            <option value="left">Missed - Left</option>
-                            <option value="right">Missed - Right</option>
-                        </select>
-                    </div>
-                    <div>
                         <label htmlFor="putts" className="block font-semibold text-fairway-green mb-2">
                             Putts
                         </label>
@@ -306,6 +366,61 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                             disabled={isSaving}
                             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
                             min={0}
+                        />
+                    </div>
+                    {currentHole.parValue === 4 || currentHole.parValue === 5 ? (
+                        <div>
+                            <label htmlFor="fairway" className="block font-semibold text-fairway-green mb-2">
+                                Fairway
+                            </label>
+                            <select
+                                id="fairway"
+                                value={currentHole.fairway ?? ""}
+                                onChange={(e) => handleFairwayChange(e.target.value)}
+                                disabled={isSaving}
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
+                            >
+                                <option value="">Not recorded</option>
+                                <option value="hit">Hit</option>
+                                <option value="left">Missed left</option>
+                                <option value="right">Missed right</option>
+                            </select>
+                        </div>
+                    ) : null}
+                    {missedGreen ? (
+                        <div>
+                            <label htmlFor="girMissDirection" className="block font-semibold text-fairway-green mb-2">
+                                Green miss direction
+                            </label>
+                            <select
+                                id="girMissDirection"
+                                value={currentHole.girMissDirection ?? ""}
+                                onChange={(e) => handleGIRMissDirectionChange(e.target.value)}
+                                disabled={isSaving}
+                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
+                            >
+                                <option value="">Not recorded</option>
+                                <option value="left">Left</option>
+                                <option value="right">Right</option>
+                                <option value="short">Short</option>
+                                <option value="long">Long</option>
+                            </select>
+                        </div>
+                    ) : null}
+                    <div>
+                        <label htmlFor="penaltyCount" className="block font-semibold text-fairway-green mb-2">
+                            Penalties
+                        </label>
+                        <input
+                            id="penaltyCount"
+                            type="number"
+                            value={currentHole.penaltyCount ?? ""}
+                            onChange={(e) => handlePenaltyCountChange(e.target.value)}
+                            placeholder="0"
+                            disabled={isSaving}
+                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
+                            min={0}
+                            step={1}
                         />
                     </div>
                 </form>

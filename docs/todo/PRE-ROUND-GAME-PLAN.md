@@ -15,9 +15,9 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 
 ## 1. Extend the scoring data model
 
-- [x] Add typed FIR outcomes: hit, missed left, or missed right.
+- [x] Add typed FIR outcomes: hit, missed left, missed right, or fairway bunker.
 - [x] Replace the current numeric fairway field with typed values.
-- [x] Add typed GIR miss directions: left, right, short, or long.
+- [x] Add typed GIR miss directions: left, right, short, long, or greenside bunker.
 - [x] Add a tee club field to each hole.
 - [x] Add a penalty count to each hole.
 - [x] Keep all richer fields optional until the user provides a value.
@@ -26,9 +26,9 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 ## 2. Add richer data capture to hole scoring
 
 - [x] Add a tee club selector.
-- [x] Add FIR controls for hit, missed left, and missed right.
+- [x] Add FIR controls for hit, missed left, missed right, and fairway bunker.
 - [x] Show FIR controls only for par 4 and par 5 holes.
-- [x] Add GIR miss controls for left, right, short, and long.
+- [x] Add GIR miss controls for left, right, short, long, and greenside bunker.
 - [x] Add a penalty count control.
 - [x] Add accessible labels and mobile-friendly controls.
 - [x] Add the same controls to direct round URL and resumed-round flows.
@@ -66,13 +66,14 @@ AI generation is the final step. The local data model, storage, interfaces, and 
 - [x] Clearly show whether a hole has no saved note or is using a prior course note.
 - [x] Do not overwrite a course note accidentally when creating a new round.
 
-## 6. Update round review
+## 6. Add a quick post-round recap
 
-- [ ] Show tee club for each hole.
-- [ ] Show FIR result and miss direction for par 4 and par 5 holes.
-- [ ] Show GIR miss direction where applicable.
-- [ ] Show penalty count for each hole.
-- [ ] If notes are shown in round review, load them from the associated yardage book rather than the round record.
+- [x] Show the course, date, total score, par, and score relative to par after completing a round.
+- [x] Show front-nine and back-nine scores.
+- [x] Summarize recorded fairways hit and penalty strokes.
+- [x] Link from the recap to the full scorecard and past rounds.
+- [ ] Show tee club, fairway outcome, GIR miss direction, and penalty count for each hole on the full scorecard.
+- [ ] If course notes are added to a round view, load them from the associated yardage book rather than the round record.
 
 ## 7. Expand scoring statistics
 

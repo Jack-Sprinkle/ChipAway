@@ -337,8 +337,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 holeIndex: currentHoleIndex,
                 holeData: { isComplete: true },
             });
-            // Navigate to past rounds or home
-            router.push("/toolkit/scores");
+            router.push(`/toolkit/round/${roundId}/review`);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to complete round");
             setIsSaving(false);

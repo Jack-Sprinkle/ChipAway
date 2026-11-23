@@ -234,7 +234,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const handleFairwayChange = (value: string) => {
         if (value === "") {
             updateHole(currentHoleIndex, { fairway: undefined });
-        } else if (value === "hit" || value === "left" || value === "right") {
+        } else if (value === "hit" || value === "left" || value === "right" || value === "bunker") {
             updateHole(currentHoleIndex, { fairway: value });
         }
     };
@@ -254,7 +254,7 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
     const handleGIRMissDirectionChange = (value: string) => {
         if (value === "") {
             updateHole(currentHoleIndex, { girMissDirection: undefined });
-        } else if (value === "left" || value === "right" || value === "short" || value === "long") {
+        } else if (value === "left" || value === "right" || value === "short" || value === "long" || value === "bunker") {
             updateHole(currentHoleIndex, { girMissDirection: value });
         }
     };
@@ -364,6 +364,17 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                     <h1 className="text-4xl font-bold text-fairway-green mb-2">Hole {currentHoleNum}</h1>
                     <p className="text-text-dark text-sm">{currentHoleNum} of 18</p>
                 </div>
+                {savedYardageNote && (
+                    <aside className="mb-6 rounded-xl border border-light-sand bg-cream p-4" aria-label={`Saved course note for hole ${currentHoleNum}`}>
+                        <div className="flex items-center justify-between gap-3">
+                            <h2 className="font-semibold text-fairway-green">Saved course note</h2>
+                            <a href="#yardage-note-section" className="shrink-0 text-sm font-semibold text-vibrant-green underline">
+                                Edit note
+                            </a>
+                        </div>
+                        <p className="mt-2 line-clamp-3 whitespace-pre-wrap text-sm text-text-dark">{savedYardageNote}</p>
+                    </aside>
+                )}
                 {scoredHoles > 0 && (
                     <div className="mb-8 p-6 bg-fairway-green text-white rounded-lg">
                         <div className="flex items-center justify-between mb-4">
@@ -383,23 +394,26 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                 )}
                 {error && <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">{error}</div>}
                 <form className="space-y-6 mb-8">
-                    <div>
-                        <label htmlFor="par" className="block font-semibold text-fairway-green mb-2">
-                            Par
-                        </label>
-                        <select
-                            id="par"
-                            value={currentHole.parValue ?? ""}
-                            onChange={(e) => handleParChange(e.target.value)}
-                            disabled={isSaving}
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-2xl text-center font-bold focus:border-vibrant-green focus:outline-none transition-colors"
-                        >
-                            <option value="">--</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                        </select>
-                    </div>
+                    <fieldset disabled={isSaving}>
+                        <legend className="block font-semibold text-fairway-green mb-2">Par</legend>
+                        <div className="grid grid-cols-3 gap-2">
+                            {[3, 4, 5].map((par) => (
+                                <label key={par} className="cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="par"
+                                        value={par}
+                                        checked={currentHole.parValue === par}
+                                        onChange={(event) => handleParChange(event.target.value)}
+                                        className="peer sr-only"
+                                    />
+                                    <span className="flex min-h-12 items-center justify-center rounded-lg border-2 border-gray-300 bg-white text-2xl font-bold text-fairway-green transition-colors peer-checked:border-vibrant-green peer-checked:bg-vibrant-green peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-vibrant-green">
+                                        {par}
+                                    </span>
+                                </label>
+                            ))}
+                        </div>
+                    </fieldset>
                     <div>
                         <label htmlFor="teeClub" className="block font-semibold text-fairway-green mb-2">
                             Tee Club
@@ -450,43 +464,59 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         />
                     </div>
                     {currentHole.parValue === 4 || currentHole.parValue === 5 ? (
-                        <div>
-                            <label htmlFor="fairway" className="block font-semibold text-fairway-green mb-2">
-                                Fairway
-                            </label>
-                            <select
-                                id="fairway"
-                                value={currentHole.fairway ?? ""}
-                                onChange={(e) => handleFairwayChange(e.target.value)}
-                                disabled={isSaving}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
-                            >
-                                <option value="">Not recorded</option>
-                                <option value="hit">Hit</option>
-                                <option value="left">Missed left</option>
-                                <option value="right">Missed right</option>
-                            </select>
-                        </div>
+                        <fieldset disabled={isSaving}>
+                            <legend className="block font-semibold text-fairway-green mb-2">Fairway</legend>
+                            <div className="grid grid-cols-2 gap-2">
+                                {[
+                                    { value: "hit", label: "Hit" },
+                                    { value: "left", label: "Missed left" },
+                                    { value: "right", label: "Missed right" },
+                                    { value: "bunker", label: "Fairway bunker" },
+                                ].map((option) => (
+                                    <label key={option.value} className="cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="fairway"
+                                            value={option.value}
+                                            checked={currentHole.fairway === option.value}
+                                            onChange={(event) => handleFairwayChange(event.target.value)}
+                                            className="peer sr-only"
+                                        />
+                                        <span className="flex min-h-12 items-center justify-center rounded-lg border-2 border-gray-300 bg-white px-2 text-center text-sm font-semibold text-fairway-green transition-colors peer-checked:border-vibrant-green peer-checked:bg-vibrant-green peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-vibrant-green">
+                                            {option.label}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
+                        </fieldset>
                     ) : null}
                     {missedGreen ? (
-                        <div>
-                            <label htmlFor="girMissDirection" className="block font-semibold text-fairway-green mb-2">
-                                Green miss direction
-                            </label>
-                            <select
-                                id="girMissDirection"
-                                value={currentHole.girMissDirection ?? ""}
-                                onChange={(e) => handleGIRMissDirectionChange(e.target.value)}
-                                disabled={isSaving}
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg text-lg focus:border-vibrant-green focus:outline-none transition-colors"
-                            >
-                                <option value="">Not recorded</option>
-                                <option value="left">Left</option>
-                                <option value="right">Right</option>
-                                <option value="short">Short</option>
-                                <option value="long">Long</option>
-                            </select>
-                        </div>
+                        <fieldset disabled={isSaving}>
+                            <legend className="block font-semibold text-fairway-green mb-2">Green miss direction</legend>
+                            <div className="grid grid-cols-2 gap-2">
+                                {[
+                                    { value: "left", label: "Left" },
+                                    { value: "right", label: "Right" },
+                                    { value: "short", label: "Short" },
+                                    { value: "long", label: "Long" },
+                                    { value: "bunker", label: "Greenside bunker" },
+                                ].map((option) => (
+                                    <label key={option.value} className="cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="girMissDirection"
+                                            value={option.value}
+                                            checked={currentHole.girMissDirection === option.value}
+                                            onChange={(event) => handleGIRMissDirectionChange(event.target.value)}
+                                            className="peer sr-only"
+                                        />
+                                        <span className="flex min-h-12 items-center justify-center rounded-lg border-2 border-gray-300 bg-white px-2 text-center text-sm font-semibold text-fairway-green transition-colors peer-checked:border-vibrant-green peer-checked:bg-vibrant-green peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-vibrant-green">
+                                            {option.label}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
+                        </fieldset>
                     ) : null}
                     <div>
                         <label htmlFor="penaltyCount" className="block font-semibold text-fairway-green mb-2">
@@ -505,7 +535,11 @@ export default function ScoringPage({ params }: { params: Promise<{ id: string }
                         />
                     </div>
                 </form>
-                <section className="mb-8 rounded-xl border border-light-sand bg-cream p-5" aria-labelledby="yardage-note-heading">
+                <section
+                    id="yardage-note-section"
+                    className="mb-8 scroll-mt-4 rounded-xl border border-light-sand bg-cream p-5"
+                    aria-labelledby="yardage-note-heading"
+                >
                     <div className="flex flex-wrap items-start justify-between gap-2">
                         <div>
                             <h2 id="yardage-note-heading" className="font-semibold text-fairway-green">

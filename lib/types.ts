@@ -19,8 +19,8 @@ export const GOLF_CLUBS = [
 ] as const;
 
 export type GolfClub = (typeof GOLF_CLUBS)[number];
-export type FairwayOutcome = "hit" | "left" | "right";
-export type GIRMissDirection = "left" | "right" | "short" | "long";
+export type FairwayOutcome = "hit" | "left" | "right" | "bunker";
+export type GIRMissDirection = "left" | "right" | "short" | "long" | "bunker";
 
 export interface Hole {
     holeNumber: number; // 1-18
